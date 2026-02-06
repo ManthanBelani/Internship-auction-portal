@@ -37,13 +37,13 @@ class User
         }
 
         try {
-            $sql = "INSERT INTO users (email, password_hash, name, registered_at) 
-                    VALUES (:email, :password_hash, :name, NOW())";
+            $sql = "INSERT INTO users (email, password, name, created_at) 
+                    VALUES (:email, :password, :name, CURRENT_TIMESTAMP)";
             
             $stmt = $this->db->prepare($sql);
             $stmt->execute([
                 ':email' => $email,
-                ':password_hash' => $passwordHash,
+                ':password' => $passwordHash,
                 ':name' => $name
             ]);
 
@@ -67,8 +67,8 @@ class User
      */
     public function findByEmail(string $email): ?array
     {
-        $sql = "SELECT id, email, password_hash, name, role, status, suspended_until, 
-                registered_at, created_at, updated_at 
+        $sql = "SELECT id, email, password, name, role, status, suspended_until, 
+                created_at, updated_at 
                 FROM users WHERE email = :email";
         
         $stmt = $this->db->prepare($sql);
@@ -88,8 +88,8 @@ class User
      */
     public function findById(int $userId): array
     {
-        $sql = "SELECT id, email, password_hash, name, role, status, suspended_until, 
-                registered_at, created_at, updated_at 
+        $sql = "SELECT id, email, password, name, role, status, suspended_until, 
+                created_at, updated_at 
                 FROM users WHERE id = :id";
         
         $stmt = $this->db->prepare($sql);

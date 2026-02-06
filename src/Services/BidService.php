@@ -31,6 +31,8 @@ class BidService
      */
     public function placeBid(int $itemId, int $bidderId, float $amount): array
     {
+        // 1. Validation (Read-only)
+        
         // Validate bid amount is positive
         if ($amount <= 0) {
             throw new \Exception('Bid amount must be positive');
@@ -62,37 +64,50 @@ class BidService
             throw new \Exception('Bid amount must be higher than current price');
         }
 
-        // Store previous bidder info for outbid notification
+        // Prepare context for notifications
         $previousBidderId = isset($item['highest_bidder_id']) ? (int)$item['highest_bidder_id'] : null;
         $previousBidAmount = (float)$item['current_price'];
+        
+        // 2. Execution (Transactional)
+        $result = \App\Utils\Transaction::run(function() use ($itemId, $bidderId, $amount, $item, $previousBidderId) {
+            // Create bid
+            $bid = $this->bidModel->create($itemId, $bidderId, $amount);
 
-        // Create bid
-        $bid = $this->bidModel->create($itemId, $bidderId, $amount);
+            // Update item's current price and highest bidder
+            $this->itemModel->update($itemId, [
+                'current_price' => $amount,
+                'highest_bidder_id' => $bidderId
+            ]);
 
-        // Update item's current price and highest bidder
-        $this->itemModel->update($itemId, [
-            'current_price' => $amount,
-            'highest_bidder_id' => $bidderId
-        ]);
-
-        // Check if reserve price is met (if set)
-        $reserveMet = null;
-        if (isset($item['reserve_price']) && $item['reserve_price'] !== null) {
-            $reserveMet = $amount >= (float)$item['reserve_price'];
-            if ($reserveMet) {
-                $this->itemModel->update($itemId, ['reserve_met' => true]);
+            // Check if reserve price is met (if set)
+            $reserveMet = null;
+            if (isset($item['reserve_price']) && $item['reserve_price'] !== null) {
+                $reserveMet = $amount >= (float)$item['reserve_price'];
+                if ($reserveMet) {
+                    $this->itemModel->update($itemId, ['reserve_met' => true]);
+                }
             }
-        }
 
-        $bidData = [
-            'bidId' => (int)$bid['id'],
-            'itemId' => (int)$bid['item_id'],
-            'bidderId' => (int)$bid['bidder_id'],
-            'bidderName' => $bid['bidder_name'],
-            'amount' => (float)$bid['amount'],
-            'timestamp' => $bid['timestamp']
-        ];
+            $bidData = [
+                'bidId' => (int)$bid['id'],
+                'itemId' => (int)$bid['item_id'],
+                'bidderId' => (int)$bid['bidder_id'],
+                'bidderName' => $bid['bidder_name'],
+                'amount' => (float)$bid['amount'],
+                'timestamp' => $bid['timestamp']
+            ];
 
+            return [
+                'bidData' => $bidData,
+                'reserveMet' => $reserveMet
+            ];
+        });
+
+        $bidData = $result['bidData'];
+        $reserveMet = $result['reserveMet'];
+
+        // 3. Notifications (Post-Transaction)
+        
         // Send WebSocket notifications
         $this->notifyWebSocket($itemId, $bidData, $reserveMet);
         

@@ -1,0 +1,4 @@
+HTTP Code: 200
+
+Raw Response:
+{"userId":1,"email":"admin@auction.com","name":"Admin User","role":"admin","status":"active","registeredAt":"2026-02-04 13:29:21","token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoiYWRtaW5AYXVjdGlvbi5jb20iLCJpYXQiOjE3NzAyMTYzMTAsImV4cCI6MTc3MDgyMTExMH0.cURwR5Ls4RJR2SpSkIu0WdzwfqflkOykcjFSNW-ZjXU"}

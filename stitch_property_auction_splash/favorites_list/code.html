@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Watchlist (Favorites)</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&amp;family=Noto+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#2094f3",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#101a22",
+                        "surface-light": "#ffffff",
+                        "surface-dark": "#1c2936",
+                        "text-main": "#0d151c",
+                        "text-sub": "#49779c",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"],
+                        "body": ["Noto Sans", "sans-serif"],
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style type="text/tailwindcss">
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.filled {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-text-main dark:text-slate-100 transition-colors duration-200">
+<div class="relative flex h-screen w-full max-w-md mx-auto flex-col overflow-hidden bg-background-light dark:bg-background-dark shadow-2xl">
+<header class="flex items-center justify-between px-4 py-3 bg-surface-light/80 dark:bg-background-dark/80 backdrop-blur-md sticky top-0 z-20 border-b border-slate-200 dark:border-slate-800">
+<div class="w-10"></div>
+<h2 class="text-lg font-bold leading-tight tracking-tight text-center flex-1">Watchlist</h2>
+<div class="flex w-10 items-center justify-end">
+<button class="flex items-center justify-center rounded-full p-2 text-text-main dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined">tune</span>
+</button>
+</div>
+</header>
+<main class="flex-1 overflow-y-auto no-scrollbar p-4 pb-24 space-y-4">
+<div class="flex items-center justify-between px-1">
+<p class="text-sm font-medium text-text-sub dark:text-slate-400">4 Items Watching</p>
+<button class="flex items-center gap-1 text-xs font-bold text-primary uppercase tracking-wide">
+                Sort by Recent
+                <span class="material-symbols-outlined text-sm">swap_vert</span>
+</button>
+</div>
+<div class="group relative flex flex-col items-stretch justify-start rounded-xl bg-surface-light dark:bg-surface-dark shadow-sm dark:shadow-none dark:border dark:border-slate-700 overflow-hidden transition-transform active:scale-[0.99]">
+<div class="relative h-48 w-full">
+<div class="absolute inset-0 bg-cover bg-center" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAqpdv_9jiw-vNDHHbjETLV5dGi8kcFOYTJsk4ceag8ZNG1AVLAlY7okK1zgnyEwzFAnBnp0k8GSnJM-NHGxG2niGJzScJ0eYN0ynXQkaMkDYmeBsuCKs7LGkC0VHtosVa_YQHcADvWqKxtFLdc589K6HSg-F8o_ksZFD9IVQwCLJf96zc7QddfibyKx4e_1zSpN9Na84JEj3zyQjczTPUMJSFh7RYk-9e4jKCQXrNrh1gTEndTvuuwDBGeIUF4H5_MDitRuL2_Y_Bi");'></div>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-60"></div>
+<button class="absolute top-3 right-3 flex h-9 w-9 items-center justify-center rounded-full bg-white/20 backdrop-blur-md text-primary shadow-sm hover:bg-white transition-colors">
+<span class="material-symbols-outlined filled text-[20px]">favorite</span>
+</button>
+<div class="absolute top-3 left-3 px-2.5 py-1 rounded-md bg-black/60 backdrop-blur-sm border border-white/10">
+<p class="text-xs font-medium text-white tracking-wide">Luxury Watch</p>
+</div>
+<div class="absolute bottom-3 left-3 text-white">
+<p class="text-xs opacity-90 font-medium mb-0.5">Current Bid</p>
+<p class="text-xl font-bold tracking-tight">$12,400</p>
+</div>
+</div>
+<div class="flex flex-col gap-3 p-4">
+<div class="flex flex-col gap-1">
+<h3 class="text-base font-bold leading-tight text-text-main dark:text-white truncate">Pre-owned Chronograph Silver Dial</h3>
+<p class="text-xs text-text-sub dark:text-slate-400">Authenticated • Mint Condition</p>
+</div>
+<div class="h-px bg-slate-100 dark:bg-slate-700 w-full"></div>
+<div class="flex items-center justify-between gap-3">
+<div class="flex flex-col">
+<span class="text-xs font-medium text-text-sub dark:text-slate-500">Ends in</span>
+<span class="text-sm font-bold text-orange-600 dark:text-orange-400 flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">timer</span> 1h 45m
+                        </span>
+</div>
+<button class="flex-1 max-w-[140px] h-9 items-center justify-center rounded-lg bg-primary hover:bg-blue-600 text-white text-sm font-bold transition-colors shadow-md shadow-blue-500/20">
+                        Place Bid
+                    </button>
+</div>
+</div>
+</div>
+<div class="group relative flex flex-col items-stretch justify-start rounded-xl bg-surface-light dark:bg-surface-dark shadow-sm dark:shadow-none dark:border dark:border-slate-700 overflow-hidden transition-transform active:scale-[0.99]">
+<div class="relative h-48 w-full">
+<div class="absolute inset-0 bg-cover bg-center" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBk1AH5V_qdBxFeOwc8y643WUuQpUANFNjykuaD_dyQZaERqEvaC0scdk38U2Rm47v3qPz64dmOlH6bfDgJoiDKFN4pUEojk0Fl1Efvts8TsXlC73Bg3xE9Rj7Xaco1KLG2zwuA8Nq2LKyvIE_3SXQmUvJR5VVOIhuusqLgjrWyTABkzA95TK8zcB2wnDSzEXiA8iZnuqt3jQG8LRAPzaNBQ34oZqRznR9347ERb5FxgI53zpgjs3yY586h5SFKcLXbSVs5zB_qVUcd");'></div>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-60"></div>
+<button class="absolute top-3 right-3 flex h-9 w-9 items-center justify-center rounded-full bg-white/20 backdrop-blur-md text-primary shadow-sm hover:bg-white transition-colors">
+<span class="material-symbols-outlined filled text-[20px]">favorite</span>
+</button>
+<div class="absolute top-3 left-3 px-2.5 py-1 rounded-md bg-green-500/90 backdrop-blur-sm shadow-sm">
+<p class="text-xs font-bold text-white tracking-wide">Electronics</p>
+</div>
+<div class="absolute bottom-3 left-3 text-white">
+<p class="text-xs opacity-90 font-medium mb-0.5">Reserve Price</p>
+<p class="text-xl font-bold tracking-tight">$2,850</p>
+</div>
+</div>
+<div class="flex flex-col gap-3 p-4">
+<div class="flex flex-col gap-1">
+<h3 class="text-base font-bold leading-tight text-text-main dark:text-white truncate">Ultimate Workstation M2 Max</h3>
+<p class="text-xs text-text-sub dark:text-slate-400">Sealed Unit • Warranty Included</p>
+</div>
+<div class="h-px bg-slate-100 dark:bg-slate-700 w-full"></div>
+<div class="flex items-center justify-between gap-3">
+<div class="flex flex-col">
+<span class="text-xs font-medium text-text-sub dark:text-slate-500">Ends in</span>
+<span class="text-sm font-bold text-text-main dark:text-slate-200">2 days</span>
+</div>
+<button class="flex-1 max-w-[140px] h-9 items-center justify-center rounded-lg bg-primary hover:bg-blue-600 text-white text-sm font-bold transition-colors shadow-md shadow-blue-500/20">
+                        Place Bid
+                    </button>
+</div>
+</div>
+</div>
+<div class="group relative flex flex-col items-stretch justify-start rounded-xl bg-surface-light dark:bg-surface-dark shadow-sm dark:shadow-none dark:border dark:border-slate-700 overflow-hidden transition-transform active:scale-[0.99]">
+<div class="relative h-48 w-full">
+<div class="absolute inset-0 bg-cover bg-center" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuC6hZVTZL9ROmMmOozpnixgg3uCjopDbKrd7hxUD4ElHREOqmoZKRsgx3OswcwN2X-hJBtyQe9GorHghed68TvTxUmVnzGTWQvHrs-i3Z2_v8WXDiTC6eI__kMpAJFMAXPveVHwAmr6T1YsgIJsEA2H0HYj2FTu12lxUbEpjuEJ8JoEYOXXjAX4lxM3g571OkIAReegSI9QJbH4ni5vfRO6m0zY8tJpsOWFvah5SG2qG98eqSmN0ZV4oH-jk-g4vlTampZp0ctMP29p");'></div>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-60"></div>
+<button class="absolute top-3 right-3 flex h-9 w-9 items-center justify-center rounded-full bg-white/20 backdrop-blur-md text-primary shadow-sm hover:bg-white transition-colors">
+<span class="material-symbols-outlined filled text-[20px]">favorite</span>
+</button>
+<div class="absolute top-3 left-3 px-2.5 py-1 rounded-md bg-purple-600/90 backdrop-blur-sm shadow-sm">
+<p class="text-xs font-bold text-white tracking-wide">Collectibles</p>
+</div>
+<div class="absolute bottom-3 left-3 text-white">
+<p class="text-xs opacity-90 font-medium mb-0.5">Current Bid</p>
+<p class="text-xl font-bold tracking-tight">$450</p>
+</div>
+</div>
+<div class="flex flex-col gap-3 p-4">
+<div class="flex flex-col gap-1">
+<h3 class="text-base font-bold leading-tight text-text-main dark:text-white truncate">Vintage Limited Edition Print #02</h3>
+<p class="text-xs text-text-sub dark:text-slate-400">Signed • PSA Graded 9.0</p>
+</div>
+<div class="h-px bg-slate-100 dark:bg-slate-700 w-full"></div>
+<div class="flex items-center justify-between gap-3">
+<div class="flex flex-col">
+<span class="text-xs font-medium text-text-sub dark:text-slate-500">Ends in</span>
+<span class="text-sm font-bold text-text-main dark:text-slate-200">14 hours</span>
+</div>
+<button class="flex-1 max-w-[140px] h-9 items-center justify-center rounded-lg bg-primary hover:bg-blue-600 text-white text-sm font-bold transition-colors shadow-md shadow-blue-500/20">
+                        Place Bid
+                    </button>
+</div>
+</div>
+</div>
+<div class="hidden flex-col items-center justify-center py-12 px-4 text-center">
+<div class="w-24 h-24 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-4xl text-slate-400 dark:text-slate-500">bookmark_add</span>
+</div>
+<h3 class="text-xl font-bold text-text-main dark:text-white mb-2">No favorites yet</h3>
+<p class="text-sm text-text-sub dark:text-slate-400 max-w-[260px] mx-auto mb-8">Start exploring auctions and save the items you want to track.</p>
+<button class="h-10 px-6 rounded-lg bg-primary hover:bg-blue-600 text-white text-sm font-bold shadow-md shadow-blue-500/20 transition-all">
+                Browse Items
+            </button>
+</div>
+</main>
+<nav class="bg-surface-light dark:bg-surface-dark border-t border-slate-200 dark:border-slate-800 px-6 pb-6 pt-3 flex justify-between items-end absolute bottom-0 w-full z-30">
+<a class="flex flex-1 flex-col items-center justify-end gap-1 text-text-sub dark:text-slate-500 hover:text-primary dark:hover:text-primary transition-colors group" href="#">
+<span class="material-symbols-outlined text-[26px] group-hover:-translate-y-0.5 transition-transform">home</span>
+<span class="text-[10px] font-medium tracking-wide">Home</span>
+</a>
+<a class="flex flex-1 flex-col items-center justify-end gap-1 text-text-sub dark:text-slate-500 hover:text-primary dark:hover:text-primary transition-colors group" href="#">
+<span class="material-symbols-outlined text-[26px] group-hover:-translate-y-0.5 transition-transform">search</span>
+<span class="text-[10px] font-medium tracking-wide">Search</span>
+</a>
+<a class="flex flex-1 flex-col items-center justify-end gap-1 text-primary" href="#">
+<span class="material-symbols-outlined filled text-[26px]">favorite</span>
+<span class="text-[10px] font-bold tracking-wide">Favorites</span>
+</a>
+<a class="flex flex-1 flex-col items-center justify-end gap-1 text-text-sub dark:text-slate-500 hover:text-primary dark:hover:text-primary transition-colors group" href="#">
+<span class="material-symbols-outlined text-[26px] group-hover:-translate-y-0.5 transition-transform">person</span>
+<span class="text-[10px] font-medium tracking-wide">Profile</span>
+</a>
+</nav>
+</div>
+
+</body></html>

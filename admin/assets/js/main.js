@@ -43,7 +43,7 @@ async function apiCall(endpoint, options = {}) {
         }
     };
     
-    const response = await fetch(`/api${endpoint}`, {
+    const response = await fetch(`http://localhost:8000/api${endpoint}`, {
         ...defaultOptions,
         ...options,
         headers: {

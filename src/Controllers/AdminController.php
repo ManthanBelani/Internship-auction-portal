@@ -28,8 +28,9 @@ class AdminController
      * Get all users (Admin only)
      * GET /api/admin/users
      */
-    public function getAllUsers(array $queryParams): void
+    public function getAllUsers(): void
     {
+        $queryParams = $_GET;
         $admin = RoleMiddleware::requireAdmin();
         if (!$admin) return;
 
@@ -249,6 +250,68 @@ class AdminController
                 'itemId' => $itemId
             ]);
 
+        } catch (\Exception $e) {
+            Response::json(['error' => $e->getMessage()], 400);
+        }
+    }
+
+    /**
+     * Get all payout requests (Admin only)
+     * GET /api/admin/payouts
+     */
+    public function getPayouts(): void
+    {
+        $admin = RoleMiddleware::requireAdmin();
+        if (!$admin) return;
+
+        try {
+            $db = Database::getConnection();
+            $status = $_GET['status'] ?? null;
+            
+            $sql = "SELECT p.*, u.name as seller_name, u.email as seller_email 
+                    FROM payouts p 
+                    JOIN users u ON p.seller_id = u.id";
+            
+            if ($status) {
+                $sql .= " WHERE p.status = :status";
+            }
+            
+            $sql .= " ORDER BY p.requested_at DESC";
+            
+            $stmt = $db->prepare($sql);
+            if ($status) {
+                $stmt->execute([':status' => $status]);
+            } else {
+                $stmt->execute();
+            }
+            
+            $payouts = $stmt->fetchAll();
+            Response::json(['payouts' => $payouts]);
+        } catch (\Exception $e) {
+            Response::json(['error' => $e->getMessage()], 400);
+        }
+    }
+
+    /**
+     * Update payout status (Admin only)
+     * PUT /api/admin/payouts/{id}
+     */
+    public function updatePayoutStatus(int $id, array $data): void
+    {
+        $admin = RoleMiddleware::requireAdmin();
+        if (!$admin) return;
+
+        try {
+            if (!isset($data['status'])) {
+                Response::json(['error' => 'Status is required'], 400);
+                return;
+            }
+
+            $db = Database::getConnection();
+            $stmt = $db->prepare("UPDATE payouts SET status = ?, processed_at = CURRENT_TIMESTAMP WHERE id = ?");
+            $stmt->execute([$data['status'], $id]);
+
+            Response::json(['message' => 'Payout status updated successfully']);
         } catch (\Exception $e) {
             Response::json(['error' => $e->getMessage()], 400);
         }

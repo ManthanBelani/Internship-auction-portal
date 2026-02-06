@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Auction Item Details</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#2094f3",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#101a22",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-[#0d151c] dark:text-white pb-28">
+<div class="sticky top-0 z-50 bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-sm border-b border-slate-200 dark:border-slate-800">
+<div class="flex items-center justify-between p-4 h-16">
+<div class="flex items-center justify-center size-10 rounded-full cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined text-[#0d151c] dark:text-white" style="font-size: 24px;">arrow_back</span>
+</div>
+<h1 class="text-base font-bold leading-tight line-clamp-1 px-4 text-center">Auction Item Details</h1>
+<div class="flex gap-2">
+<div class="flex items-center justify-center size-10 rounded-full cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined text-[#0d151c] dark:text-white" style="font-size: 24px;">favorite_border</span>
+</div>
+<div class="flex items-center justify-center size-10 rounded-full cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined text-[#0d151c] dark:text-white" style="font-size: 24px;">share</span>
+</div>
+</div>
+</div>
+</div>
+<div class="relative w-full aspect-[4/3] bg-slate-200 dark:bg-slate-800 group">
+<div class="flex overflow-x-auto snap-x snap-mandatory w-full h-full [&amp;::-webkit-scrollbar]:hidden">
+<div class="w-full h-full flex-shrink-0 snap-center relative">
+<div class="w-full h-full bg-cover bg-center" data-alt="High-end luxury item" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDHvBMyRlyFRc-qajmoTO8UhAq-1wF2rrLrk-3rmHDclN7AzaWGdvqbRp1f_1K0s75JY98gq-0PWTigbn9d1ZTzfUI8h82pP_H1JTXCXf1lCIQKF8gj4OR2B60RkjU57XSKFiG8URRfIlOkA1BnA0dxGtZrXUcf7PLsoRWCYu-Q0dG9fR-yChr-TVs4GeF-X_FhKEVe7JUnOhOYvlkj16c-ULsgkohF4vrAnuZrvGcicXzFbOs3HXIUaXrakduR6akObR0xgKzCTbTZ');"></div>
+</div>
+<div class="w-full h-full flex-shrink-0 snap-center relative">
+<div class="w-full h-full bg-cover bg-center" data-alt="High-end luxury item detail" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCBiqtIJYGzCwD9w-pSPzYFxL8qOG8DKqP9799RTBJSEqVWku2a3B4JydxAl8cx_vXXbz3bQ5W4Kd2JdnuZmekrqoSEiYk9zEZZO2PFD8LKjpQAXAhjQK7ZWTy13tdnvRMWNbTihSpDBLFRpSdBhNOsiAEzJTaaS9z5vC95CSOIn_fB6A2i0wDPaoIt8p8LNz2kpJxJhjkBe2OotqjgGNaFHZ965cpPCfYoQCyT4ZRzmcH37XG4scwOzYtdinbNaBIYo580kZBSHd32');"></div>
+</div>
+<div class="w-full h-full flex-shrink-0 snap-center relative">
+<div class="w-full h-full bg-cover bg-center" data-alt="High-end luxury item packaging" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAt96XZIJjr7nPQ34WDXEE0OBZz4ohdTMxjmBFA3Hj7or42oqz2snLtcxORHRCUjvKN3ZAfk-dOOU61iKCkdxVt6cuBFshdPL3evI9lyeIgYwCX6oUNm6ZxByWnQPLN0B_ojXYocuccEesHNI9ibHtOvjzZU-Uy8yI49frBhU59l7Oc-S5VndqxsG_d-zKsxaWFe-DEdsahOx0S5QRUW0hkRE2pVqRH0zmiDkEU9m9u_rw9Qtyd1Mrz7WVuSW20VdHL2S3bL2yBMzdD');"></div>
+</div>
+</div>
+<div class="absolute bottom-4 right-4 bg-black/60 backdrop-blur-sm text-white px-3 py-1 rounded-full text-xs font-bold tracking-wide">
+            1 / 5
+        </div>
+</div>
+<div class="bg-primary/10 dark:bg-primary/20 p-4 border-b border-primary/20">
+<div class="flex flex-col gap-3">
+<div class="flex justify-between items-center">
+<div class="flex items-center gap-2">
+<span class="relative flex h-3 w-3">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+<span class="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
+</span>
+<h3 class="text-red-600 dark:text-red-400 tracking-wide text-sm font-bold uppercase">Auction Live</h3>
+</div>
+<span class="text-xs font-medium text-slate-500 dark:text-slate-400">Time Remaining</span>
+</div>
+<div class="flex gap-2 justify-between">
+<div class="flex flex-col items-center bg-white dark:bg-slate-800 rounded-lg p-2 w-full shadow-sm border border-slate-100 dark:border-slate-700">
+<p class="text-xl font-bold text-primary">02</p>
+<p class="text-[10px] text-slate-500 uppercase tracking-wider font-semibold">Days</p>
+</div>
+<div class="flex items-center text-primary font-bold">:</div>
+<div class="flex flex-col items-center bg-white dark:bg-slate-800 rounded-lg p-2 w-full shadow-sm border border-slate-100 dark:border-slate-700">
+<p class="text-xl font-bold text-primary">14</p>
+<p class="text-[10px] text-slate-500 uppercase tracking-wider font-semibold">Hrs</p>
+</div>
+<div class="flex items-center text-primary font-bold">:</div>
+<div class="flex flex-col items-center bg-white dark:bg-slate-800 rounded-lg p-2 w-full shadow-sm border border-slate-100 dark:border-slate-700">
+<p class="text-xl font-bold text-primary">30</p>
+<p class="text-[10px] text-slate-500 uppercase tracking-wider font-semibold">Mins</p>
+</div>
+<div class="flex items-center text-primary font-bold">:</div>
+<div class="flex flex-col items-center bg-white dark:bg-slate-800 rounded-lg p-2 w-full shadow-sm border border-slate-100 dark:border-slate-700">
+<p class="text-xl font-bold text-primary">45</p>
+<p class="text-[10px] text-slate-500 uppercase tracking-wider font-semibold">Secs</p>
+</div>
+</div>
+</div>
+</div>
+<div class="p-4 flex flex-col gap-6">
+<div class="flex flex-col gap-3">
+<div class="flex justify-between items-start gap-4">
+<h1 class="text-2xl font-bold text-[#0d151c] dark:text-white leading-tight">Vintage Professional Chronograph</h1>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2 bg-slate-100 dark:bg-slate-800 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700">
+<span class="material-symbols-outlined text-slate-600 dark:text-slate-400" style="font-size: 20px;">verified</span>
+<span class="text-sm font-bold text-slate-700 dark:text-slate-300">Verified Seller</span>
+</div>
+<span class="text-xs text-slate-400 font-mono">LOT #AU-90234</span>
+</div>
+</div>
+<div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-5">
+<h2 class="text-lg font-bold mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">gavel</span>
+                Bidding Details
+            </h2>
+<div class="grid grid-cols-1 gap-6">
+<div class="flex flex-col gap-1 border-b border-slate-100 dark:border-slate-700 pb-4">
+<span class="text-sm text-slate-500 dark:text-slate-400">Starting Bid</span>
+<span class="text-3xl font-bold text-primary">$12,500</span>
+</div>
+<div class="grid grid-cols-2 gap-y-6 gap-x-4">
+<div class="flex flex-col gap-1">
+<span class="text-xs text-slate-500 dark:text-slate-400 font-medium uppercase tracking-wide">Current Highest</span>
+<span class="text-lg font-bold text-[#0d151c] dark:text-white">$14,200</span>
+</div>
+<div class="flex flex-col gap-1">
+<span class="text-xs text-slate-500 dark:text-slate-400 font-medium uppercase tracking-wide">Total Bids</span>
+<span class="text-lg font-bold text-[#0d151c] dark:text-white">18</span>
+</div>
+<div class="flex flex-col gap-1">
+<span class="text-xs text-slate-500 dark:text-slate-400 font-medium uppercase tracking-wide">Bid Increment</span>
+<span class="text-lg font-bold text-[#0d151c] dark:text-white">$500</span>
+</div>
+<div class="flex flex-col gap-1">
+<span class="text-xs text-slate-500 dark:text-slate-400 font-medium uppercase tracking-wide">Buyer's Premium</span>
+<span class="text-lg font-bold text-[#0d151c] dark:text-white">5%</span>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-5">
+<h2 class="text-lg font-bold mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">reorder</span>
+                Item Specifications
+            </h2>
+<div class="flex flex-col divide-y divide-slate-100 dark:divide-slate-700">
+<div class="flex justify-between py-3">
+<span class="text-sm text-slate-500 dark:text-slate-400">Brand</span>
+<span class="text-sm font-semibold text-[#0d151c] dark:text-white">Heuer-Heritage</span>
+</div>
+<div class="flex justify-between py-3">
+<span class="text-sm text-slate-500 dark:text-slate-400">Model</span>
+<span class="text-sm font-semibold text-[#0d151c] dark:text-white">Autavia Calibre 11</span>
+</div>
+<div class="flex justify-between py-3">
+<span class="text-sm text-slate-500 dark:text-slate-400">Year</span>
+<span class="text-sm font-semibold text-[#0d151c] dark:text-white">1969</span>
+</div>
+<div class="flex justify-between py-3">
+<span class="text-sm text-slate-500 dark:text-slate-400">Condition</span>
+<span class="text-sm font-semibold text-green-600 dark:text-green-400">Excellent (Grade A)</span>
+</div>
+<div class="flex justify-between py-3">
+<span class="text-sm text-slate-500 dark:text-slate-400">Material</span>
+<span class="text-sm font-semibold text-[#0d151c] dark:text-white">Stainless Steel</span>
+</div>
+<div class="flex justify-between py-3">
+<span class="text-sm text-slate-500 dark:text-slate-400">Movement</span>
+<span class="text-sm font-semibold text-[#0d151c] dark:text-white">Automatic</span>
+</div>
+</div>
+</div>
+<div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-5">
+<h2 class="text-lg font-bold mb-3">Description</h2>
+<p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed mb-2">
+                An exceptional example of the 1969 Autavia Chronograph. This piece features a "Panda" dial configuration with original tritium lume that has aged to a beautiful cream patina. Recently serviced and maintaining COSC precision.
+            </p>
+<button class="text-primary text-sm font-bold flex items-center gap-1 hover:underline">
+                View Full Story <span class="material-symbols-outlined" style="font-size: 16px;">expand_more</span>
+</button>
+</div>
+<div>
+<h2 class="text-lg font-bold mb-4 px-1">Certificates &amp; Authentication</h2>
+<div class="flex flex-col gap-3">
+<div class="bg-white dark:bg-slate-800 rounded-xl p-4 border border-slate-200 dark:border-slate-700 flex items-center justify-between group cursor-pointer hover:border-primary/50 transition-colors">
+<div class="flex items-center gap-4">
+<div class="bg-blue-50 dark:bg-blue-900/20 p-2.5 rounded-lg text-primary">
+<span class="material-symbols-outlined">verified_user</span>
+</div>
+<div class="flex flex-col">
+<span class="font-bold text-sm text-[#0d151c] dark:text-white group-hover:text-primary transition-colors">Product Authenticity</span>
+<span class="text-xs text-slate-500">Certified by Third-Party Expert</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-slate-400" style="font-size: 20px;">visibility</span>
+</div>
+<div class="bg-white dark:bg-slate-800 rounded-xl p-4 border border-slate-200 dark:border-slate-700 flex items-center justify-between group cursor-pointer hover:border-primary/50 transition-colors">
+<div class="flex items-center gap-4">
+<div class="bg-blue-50 dark:bg-blue-900/20 p-2.5 rounded-lg text-primary">
+<span class="material-symbols-outlined">workspace_premium</span>
+</div>
+<div class="flex flex-col">
+<span class="font-bold text-sm text-[#0d151c] dark:text-white group-hover:text-primary transition-colors">Warranty Certificate</span>
+<span class="text-xs text-slate-500">12-Month Global Coverage</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-slate-400" style="font-size: 20px;">visibility</span>
+</div>
+</div>
+</div>
+</div>
+<div class="fixed bottom-0 left-0 w-full bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 p-4 pb-8 z-40 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
+<div class="max-w-7xl mx-auto flex items-center gap-4">
+<div class="flex-1 hidden sm:flex flex-col">
+<span class="text-xs text-slate-500 dark:text-slate-400 uppercase font-bold tracking-wider">Current Status</span>
+<span class="text-sm font-bold text-slate-900 dark:text-white">Qualified Bidder</span>
+</div>
+<button class="flex-1 bg-primary hover:bg-primary/90 text-white h-12 rounded-lg font-bold text-base shadow-lg shadow-primary/30 flex items-center justify-center gap-2 transition-all active:scale-[0.98]">
+<span>Place Bid</span>
+<span class="material-symbols-outlined" style="font-size: 20px;">gavel</span>
+</button>
+</div>
+</div>
+
+</body></html>

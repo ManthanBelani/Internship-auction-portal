@@ -24,11 +24,18 @@ class ItemController
             $user = AuthMiddleware::authenticate();
             if (!$user) return;
 
-            // Validate required fields
-            if (!isset($data['title']) || !isset($data['description']) || 
-                !isset($data['startingPrice']) || !isset($data['endTime'])) {
-                Response::badRequest('Title, description, startingPrice, and endTime are required');
-                return;
+            // Validate input
+            $validator = new \App\Validation\Validator();
+            $rules = [
+                'title' => 'required|min:3',
+                'description' => 'required|min:10',
+                'startingPrice' => 'required|numeric|positive',
+                'endTime' => 'required|date'
+            ];
+
+            if (!$validator->validate($data, $rules)) {
+                 Response::badRequest($validator->getFirstError());
+                 return;
             }
 
             $result = $this->itemService->createItem(
@@ -36,7 +43,8 @@ class ItemController
                 $data['title'],
                 $data['description'],
                 (float)$data['startingPrice'],
-                $data['endTime']
+                $data['endTime'],
+                $data['category'] ?? null
             );
 
             Response::success($result, 201);
@@ -48,17 +56,33 @@ class ItemController
     /**
      * GET /api/items
      */
-    public function getAll(array $queryParams): void
+    public function getAll(): void
     {
+        $queryParams = $_GET;
         try {
             $filters = [];
             
             if (isset($queryParams['search'])) {
                 $filters['search'] = $queryParams['search'];
             }
-            
             if (isset($queryParams['sellerId'])) {
                 $filters['sellerId'] = (int)$queryParams['sellerId'];
+            }
+
+            if (isset($queryParams['category'])) {
+                $filters['category'] = $queryParams['category'];
+            }
+
+            if (isset($queryParams['minPrice'])) {
+                $filters['minPrice'] = (float)$queryParams['minPrice'];
+            }
+
+            if (isset($queryParams['maxPrice'])) {
+                $filters['maxPrice'] = (float)$queryParams['maxPrice'];
+            }
+
+            if (isset($queryParams['sort'])) {
+                $filters['sort'] = $queryParams['sort'];
             }
 
             $items = $this->itemService->getActiveItems($filters);

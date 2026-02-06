@@ -428,11 +428,18 @@ class ImageService {
      */
     public function getItemImages(int $itemId): array {
         try {
+            // Check if table exists and has correct structure
+            $tableCheck = $this->db->query("SELECT name FROM sqlite_master WHERE type='table' AND name='item_images'");
+            if (!$tableCheck || !$tableCheck->fetch()) {
+                // Table doesn't exist, return empty array
+                return [];
+            }
+            
             $stmt = $this->db->prepare("
-                SELECT image_id, item_id, image_url, thumbnail_url, upload_timestamp
+                SELECT id, item_id, image_url, thumbnail_url, created_at
                 FROM item_images
                 WHERE item_id = :item_id
-                ORDER BY upload_timestamp ASC
+                ORDER BY created_at ASC
             ");
             
             $stmt->execute([':item_id' => $itemId]);
@@ -442,11 +449,11 @@ class ImageService {
             // Transform to camelCase for API response
             return array_map(function($image) {
                 return [
-                    'imageId' => (int) $image['image_id'],
+                    'imageId' => (int) $image['id'],
                     'itemId' => (int) $image['item_id'],
                     'imageUrl' => $image['image_url'],
                     'thumbnailUrl' => $image['thumbnail_url'],
-                    'uploadTimestamp' => $image['upload_timestamp']
+                    'uploadTimestamp' => $image['created_at']
                 ];
             }, $images);
 

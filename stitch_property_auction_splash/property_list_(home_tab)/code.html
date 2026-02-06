@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Item Discovery Feed - Luxury Auctions</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#2094f3",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#101a22",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.filled {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display">
+<div class="relative flex h-full min-h-screen w-full flex-col overflow-x-hidden max-w-md mx-auto bg-white dark:bg-[#15202b] shadow-2xl">
+<header class="sticky top-0 z-20 flex items-center justify-between bg-white dark:bg-[#15202b] px-4 py-3 border-b border-slate-100 dark:border-slate-800">
+<div class="flex items-center gap-3">
+<div class="h-10 w-10 overflow-hidden rounded-full border border-slate-200 dark:border-slate-700 bg-center bg-cover" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBGPNV4uP4aeDfFVFygR9fu4MURy-nKCCs8t8G0Q_Cd3aLD9gtjzJVOzrosHgdQ0nUtUzJR03s0mO0ZegfNCr1E-sezEwnrooUz3bSjpbDfUjnzeuiwD1XDNiyI8oOVxuinvWu-Jg7cMyHJ6IXzzpoDg-CJNCFkyuWK7sXQj3AnFpGJBpmUnlKCxA3mdd5FHs2wslK8SN2yUDMZ3LDQ_b01K3H3RbQLJ74Z1BLIiX3Hb7UVNYCh_hhl5SZVeJ7taJZshYMos_Ry88wZ');"></div>
+<h1 class="text-xl font-bold tracking-tight text-slate-900 dark:text-white">Discover</h1>
+</div>
+<button class="flex items-center justify-center p-2 rounded-full text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 h-2.5 w-2.5 rounded-full bg-red-500 border-2 border-white dark:border-[#15202b]"></span>
+</button>
+</header>
+<section class="flex flex-col gap-3 px-4 pt-4 pb-2 bg-white dark:bg-[#15202b]">
+<div class="flex items-center gap-3">
+<div class="flex flex-1 items-center rounded-lg bg-slate-100 dark:bg-slate-800 px-3 py-2.5">
+<span class="material-symbols-outlined text-slate-400">search</span>
+<input class="ml-2 w-full bg-transparent border-none p-0 text-sm font-medium text-slate-900 dark:text-white placeholder-slate-400 focus:ring-0" placeholder="Search collectibles, tech, art..." type="text"/>
+</div>
+<button aria-label="Filters" class="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-primary text-white shadow-md shadow-primary/30 active:scale-95 transition-transform">
+<span class="material-symbols-outlined">tune</span>
+</button>
+</div>
+<div class="flex gap-2 overflow-x-auto no-scrollbar py-1">
+<button class="flex shrink-0 items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1.5 text-xs font-semibold text-primary ring-1 ring-inset ring-primary/20 hover:bg-primary/20 dark:bg-primary/20 dark:text-primary-300">
+<span>Electronics</span>
+<span class="material-symbols-outlined text-[14px]">close</span>
+</button>
+<button class="flex shrink-0 items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1.5 text-xs font-semibold text-primary ring-1 ring-inset ring-primary/20 hover:bg-primary/20 dark:bg-primary/20 dark:text-primary-300">
+<span>New</span>
+<span class="material-symbols-outlined text-[14px]">close</span>
+</button>
+<button class="flex shrink-0 items-center gap-1.5 rounded-full bg-slate-100 px-3 py-1.5 text-xs font-semibold text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-400">
+<span>Collectibles</span>
+</button>
+<button class="flex shrink-0 items-center gap-1.5 rounded-full bg-slate-100 px-3 py-1.5 text-xs font-semibold text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-400">
+<span>Art</span>
+</button>
+</div>
+</section>
+<main class="flex flex-col gap-4 p-4 pb-24 bg-background-light dark:bg-background-dark min-h-screen">
+<div class="flex items-center justify-between px-1">
+<p class="text-sm font-semibold text-slate-500 dark:text-slate-400">1,240 Items Found</p>
+<button class="flex items-center gap-1 text-xs font-bold text-primary">
+                    Sort: Most Recent
+                    <span class="material-symbols-outlined text-[16px]">keyboard_arrow_down</span>
+</button>
+</div>
+<div class="group relative flex flex-col overflow-hidden rounded-xl bg-white dark:bg-[#1e2936] shadow-sm ring-1 ring-slate-900/5 dark:ring-white/10 transition-all hover:shadow-md">
+<div class="relative aspect-square w-full overflow-hidden bg-slate-200">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA2m7I9qZjw2w86TG0gJQgQN5cVdXMXadmMwGpEm4oRSG6nUG-AQy-Gs8pU0Iyn3rGo83GtpeWIBBJuGaOfL3juNAo-IKLHcHiVjnsjZDYDZALp0PM7ia-WQEQWn15gckeCy5KxdCJ94IXKUvzHeI6xd2gGBghdJkGwhRguv4zr-xOxVMOJB_txBIs10KEC_0_KFCEchfAWWJvs8nXaTwE_jCz3qgkL2FRg5YgXaZXBCgCcbOS2UeXaaL6qMG-mEW0T0hYtwfIZ4U-S');"></div>
+<div class="absolute top-3 left-3 flex items-center gap-1.5 rounded bg-red-600/90 px-2 py-1 text-[10px] font-bold text-white backdrop-blur-sm">
+<span class="h-1.5 w-1.5 animate-pulse rounded-full bg-white"></span>
+                        LIVE
+                    </div>
+<button class="absolute top-3 right-3 flex h-8 w-8 items-center justify-center rounded-full bg-black/40 text-white backdrop-blur-md transition hover:bg-red-500 hover:text-white">
+<span class="material-symbols-outlined text-[20px]">favorite</span>
+</button>
+<div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-3 pt-8">
+<div class="flex items-center gap-2">
+<span class="rounded bg-white/20 px-2 py-0.5 text-[10px] font-bold text-white backdrop-blur-md uppercase tracking-wider">New</span>
+<span class="text-[10px] font-medium text-white/90">Electronics</span>
+</div>
+</div>
+</div>
+<div class="flex flex-col gap-3 p-3">
+<div>
+<h3 class="text-base font-bold text-slate-900 dark:text-white leading-tight">Pro Sound Wireless Headphones</h3>
+<p class="mt-0.5 flex items-center gap-1 text-xs font-medium text-slate-500 dark:text-slate-400">
+<span class="material-symbols-outlined text-[14px]">local_shipping</span>
+                            International Shipping Available
+                        </p>
+</div>
+<div class="grid grid-cols-2 gap-3 rounded-lg bg-slate-50 dark:bg-slate-800/50 p-2.5">
+<div class="flex flex-col">
+<span class="text-[10px] uppercase font-bold text-slate-400">Current Bid</span>
+<span class="text-lg font-bold text-slate-900 dark:text-white">$450.00</span>
+</div>
+<div class="flex flex-col items-end border-l border-slate-200 dark:border-slate-700 pl-3">
+<span class="text-[10px] uppercase font-bold text-slate-400">Bids</span>
+<span class="text-sm font-semibold text-slate-700 dark:text-slate-300">12</span>
+</div>
+</div>
+<div class="flex items-center justify-between border-t border-slate-100 dark:border-slate-700 pt-2">
+<div class="flex items-center gap-1.5 text-red-600 dark:text-red-400">
+<span class="material-symbols-outlined text-[18px]">timer</span>
+<span class="text-xs font-bold">Ends in 04h 32m</span>
+</div>
+<button class="text-xs font-bold text-primary hover:underline uppercase tracking-tight">Bid Now</button>
+</div>
+</div>
+</div>
+<div class="group relative flex flex-col overflow-hidden rounded-xl bg-white dark:bg-[#1e2936] shadow-sm ring-1 ring-slate-900/5 dark:ring-white/10 transition-all hover:shadow-md">
+<div class="relative aspect-square w-full overflow-hidden bg-slate-200">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDiN9CcGa1mPzJsidX146kDa8oOSCbe9HefOZhMuOMBa_9kBpTH0rEPOc4iU4MwbPq33OLfd5A3tgmZXkntlu2l45aNvJMyq903RHqrgl2c2QB2E8n1zYTpl2Gle51WXH9yK4n040WP_MC-jM8DT1MlMkfPm8dWjcnEU_kOmeXquJ7GT0rCag4tLwVCszz6wAstTfJ_dHx7dVuZO6z3uyM4lxAuSxo_UPQLbjE-s4UWFa5LC0vUhH0T9vjKSDN9b21CK9uufN9WlBKr');"></div>
+<div class="absolute top-3 left-3 flex items-center gap-1.5 rounded bg-blue-600/90 px-2 py-1 text-[10px] font-bold text-white backdrop-blur-sm">
+                        UPCOMING
+                    </div>
+<button class="absolute top-3 right-3 flex h-8 w-8 items-center justify-center rounded-full bg-black/40 text-white backdrop-blur-md transition hover:bg-red-500 hover:text-white">
+<span class="material-symbols-outlined text-[20px]">favorite</span>
+</button>
+<div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-3 pt-8">
+<div class="flex items-center gap-2">
+<span class="rounded bg-white/20 px-2 py-0.5 text-[10px] font-bold text-white backdrop-blur-md uppercase tracking-wider">Used</span>
+<span class="text-[10px] font-medium text-white/90">Luxury Goods</span>
+</div>
+</div>
+</div>
+<div class="flex flex-col gap-3 p-3">
+<div>
+<h3 class="text-base font-bold text-slate-900 dark:text-white leading-tight">Vintage Chronograph Watch</h3>
+<p class="mt-0.5 flex items-center gap-1 text-xs font-medium text-slate-500 dark:text-slate-400">
+<span class="material-symbols-outlined text-[14px]">verified</span>
+                            Authenticated Item
+                        </p>
+</div>
+<div class="grid grid-cols-2 gap-3 rounded-lg bg-slate-50 dark:bg-slate-800/50 p-2.5">
+<div class="flex flex-col">
+<span class="text-[10px] uppercase font-bold text-slate-400">Starting Bid</span>
+<span class="text-lg font-bold text-slate-900 dark:text-white">$1,200</span>
+</div>
+<div class="flex flex-col items-end border-l border-slate-200 dark:border-slate-700 pl-3">
+<span class="text-[10px] uppercase font-bold text-slate-400">Condition</span>
+<span class="text-sm font-semibold text-slate-700 dark:text-slate-300">Excellent</span>
+</div>
+</div>
+<div class="flex items-center justify-between border-t border-slate-100 dark:border-slate-700 pt-2">
+<div class="flex items-center gap-1.5 text-primary dark:text-primary-400">
+<span class="material-symbols-outlined text-[18px]">event</span>
+<span class="text-xs font-bold">Starts in 2 days</span>
+</div>
+<button class="text-xs font-bold text-primary hover:underline uppercase tracking-tight">Remind Me</button>
+</div>
+</div>
+</div>
+<div class="group relative flex flex-col overflow-hidden rounded-xl bg-white dark:bg-[#1e2936] shadow-sm ring-1 ring-slate-900/5 dark:ring-white/10 transition-all hover:shadow-md">
+<div class="relative aspect-square w-full overflow-hidden bg-slate-200">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDLDovYradQiMzzhoGjHW-UYidqin5-Q27tiLW6P-jEXY0GhaFXtATp1X0IY30RllyKEc-qk_4VYV4_iiWpV9ALjPYgI3fEtaAs0-sji7xU70IhAMeYNOXHi7AORHUQtOSM7iF0P46ojImQFIFYSvC6_5_bsNboPvIlmcqvN0Ja84shUo72ES8olGWzUGT3HzKV7R5L92Tqe4ETN62reUm3TfmfWB-PHZu_Mo_dGSvHG6gc6GloJqEnM_RurVmUhFEYQ9v4l0NZ7KFI');"></div>
+<div class="absolute top-3 left-3 flex items-center gap-1.5 rounded bg-amber-600/90 px-2 py-1 text-[10px] font-bold text-white backdrop-blur-sm">
+                        LAST CHANCE
+                    </div>
+<button class="absolute top-3 right-3 flex h-8 w-8 items-center justify-center rounded-full bg-black/40 text-white backdrop-blur-md transition hover:bg-red-500 hover:text-white">
+<span class="material-symbols-outlined text-[20px]">favorite</span>
+</button>
+<div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-3 pt-8">
+<div class="flex items-center gap-2">
+<span class="rounded bg-white/20 px-2 py-0.5 text-[10px] font-bold text-white backdrop-blur-md uppercase tracking-wider">Refurbished</span>
+<span class="text-[10px] font-medium text-white/90">Art</span>
+</div>
+</div>
+</div>
+<div class="flex flex-col gap-3 p-3">
+<div>
+<h3 class="text-base font-bold text-slate-900 dark:text-white leading-tight">Digital Abstract "Nebula"</h3>
+<p class="mt-0.5 flex items-center gap-1 text-xs font-medium text-slate-500 dark:text-slate-400">
+<span class="material-symbols-outlined text-[14px]">palette</span>
+                            NFT Available
+                        </p>
+</div>
+<div class="grid grid-cols-2 gap-3 rounded-lg bg-slate-50 dark:bg-slate-800/50 p-2.5">
+<div class="flex flex-col">
+<span class="text-[10px] uppercase font-bold text-slate-400">Current Bid</span>
+<span class="text-lg font-bold text-slate-900 dark:text-white">$890.00</span>
+</div>
+<div class="flex flex-col items-end border-l border-slate-200 dark:border-slate-700 pl-3">
+<span class="text-[10px] uppercase font-bold text-slate-400">Ends In</span>
+<span class="text-sm font-semibold text-red-600">12m 45s</span>
+</div>
+</div>
+<div class="flex items-center justify-between border-t border-slate-100 dark:border-slate-700 pt-2">
+<div class="flex items-center gap-1.5 text-slate-600 dark:text-slate-400">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+<span class="text-xs font-bold">143 watching</span>
+</div>
+<button class="text-xs font-bold text-primary hover:underline uppercase tracking-tight">Bid Now</button>
+</div>
+</div>
+</div>
+</main>
+<div class="fixed inset-0 z-50 flex items-end justify-center bg-black/60 backdrop-blur-sm pointer-events-none opacity-0">
+<div class="w-full max-w-md rounded-t-2xl bg-white dark:bg-[#15202b] p-5 shadow-2xl transition-transform translate-y-full">
+<div class="mx-auto mb-4 h-1 w-12 rounded-full bg-slate-300 dark:bg-slate-700"></div>
+<div class="flex items-center justify-between mb-6">
+<h2 class="text-lg font-bold text-slate-900 dark:text-white">Filters</h2>
+<button class="text-sm font-semibold text-primary">Reset</button>
+</div>
+<div class="space-y-6 max-h-[60vh] overflow-y-auto no-scrollbar pb-20">
+<div class="space-y-3">
+<label class="text-sm font-bold text-slate-900 dark:text-white">Category</label>
+<div class="flex flex-wrap gap-2">
+<button class="rounded-lg bg-primary px-3 py-2 text-sm font-semibold text-white shadow-sm">Electronics</button>
+<button class="rounded-lg bg-slate-100 px-3 py-2 text-sm font-semibold text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-400">Art</button>
+<button class="rounded-lg bg-slate-100 px-3 py-2 text-sm font-semibold text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-400">Collectibles</button>
+<button class="rounded-lg bg-slate-100 px-3 py-2 text-sm font-semibold text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-400">Luxury Goods</button>
+<button class="rounded-lg bg-slate-100 px-3 py-2 text-sm font-semibold text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-400">Fashion</button>
+</div>
+</div>
+<div class="space-y-3">
+<label class="text-sm font-bold text-slate-900 dark:text-white">Condition</label>
+<div class="flex flex-wrap gap-2">
+<button class="rounded-lg bg-primary px-3 py-2 text-sm font-semibold text-white shadow-sm">New</button>
+<button class="rounded-lg bg-slate-100 px-3 py-2 text-sm font-semibold text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-400">Used</button>
+<button class="rounded-lg bg-slate-100 px-3 py-2 text-sm font-semibold text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-400">Refurbished</button>
+</div>
+</div>
+<div class="space-y-3">
+<div class="flex items-center justify-between">
+<label class="text-sm font-bold text-slate-900 dark:text-white">Price Range</label>
+<span class="text-xs font-medium text-slate-500">$100 - $10k+</span>
+</div>
+<input class="h-2 w-full cursor-pointer appearance-none rounded-lg bg-slate-200 dark:bg-slate-700 accent-primary" max="100" min="0" type="range"/>
+</div>
+<div class="space-y-3">
+<label class="text-sm font-bold text-slate-900 dark:text-white">Auction Status</label>
+<div class="flex flex-wrap gap-2">
+<button class="flex items-center gap-2 rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm font-semibold text-red-700 dark:border-red-900/30 dark:bg-red-900/20 dark:text-red-400">
+<span class="h-1.5 w-1.5 rounded-full bg-red-500"></span> Live
+                            </button>
+<button class="rounded-lg bg-slate-100 px-3 py-2 text-sm font-semibold text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-400">Upcoming</button>
+<button class="rounded-lg bg-slate-100 px-3 py-2 text-sm font-semibold text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-400">Ending Soon</button>
+</div>
+</div>
+</div>
+<div class="absolute bottom-0 left-0 right-0 border-t border-slate-100 bg-white p-4 dark:border-slate-800 dark:bg-[#15202b]">
+<button class="w-full rounded-lg bg-primary py-3.5 text-center text-sm font-bold text-white shadow-lg shadow-primary/20 active:scale-[0.98]">
+                        Apply Filters
+                    </button>
+</div>
+</div>
+</div>
+</div>
+
+</body></html>

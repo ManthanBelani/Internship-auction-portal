@@ -1,5 +1,5 @@
 // Dashboard statistics loader
-const API_BASE = '/api';
+const API_BASE = 'http://localhost:8000/api';
 let usersChart, itemsChart;
 
 // Get token from session

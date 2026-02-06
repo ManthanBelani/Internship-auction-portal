@@ -21,64 +21,65 @@ class ImageController
     }
 
     /**
-     * POST /api/items/{itemId}/images
-     * Upload an image for an auction item
-     * Requires authentication and seller ownership
+     * POST /api/items/{itemId}/images/bulk
+     * Bulk upload images for an auction item
      */
-    public function upload(int $itemId): void
+    public function bulkUpload(int $itemId): void
     {
         try {
-            // Authenticate user
             $user = AuthMiddleware::authenticate();
             if (!$user) return;
 
-            // Validate itemId
-            if ($itemId <= 0) {
-                Response::badRequest('Invalid item ID');
-                return;
-            }
-
-            // Verify item exists and user is the seller
-            try {
-                $item = $this->itemService->getItemById($itemId);
-            } catch (\Exception $e) {
-                Response::notFound('Item not found');
-                return;
-            }
-
-            // Check if user is the seller
+            // Verify item exists and user is seller
+            $item = $this->itemService->getItemById($itemId);
             if ($item['sellerId'] !== (int)$user['userId']) {
-                Response::forbidden('Only the seller can upload images for this item');
+                Response::forbidden('Access denied');
                 return;
             }
 
-            // Check if file was uploaded
-            if (!isset($_FILES['image'])) {
-                Response::badRequest('No image file provided');
+            if (!isset($_FILES['images'])) {
+                Response::badRequest('No images provided');
                 return;
             }
 
-            $file = $_FILES['image'];
+            $files = $_FILES['images'];
+            $results = [];
+            $errors = [];
 
-            // Upload image using ImageService
-            $result = $this->imageService->uploadImage($itemId, $file);
+            // Reformat $_FILES array if needed (multiple files)
+            $fileCount = count($files['name']);
+            for ($i = 0; $i < $fileCount; $i++) {
+                $file = [
+                    'name' => $files['name'][$i],
+                    'type' => $files['type'][$i],
+                    'tmp_name' => $files['tmp_name'][$i],
+                    'error' => $files['error'][$i],
+                    'size' => $files['size'][$i]
+                ];
 
-            if (!$result['success']) {
-                Response::badRequest($result['error']);
-                return;
+                $uploadResult = $this->imageService->uploadImage($itemId, $file);
+                if ($uploadResult['success']) {
+                    $results[] = [
+                        'imageId' => $uploadResult['imageId'],
+                        'imageUrl' => $uploadResult['imageUrl']
+                    ];
+                } else {
+                    $errors[] = [
+                        'fileName' => $file['name'],
+                        'error' => $uploadResult['error']
+                    ];
+                }
             }
 
-            // Return success response with image data
             Response::success([
-                'imageId' => $result['imageId'],
-                'imageUrl' => $result['imageUrl'],
-                'thumbnailUrl' => $result['thumbnailUrl'],
-                'message' => 'Image uploaded successfully'
+                'uploaded' => $results,
+                'errors' => $errors,
+                'total_success' => count($results),
+                'total_failed' => count($errors)
             ], 201);
 
         } catch (\Exception $e) {
-            error_log("ImageController: Upload error - " . $e->getMessage());
-            Response::serverError('Failed to upload image');
+            Response::serverError($e->getMessage());
         }
     }
 

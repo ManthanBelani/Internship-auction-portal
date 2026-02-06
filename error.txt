@@ -1,0 +1,7 @@
+﻿
+Fatal error: Uncaught RuntimeException: Database connection failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in C:\Users\manth\OneDrive\Desktop\Final Internship Project\src\Config\Database.php:58
+Stack trace:
+#0 C:\Users\manth\OneDrive\Desktop\Final Internship Project\src\Models\Item.php(16): App\Config\Database::getConnection()
+#1 C:\Users\manth\OneDrive\Desktop\Final Internship Project\create_test_item.php(6): App\Models\Item->__construct()
+#2 {main}
+  thrown in C:\Users\manth\OneDrive\Desktop\Final Internship Project\src\Config\Database.php on line 58

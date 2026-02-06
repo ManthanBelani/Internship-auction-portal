@@ -48,8 +48,8 @@ class Item
         }
 
         try {
-            $sql = "INSERT INTO items (title, description, starting_price, current_price, end_time, seller_id, status) 
-                    VALUES (:title, :description, :starting_price, :current_price, :end_time, :seller_id, 'active')";
+            $sql = "INSERT INTO items (title, description, starting_price, current_price, end_time, seller_id, status, category) 
+                    VALUES (:title, :description, :starting_price, :current_price, :end_time, :seller_id, 'active', :category)";
             
             $stmt = $this->db->prepare($sql);
             $stmt->execute([
@@ -58,7 +58,8 @@ class Item
                 ':starting_price' => $startingPrice,
                 ':current_price' => $startingPrice,
                 ':end_time' => $endTime,
-                ':seller_id' => $sellerId
+                ':seller_id' => $sellerId,
+                ':category' => $data['category'] ?? null
             ]);
 
             $itemId = (int)$this->db->lastInsertId();
@@ -106,7 +107,7 @@ class Item
         $sql = "SELECT i.*, u.name as seller_name 
                 FROM items i 
                 JOIN users u ON i.seller_id = u.id 
-                WHERE i.status = 'active' AND i.end_time > NOW()";
+                WHERE i.status = 'active' AND i.end_time > CURRENT_TIMESTAMP";
         
         $params = [];
 
@@ -116,13 +117,45 @@ class Item
             $params[':seller_id'] = $filters['sellerId'];
         }
 
+        // Add category filter
+        if (isset($filters['category']) && !empty($filters['category'])) {
+            $sql .= " AND i.category = :category";
+            $params[':category'] = $filters['category'];
+        }
+
+        // Add price filters
+        if (isset($filters['minPrice'])) {
+            $sql .= " AND i.current_price >= :min_price";
+            $params[':min_price'] = $filters['minPrice'];
+        }
+        if (isset($filters['maxPrice'])) {
+            $sql .= " AND i.current_price <= :max_price";
+            $params[':max_price'] = $filters['maxPrice'];
+        }
+
         // Add search filter
         if (isset($filters['search']) && !empty($filters['search'])) {
             $sql .= " AND (i.title LIKE :search OR i.description LIKE :search)";
             $params[':search'] = '%' . $filters['search'] . '%';
         }
 
-        $sql .= " ORDER BY i.created_at DESC";
+        // Sorting
+        $sort = $filters['sort'] ?? 'newest';
+        switch ($sort) {
+            case 'price_asc':
+                $sql .= " ORDER BY i.current_price ASC";
+                break;
+            case 'price_desc':
+                $sql .= " ORDER BY i.current_price DESC";
+                break;
+            case 'ending_soon':
+                $sql .= " ORDER BY i.end_time ASC";
+                break;
+            case 'newest':
+            default:
+                $sql .= " ORDER BY i.created_at DESC";
+                break;
+        }
         
         $stmt = $this->db->prepare($sql);
         $stmt->execute($params);
@@ -214,7 +247,7 @@ class Item
     public function findExpired(): array
     {
         $sql = "SELECT * FROM items 
-                WHERE status = 'active' AND end_time <= NOW()";
+                WHERE status = 'active' AND end_time <= CURRENT_TIMESTAMP";
         
         $stmt = $this->db->query($sql);
         
@@ -238,6 +271,7 @@ class Item
             'currentPrice' => (float)$item['current_price'],
             'endTime' => $item['end_time'],
             'sellerId' => (int)$item['seller_id'],
+            'category' => $item['category'],
             'status' => $item['status'],
             'createdAt' => $item['created_at']
         ];

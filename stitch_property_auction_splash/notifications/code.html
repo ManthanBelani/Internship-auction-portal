@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Auction Notifications</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#2094f3",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#101a22",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+<style type="text/tailwindcss">
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .material-symbols-outlined {
+            font-variation-settings:
+            'FILL' 0,
+            'wght' 400,
+            'GRAD' 0,
+            'opsz' 24
+        }
+        .material-symbols-outlined.filled {
+            font-variation-settings:
+            'FILL' 1,
+            'wght' 400,
+            'GRAD' 0,
+            'opsz' 24
+        }
+        body {
+            min-height: 100dvh;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased selection:bg-primary/20">
+<div class="mx-auto flex h-full min-h-screen w-full max-w-md flex-col overflow-x-hidden bg-background-light dark:bg-background-dark shadow-2xl relative">
+<div class="h-10 w-full bg-background-light dark:bg-background-dark sticky top-0 z-50"></div>
+<header class="sticky top-0 z-40 bg-background-light/90 dark:bg-background-dark/90 backdrop-blur-md px-4 pb-2 pt-2 border-b border-transparent transition-all duration-200">
+<div class="flex items-center justify-between mb-4">
+<button class="flex items-center justify-center p-2 -ml-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors text-slate-900 dark:text-white">
+<span class="material-symbols-outlined text-[20px]">arrow_back_ios_new</span>
+</button>
+<button class="text-primary text-sm font-bold tracking-wide hover:opacity-80 transition-opacity">
+                    Mark all as read
+                </button>
+</div>
+<h1 class="text-3xl font-bold text-slate-900 dark:text-white mb-2 tracking-tight">Auction Notifications</h1>
+</header>
+<div class="sticky top-[108px] z-30 bg-background-light dark:bg-background-dark pb-4 pt-1 px-4">
+<div class="flex gap-3 overflow-x-auto no-scrollbar py-1">
+<button class="flex h-9 min-w-[60px] shrink-0 items-center justify-center rounded-full bg-slate-900 dark:bg-white px-5 transition-transform active:scale-95">
+<p class="text-white dark:text-slate-900 text-sm font-semibold">All</p>
+</button>
+<button class="flex h-9 min-w-[60px] shrink-0 items-center justify-center rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-5 transition-transform active:scale-95">
+<p class="text-slate-600 dark:text-slate-300 text-sm font-semibold">Unread</p>
+<span class="ml-2 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-white">3</span>
+</button>
+<button class="flex h-9 min-w-[60px] shrink-0 items-center justify-center rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-5 transition-transform active:scale-95">
+<p class="text-slate-600 dark:text-slate-300 text-sm font-semibold">Auctions</p>
+</button>
+<button class="flex h-9 min-w-[60px] shrink-0 items-center justify-center rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-5 transition-transform active:scale-95">
+<p class="text-slate-600 dark:text-slate-300 text-sm font-semibold">Offers</p>
+</button>
+</div>
+</div>
+<div class="flex justify-center -mt-8 h-8 opacity-0 pointer-events-none">
+<span class="material-symbols-outlined animate-spin text-slate-400">progress_activity</span>
+</div>
+<main class="flex flex-col px-4 pb-20 space-y-6">
+<section>
+<h4 class="text-slate-500 dark:text-slate-400 text-xs font-bold uppercase tracking-wider mb-3 ml-1">Today</h4>
+<div class="flex flex-col space-y-3">
+<div class="group relative flex gap-4 p-4 rounded-xl bg-white dark:bg-slate-800 shadow-sm border border-slate-100 dark:border-slate-700 active:scale-[0.99] transition-transform duration-150">
+<div class="flex shrink-0 items-start pt-1">
+<div class="flex size-10 items-center justify-center rounded-full bg-primary/10 text-primary">
+<span class="material-symbols-outlined filled">timer</span>
+</div>
+</div>
+<div class="flex flex-1 flex-col gap-1 min-w-0">
+<div class="flex justify-between items-start gap-2">
+<p class="text-slate-900 dark:text-white text-base font-bold leading-tight truncate">Ending Soon</p>
+<span class="shrink-0 size-2.5 rounded-full bg-primary mt-1.5 shadow-sm shadow-primary/50"></span>
+</div>
+<p class="text-slate-600 dark:text-slate-300 text-sm font-medium leading-relaxed">
+                                Auction for <span class="font-bold text-slate-800 dark:text-slate-200">Vintage Leica M3 Camera</span> is ending! Only 15 minutes left to place your bid.
+                            </p>
+<p class="text-slate-400 dark:text-slate-500 text-xs font-semibold mt-1">2 min ago</p>
+</div>
+</div>
+<div class="group relative flex gap-4 p-4 rounded-xl bg-white dark:bg-slate-800 shadow-sm border border-slate-100 dark:border-slate-700 active:scale-[0.99] transition-transform duration-150">
+<div class="flex shrink-0 items-start pt-1">
+<div class="flex size-10 items-center justify-center rounded-full bg-red-50 dark:bg-red-900/20 text-red-500">
+<span class="material-symbols-outlined">trending_up</span>
+</div>
+</div>
+<div class="flex flex-1 flex-col gap-1 min-w-0">
+<div class="flex justify-between items-start gap-2">
+<p class="text-slate-900 dark:text-white text-base font-bold leading-tight truncate">Outbid Alert</p>
+<span class="shrink-0 size-2.5 rounded-full bg-primary mt-1.5 shadow-sm shadow-primary/50"></span>
+</div>
+<p class="text-slate-600 dark:text-slate-300 text-sm font-medium leading-relaxed">
+                                You have been outbid on <span class="font-bold text-slate-800 dark:text-slate-200">Rolex Submariner 1968</span>. Raise your offer to stay in the lead.
+                            </p>
+<p class="text-slate-400 dark:text-slate-500 text-xs font-semibold mt-1">15 min ago</p>
+</div>
+</div>
+<div class="group relative flex gap-4 p-4 rounded-xl bg-gradient-to-br from-white to-amber-50 dark:from-slate-800 dark:to-slate-800/50 shadow-sm border border-amber-100 dark:border-slate-700 active:scale-[0.99] transition-transform duration-150">
+<div class="flex shrink-0 items-start pt-1">
+<div class="flex size-10 items-center justify-center rounded-full bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400">
+<span class="material-symbols-outlined filled">emoji_events</span>
+</div>
+</div>
+<div class="flex flex-1 flex-col gap-1 min-w-0">
+<div class="flex justify-between items-start gap-2">
+<p class="text-slate-900 dark:text-white text-base font-bold leading-tight truncate">Auction Won!</p>
+<span class="shrink-0 size-2.5 rounded-full bg-primary mt-1.5 shadow-sm shadow-primary/50"></span>
+</div>
+<p class="text-slate-600 dark:text-slate-300 text-sm font-medium leading-relaxed">
+                                Winner! You won the auction for <span class="font-bold text-slate-800 dark:text-slate-200">First Edition Comic Book</span>. Proceed to checkout now.
+                            </p>
+<p class="text-slate-400 dark:text-slate-500 text-xs font-semibold mt-1">2 hours ago</p>
+</div>
+</div>
+</div>
+</section>
+<section>
+<h4 class="text-slate-500 dark:text-slate-400 text-xs font-bold uppercase tracking-wider mb-3 ml-1">Yesterday</h4>
+<div class="flex flex-col space-y-3">
+<div class="group relative flex gap-4 p-4 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-transparent dark:border-slate-800 active:scale-[0.99] transition-transform duration-150 opacity-90">
+<div class="flex shrink-0 items-start pt-1">
+<div class="flex size-10 items-center justify-center rounded-full bg-green-100 dark:bg-green-900/20 text-green-600 dark:text-green-500">
+<span class="material-symbols-outlined filled">check_circle</span>
+</div>
+</div>
+<div class="flex flex-1 flex-col gap-1 min-w-0">
+<div class="flex justify-between items-start gap-2">
+<p class="text-slate-700 dark:text-slate-200 text-base font-bold leading-tight truncate">Bid Confirmed</p>
+</div>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium leading-relaxed">
+                                Your bid on <span class="font-semibold text-slate-800 dark:text-slate-300">MacBook Pro M3 Max</span> has been registered successfully.
+                            </p>
+<p class="text-slate-400 dark:text-slate-600 text-xs font-semibold mt-1">Yesterday, 4:30 PM</p>
+</div>
+</div>
+<div class="group relative flex gap-4 p-4 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-transparent dark:border-slate-800 active:scale-[0.99] transition-transform duration-150 opacity-90">
+<div class="flex shrink-0 items-start pt-1">
+<div class="flex size-10 items-center justify-center rounded-full bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300">
+<span class="material-symbols-outlined">settings</span>
+</div>
+</div>
+<div class="flex flex-1 flex-col gap-1 min-w-0">
+<div class="flex justify-between items-start gap-2">
+<p class="text-slate-700 dark:text-slate-200 text-base font-bold leading-tight truncate">System Update</p>
+</div>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium leading-relaxed">
+                                Auction platform maintenance scheduled for tonight at 12:00 AM UTC. Bidding will be temporarily paused.
+                            </p>
+<p class="text-slate-400 dark:text-slate-600 text-xs font-semibold mt-1">Yesterday, 9:00 AM</p>
+</div>
+</div>
+</div>
+</section>
+<div class="py-8 flex flex-col items-center justify-center text-center opacity-60">
+<div class="size-16 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center mb-3">
+<span class="material-symbols-outlined text-3xl text-slate-400">check_circle</span>
+</div>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">You're all caught up!</p>
+</div>
+</main>
+</div>
+
+</body></html>

@@ -20,11 +20,18 @@ class ReviewController {
      */
     public function create(array $data, int $userId): void {
         try {
-            // Validate required fields
-            if (!isset($data['transactionId']) || !isset($data['revieweeId']) || 
-                !isset($data['rating']) || !isset($data['reviewText'])) {
-                Response::json(['error' => 'Missing required fields'], 400);
-                return;
+            // Validate input
+            $validator = new \App\Validation\Validator();
+            $rules = [
+                'transactionId' => 'required|integer',
+                'revieweeId' => 'required|integer',
+                'rating' => 'required|integer|min:1|max:5',
+                'reviewText' => 'required|min:3'
+            ];
+
+            if (!$validator->validate($data, $rules)) {
+                 Response::json(['error' => $validator->getFirstError()], 400);
+                 return;
             }
 
             $transactionId = (int)$data['transactionId'];

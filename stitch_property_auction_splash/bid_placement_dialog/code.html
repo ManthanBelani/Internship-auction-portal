@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Place Bid Dialog</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#000000",
+                        "accent": "#2094f3",
+                        "background-light": "#f2f2f7",
+                        "background-dark": "#000000",
+                        "surface-dark": "#1c1c1e",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "0.75rem", "xl": "1rem", "2xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style type="text/tailwindcss">
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        body {
+            min-height: 100dvh;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-white antialiased relative overflow-hidden">
+<div aria-hidden="true" class="h-screen w-full flex flex-col p-4 opacity-30 pointer-events-none">
+<div class="w-full h-64 bg-gray-300 dark:bg-gray-700 rounded-2xl mb-4 relative overflow-hidden">
+<img alt="Luxury watch" class="w-full h-full object-cover grayscale" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDW700ZtAgM6oTk44WHsN4k1xHkCDGTH01NTlyxa2xVRFTZstWkkyjG5tNA_MdwM3KSjFe8KBrLZRiTJ_f264g-r4jTtxZsjRovQGLO1EAu2naCDmlfkbUX5bkO85luDdyehjBcSJDs1eegiOo3joqmadazLPsjsufzPnLK9ESPwkp5CK-MpIo2v0mtEE4mlbyFdH52TUpfK5WCsv-H8yNRfGgO1n-XIK5cgYtQV5oiJWbSHtKT5WRJ-4CQjN5D4LVwpAJxICOYRIPh"/>
+</div>
+<div class="h-8 w-3/4 bg-gray-300 dark:bg-gray-700 rounded mb-2"></div>
+<div class="h-4 w-1/2 bg-gray-200 dark:bg-gray-800 rounded mb-6"></div>
+</div>
+<div class="fixed inset-0 bg-black/60 backdrop-blur-[2px] z-40"></div>
+<div class="fixed bottom-0 left-0 right-0 z-50 flex flex-col items-center justify-end h-auto max-h-[90vh]">
+<div class="w-full max-w-md bg-white dark:bg-surface-dark rounded-t-[2.5rem] shadow-2xl flex flex-col relative pb-safe">
+<div class="w-full flex justify-center pt-4 pb-2">
+<div class="w-9 h-1.25 bg-gray-300 dark:bg-gray-600 rounded-full"></div>
+</div>
+<div class="px-8 pt-2 pb-4 text-center">
+<h2 class="text-xl font-bold text-gray-900 dark:text-white">Place Bid</h2>
+<p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Vintage Chronograph 1964</p>
+</div>
+<div class="px-8 py-4 space-y-8">
+<div class="flex items-center justify-between bg-gray-50 dark:bg-black/20 p-4 rounded-2xl border border-gray-100 dark:border-gray-800">
+<div class="text-center flex-1 border-r border-gray-200 dark:border-gray-800">
+<p class="text-[10px] uppercase tracking-wider font-bold text-gray-500 mb-1">Current Bid</p>
+<p class="text-lg font-bold text-gray-900 dark:text-white">$1,250</p>
+</div>
+<div class="text-center flex-1">
+<p class="text-[10px] uppercase tracking-wider font-bold text-gray-500 mb-1">Minimum Next Bid</p>
+<p class="text-lg font-bold text-accent">$1,260</p>
+</div>
+</div>
+<div class="space-y-4">
+<div class="relative">
+<span class="absolute left-0 top-1/2 -translate-y-1/2 text-4xl font-light text-gray-300 dark:text-gray-600 ml-4">$</span>
+<input class="w-full bg-transparent border-0 border-b-2 border-gray-100 dark:border-gray-800 focus:border-accent focus:ring-0 text-5xl font-extrabold text-center py-6 text-gray-900 dark:text-white" id="bidAmount" placeholder="1260" type="number" value="1260"/>
+</div>
+<div class="flex justify-center gap-3">
+<button class="flex-1 py-3 px-2 bg-gray-100 dark:bg-gray-800 rounded-xl text-sm font-bold text-gray-900 dark:text-white active:scale-95 transition-transform">
+                            +$10
+                        </button>
+<button class="flex-1 py-3 px-2 bg-gray-100 dark:bg-gray-800 rounded-xl text-sm font-bold text-gray-900 dark:text-white active:scale-95 transition-transform">
+                            +$50
+                        </button>
+<button class="flex-1 py-3 px-2 bg-gray-100 dark:bg-gray-800 rounded-xl text-sm font-bold text-gray-900 dark:text-white active:scale-95 transition-transform">
+                            +$100
+                        </button>
+</div>
+</div>
+<div class="flex items-start gap-3 px-2">
+<div class="flex items-center h-5 mt-0.5">
+<input checked="" class="w-5 h-5 text-accent bg-white border-gray-300 rounded-full focus:ring-accent focus:ring-offset-0 dark:bg-gray-700 dark:border-gray-600" id="terms" type="checkbox"/>
+</div>
+<label class="text-[11px] text-gray-500 dark:text-gray-400 leading-normal" for="terms">
+                        By placing this bid, you agree to our <a class="text-accent underline font-medium" href="#">Auction Terms</a> and acknowledge this is a binding contract.
+                    </label>
+</div>
+</div>
+<div class="p-8 space-y-3">
+<button class="w-full bg-accent hover:opacity-90 text-white font-bold py-5 rounded-2xl shadow-xl shadow-blue-500/20 active:scale-[0.98] transition-all text-lg">
+                    Confirm Bid
+                </button>
+<button class="w-full text-gray-400 dark:text-gray-500 font-semibold py-3 active:opacity-60 transition-opacity">
+                    Cancel
+                </button>
+<div class="mt-4 flex justify-center">
+<div class="h-1.5 w-32 bg-gray-200 dark:bg-gray-800 rounded-full"></div>
+</div>
+</div>
+</div>
+</div>
+
+</body></html>

@@ -39,10 +39,11 @@ class ItemService
      * @param string $description Item description
      * @param float $startingPrice Starting price
      * @param string $endTime Auction end time (ISO 8601 format)
+     * @param string|null $category Item category
      * @return array Created item data
      * @throws \Exception If validation fails
      */
-    public function createItem(int $sellerId, string $title, string $description, float $startingPrice, string $endTime): array
+    public function createItem(int $sellerId, string $title, string $description, float $startingPrice, string $endTime, ?string $category = null): array
     {
         // Validate positive price
         if ($startingPrice <= 0) {
@@ -67,12 +68,13 @@ class ItemService
         }
 
         // Create item
-        $item = $this->itemModel->create($sellerId, $title, $description, $startingPrice, $endTime);
+        $item = $this->itemModel->create($sellerId, $title, $description, $startingPrice, $endTime, ['category' => $category]);
 
         return [
             'itemId' => (int)$item['id'],
             'title' => $item['title'],
             'description' => $item['description'],
+            'category' => $item['category'],
             'startingPrice' => (float)$item['starting_price'],
             'currentPrice' => (float)$item['current_price'],
             'endTime' => $item['end_time'],
@@ -98,6 +100,7 @@ class ItemService
                 'itemId' => (int)$item['id'],
                 'title' => $item['title'],
                 'description' => $item['description'],
+                'category' => $item['category'] ?? null,
                 'startingPrice' => (float)$item['starting_price'],
                 'currentPrice' => (float)$item['current_price'],
                 'endTime' => $item['end_time'],

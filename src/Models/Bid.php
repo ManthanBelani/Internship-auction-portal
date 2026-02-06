@@ -117,6 +117,25 @@ class Bid
     }
 
     /**
+     * Find unique items a bidder has participated in
+     */
+    public function findItemsByBidderId(int $bidderId): array
+    {
+        $sql = "SELECT i.*, u.name as seller_name, MAX(b.amount) as my_highest_bid, MAX(b.timestamp) as my_last_bid_at
+                FROM items i
+                JOIN bids b ON i.id = b.item_id
+                JOIN users u ON i.seller_id = u.id
+                WHERE b.bidder_id = :bidder_id
+                GROUP BY i.id
+                ORDER BY my_last_bid_at DESC";
+        
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([':bidder_id' => $bidderId]);
+        
+        return $stmt->fetchAll();
+    }
+
+    /**
      * Get the highest bid for an item
      * 
      * @param int $itemId Item ID

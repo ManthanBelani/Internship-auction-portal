@@ -24,9 +24,13 @@ class BidController
             $user = AuthMiddleware::authenticate();
             if (!$user) return;
 
-            // Validate required fields
-            if (!isset($data['itemId']) || !isset($data['amount'])) {
-                Response::badRequest('ItemId and amount are required');
+            // Validate inputs
+            $validator = new \App\Validation\Validator();
+            if (!$validator->validate($data, [
+                'itemId' => 'required|integer',
+                'amount' => 'required|positive'
+            ])) {
+                Response::badRequest($validator->getFirstError());
                 return;
             }
 

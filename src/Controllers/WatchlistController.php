@@ -20,13 +20,36 @@ class WatchlistController {
      */
     public function add(array $data, int $userId): void {
         try {
-            // Validate required fields
-            if (!isset($data['itemId'])) {
-                Response::json(['error' => 'Item ID is required'], 400);
+            // Log incoming data for debugging
+            error_log("Watchlist add request - userId: $userId, data: " . json_encode($data));
+            
+            // Check if itemId is provided
+            if (!isset($data['itemId']) || empty($data['itemId'])) {
+                error_log("Watchlist validation failed: itemId is required");
+                Response::json(['error' => 'itemId is required'], 400);
                 return;
             }
 
+            // Convert to integer
             $itemId = (int)$data['itemId'];
+            
+            if ($itemId <= 0) {
+                error_log("Watchlist validation failed: invalid itemId");
+                Response::json(['error' => 'Invalid itemId'], 400);
+                return;
+            }
+
+            // Check if already in watchlist
+            if ($this->watchlistService->isWatching($userId, $itemId)) {
+                // Already in watchlist, return success (idempotent)
+                error_log("Item already in watchlist, returning success");
+                Response::json([
+                    'message' => 'Item already in watchlist',
+                    'itemId' => $itemId,
+                    'alreadyExists' => true
+                ], 200);
+                return;
+            }
 
             // Add to watchlist
             $this->watchlistService->addToWatchlist($userId, $itemId);
@@ -37,6 +60,7 @@ class WatchlistController {
             ], 201);
 
         } catch (\Exception $e) {
+            error_log("Watchlist add error: " . $e->getMessage());
             Response::json(['error' => $e->getMessage()], 400);
         }
     }

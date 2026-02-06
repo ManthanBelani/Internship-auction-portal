@@ -21,10 +21,26 @@ class UserController
     public function register(array $data): void
     {
         try {
-            // Validate required fields
-            if (!isset($data['email']) || !isset($data['password']) || !isset($data['name'])) {
-                Response::badRequest('Email, password, and name are required');
-                return;
+            // Log incoming data for debugging (remove passwords)
+            $debugData = $data;
+            if (isset($debugData['password'])) {
+                $debugData['password'] = '***';
+            }
+            error_log("Registration attempt with data: " . json_encode($debugData));
+
+            // Validate input
+            $validator = new \App\Validation\Validator();
+            $rules = [
+                'email' => 'required|email',
+                'password' => 'required|min:8',
+                'name' => 'required|min:2'
+            ];
+
+            if (!$validator->validate($data, $rules)) {
+                 $error = $validator->getFirstError();
+                 error_log("Validation failed: " . $error);
+                 Response::badRequest($error);
+                 return;
             }
 
             // Optional role parameter (defaults to 'buyer')
@@ -40,7 +56,13 @@ class UserController
             $result['role'] = $role;
             $result['status'] = 'active';
 
-            Response::success($result, 201);
+            $token = $result['token'];
+            unset($result['token']);
+            
+            Response::success([
+                'token' => $token,
+                'user' => $result
+            ], 201);
         } catch (\Exception $e) {
             if (str_contains($e->getMessage(), 'already exists')) {
                 Response::error('EMAIL_ALREADY_EXISTS', $e->getMessage(), 409);
@@ -67,7 +89,13 @@ class UserController
                 $data['password']
             );
 
-            Response::success($result);
+            $token = $result['token'];
+            unset($result['token']);
+
+            Response::success([
+                'token' => $token,
+                'user' => $result
+            ]);
         } catch (\Exception $e) {
             Response::unauthorized($e->getMessage());
         }
@@ -83,7 +111,7 @@ class UserController
             if (!$user) return;
 
             $profile = $this->userService->getUserProfile((int)$user['userId']);
-            Response::success($profile);
+            Response::success(['user' => $profile]);
         } catch (\Exception $e) {
             Response::notFound($e->getMessage());
         }

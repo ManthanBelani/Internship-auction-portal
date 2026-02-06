@@ -777,7 +777,6 @@ class ImageServiceTest extends TestCase
             unlink($result['thumbnailPath']);
         }
     }
-}
 
     // Tests for database operations
 

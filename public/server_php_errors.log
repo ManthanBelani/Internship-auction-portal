@@ -1,0 +1,20 @@
+[06-Feb-2026 06:51:30 Europe/Berlin] Using SQLite Database at: C:\Users\manth\OneDrive\Desktop\Final Internship Project\src\Config/../.././database/auction_portal.sqlite
+[06-Feb-2026 06:55:36 Europe/Berlin] Using SQLite Database at: C:\Users\manth\OneDrive\Desktop\Final Internship Project\src\Config/../.././database/auction_portal.sqlite
+[06-Feb-2026 06:55:36 Europe/Berlin] ImageService: Database error retrieving images: SQLSTATE[HY000]: General error: 1 no such column: image_id
+[06-Feb-2026 06:55:36 Europe/Berlin] ImageService: Database error retrieving images: SQLSTATE[HY000]: General error: 1 no such column: image_id
+[06-Feb-2026 06:55:58 Europe/Berlin] Using SQLite Database at: C:\Users\manth\OneDrive\Desktop\Final Internship Project\src\Config/../.././database/auction_portal.sqlite
+[06-Feb-2026 06:55:58 Europe/Berlin] Checking Route: health against URI: api/items
+[06-Feb-2026 06:55:58 Europe/Berlin] Checking Route:  against URI: api/items
+[06-Feb-2026 06:55:58 Europe/Berlin] Checking Route: api/users/profile against URI: api/items
+[06-Feb-2026 06:55:58 Europe/Berlin] Checking Route: api/users/(\d+)/public against URI: api/items
+[06-Feb-2026 06:55:58 Europe/Berlin] Checking Route: api/items against URI: api/items
+[06-Feb-2026 06:55:58 Europe/Berlin] ItemController::getAll() called
+[06-Feb-2026 06:55:58 Europe/Berlin] ImageService: Database error retrieving images: SQLSTATE[HY000]: General error: 1 no such column: image_id
+[06-Feb-2026 06:55:58 Europe/Berlin] ImageService: Database error retrieving images: SQLSTATE[HY000]: General error: 1 no such column: image_id
+[06-Feb-2026 07:00:12 Europe/Berlin] Using SQLite Database at: C:\Users\manth\OneDrive\Desktop\Final Internship Project\src\Config/../.././database/auction_portal.sqlite
+[06-Feb-2026 07:00:13 Europe/Berlin] Checking Route: api/users/register against URI: api/users/login
+[06-Feb-2026 07:00:13 Europe/Berlin] Checking Route: api/users/login against URI: api/users/login
+[06-Feb-2026 07:00:22 Europe/Berlin] Using SQLite Database at: C:\Users\manth\OneDrive\Desktop\Final Internship Project\src\Config/../.././database/auction_portal.sqlite
+[06-Feb-2026 07:00:22 Europe/Berlin] Checking Route: api/users/register against URI: api/users/login
+[06-Feb-2026 07:00:22 Europe/Berlin] Checking Route: api/users/login against URI: api/users/login
+[06-Feb-2026 07:02:33 Europe/Berlin] Using SQLite Database at: C:\Users\manth\OneDrive\Desktop\Final Internship Project\src\Config/../.././database/auction_portal.sqlite

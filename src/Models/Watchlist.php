@@ -27,12 +27,13 @@ class Watchlist {
 
     public function findByUserId(int $userId): array {
         $stmt = $this->db->prepare("
-            SELECT w.watchlist_id, w.user_id, w.item_id, w.added_at,
-                   i.title, i.description, i.current_price, i.end_time, i.status
+            SELECT w.id as watchlist_id, w.user_id, w.item_id, w.created_at as added_at,
+                   i.id, i.title, i.description, i.current_price, i.end_time, i.status,
+                   i.starting_price, i.seller_id
             FROM watchlist w
             JOIN items i ON w.item_id = i.id
             WHERE w.user_id = :user_id
-            ORDER BY w.added_at DESC
+            ORDER BY w.created_at DESC
         ");
         
         $stmt->execute([':user_id' => $userId]);
@@ -74,13 +75,17 @@ class Watchlist {
             'userId' => (int) $data['user_id'],
             'itemId' => (int) $data['item_id'],
             'addedAt' => $data['added_at'],
-            'item' => isset($data['title']) ? [
-                'title' => $data['title'],
-                'description' => $data['description'],
-                'currentPrice' => (float) $data['current_price'],
-                'endTime' => $data['end_time'],
-                'status' => $data['status']
-            ] : null
+            // Return full item object for Flutter app
+            'id' => (string) $data['id'],
+            'title' => $data['title'],
+            'description' => $data['description'],
+            'startingPrice' => (float) $data['starting_price'],
+            'currentPrice' => (float) $data['current_price'],
+            'endTime' => $data['end_time'],
+            'status' => $data['status'],
+            'sellerId' => (int) $data['seller_id'],
+            'bidCount' => 0, // Default value
+            'images' => [] // Default empty array
         ];
     }
 }

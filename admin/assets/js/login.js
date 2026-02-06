@@ -11,8 +11,8 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
     submitBtn.innerHTML = '<div class="spinner"></div> Logging in...';
     
     try {
-        // Call login API
-        const response = await fetch('/api/users/login', {
+        // Call login API (use correct port)
+        const response = await fetch('http://localhost:8000/api/users/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -27,7 +27,9 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
         }
         
         // Check if user has admin or moderator role
-        if (data.user.role !== 'admin' && data.user.role !== 'moderator') {
+        // The API returns role directly in the response
+        const userRole = data.role;
+        if (userRole !== 'admin' && userRole !== 'moderator') {
             throw new Error('You do not have permission to access the admin panel');
         }
         
@@ -40,10 +42,10 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
             body: new URLSearchParams({
                 action: 'set_session',
                 user_data: JSON.stringify({
-                    id: data.user.userId,
-                    name: data.user.name,
-                    email: data.user.email,
-                    role: data.user.role,
+                    id: data.userId,
+                    name: data.name,
+                    email: data.email,
+                    role: data.role,
                     token: data.token
                 })
             })

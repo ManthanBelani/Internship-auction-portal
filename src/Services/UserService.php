@@ -64,7 +64,9 @@ class UserService
             'userId' => (int)$user['id'],
             'email' => $user['email'],
             'name' => $user['name'],
-            'registeredAt' => $user['registered_at'],
+            'role' => $user['role'] ?? 'buyer',
+            'status' => $user['status'] ?? 'active',
+            'registeredAt' => $user['created_at'] ?? date('Y-m-d H:i:s'),
             'token' => $token
         ];
     }
@@ -87,7 +89,7 @@ class UserService
         }
 
         // Verify password
-        if (!Auth::verifyPassword($password, $user['password_hash'])) {
+        if (!Auth::verifyPassword($password, $user['password'])) {
             throw new \Exception('Invalid credentials');
         }
 
@@ -99,7 +101,9 @@ class UserService
             'userId' => (int)$user['id'],
             'email' => $user['email'],
             'name' => $user['name'],
-            'registeredAt' => $user['registered_at'],
+            'role' => $user['role'] ?? 'buyer',
+            'status' => $user['status'] ?? 'active',
+            'registeredAt' => $user['created_at'] ?? date('Y-m-d H:i:s'),
             'token' => $token
         ];
     }
@@ -124,7 +128,7 @@ class UserService
             'userId' => (int)$user['id'],
             'email' => $user['email'],
             'name' => $user['name'],
-            'registeredAt' => $user['registered_at'],
+            'registeredAt' => $user['created_at'],
             'averageRating' => $averageRating,
             'totalReviews' => count($reviews)
         ];
@@ -164,7 +168,7 @@ class UserService
             'userId' => (int)$user['id'],
             'email' => $user['email'],
             'name' => $user['name'],
-            'registeredAt' => $user['registered_at']
+            'registeredAt' => $user['created_at']
         ];
     }
 
@@ -186,9 +190,10 @@ class UserService
         return [
             'userId' => (int)$user['id'],
             'name' => $user['name'],
-            'registeredAt' => $user['registered_at'],
+            'registeredAt' => $user['created_at'],
             'averageRating' => $averageRating,
             'totalReviews' => count($reviews)
         ];
     }
 }
+

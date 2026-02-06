@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Bidding Activity History</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#1a1a1a",
+                        "accent": "#d4af37",
+                        "background-light": "#f8f9fa",
+                        "background-dark": "#0f1115",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem", 
+                        "lg": "0.5rem", 
+                        "xl": "1rem", 
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display antialiased">
+<div class="relative flex min-h-screen w-full flex-col overflow-x-hidden max-w-md mx-auto bg-background-light dark:bg-background-dark border-x dark:border-gray-800 border-gray-100">
+<div class="flex items-center sticky top-0 z-10 bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-md p-4 pb-2 justify-between border-b border-gray-200 dark:border-gray-800">
+<button class="text-[#0d151c] dark:text-white flex size-10 shrink-0 items-center justify-center rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+<span class="material-symbols-outlined">arrow_back_ios_new</span>
+</button>
+<h2 class="text-[#0d151c] dark:text-white text-lg font-bold leading-tight tracking-tight flex-1 text-center">Bidding Activity</h2>
+<div class="flex w-10 items-center justify-end">
+<button class="flex size-10 cursor-pointer items-center justify-center overflow-hidden rounded-full bg-transparent text-[#0d151c] dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+<span class="material-symbols-outlined text-[20px]">search</span>
+</button>
+</div>
+</div>
+<div class="pb-2 bg-background-light dark:bg-background-dark pt-2 sticky top-[65px] z-10">
+<div class="flex border-b border-gray-200 dark:border-gray-800 px-4 justify-between">
+<button class="group flex flex-col items-center justify-center border-b-[2px] border-b-black dark:border-b-white text-[#0d151c] dark:text-white pb-3 pt-2 flex-1 transition-all">
+<p class="text-xs font-bold leading-normal uppercase tracking-wider">Winning</p>
+</button>
+<button class="group flex flex-col items-center justify-center border-b-[2px] border-b-transparent text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white pb-3 pt-2 flex-1 transition-all">
+<p class="text-xs font-bold leading-normal uppercase tracking-wider">Outbid</p>
+</button>
+<button class="group flex flex-col items-center justify-center border-b-[2px] border-b-transparent text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white pb-3 pt-2 flex-1 transition-all">
+<p class="text-xs font-bold leading-normal uppercase tracking-wider">Won</p>
+</button>
+<button class="group flex flex-col items-center justify-center border-b-[2px] border-b-transparent text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white pb-3 pt-2 flex-1 transition-all">
+<p class="text-xs font-bold leading-normal uppercase tracking-wider">Ended</p>
+</button>
+</div>
+</div>
+<div class="flex flex-col gap-4 p-4 pb-24">
+<div class="flex flex-col gap-3 rounded-xl bg-white dark:bg-[#1a1c1e] p-4 shadow-sm border border-gray-100 dark:border-gray-800">
+<div class="flex items-start gap-4">
+<div class="h-24 w-24 shrink-0 overflow-hidden rounded-lg bg-gray-100">
+<div class="h-full w-full bg-cover bg-center" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDpIVYzZbnDEL3I6zqJcFluU0_Sqghojqp16bNNakdBGo7w9jCxeUMFrCEeyr2mAkt-4Tl-aTVhhpR1dwjhk705Ajp5c37gFLzWgZWafmD_CNEu5MBPLWDVYaNglvq4l8mp5R7U5YruMd3Vpc5xa5-WX0YJhnD1qkpgg7OGT8UY-csa1ARO_3OqeQlHecfRpBnJi8Xa_u_dGPrYWgup6CJXazmMQVB1w-_ssChePrIygFuDggXNXggieGylncr3N2PcXoqfUYEmrw2J");'></div>
+</div>
+<div class="flex flex-1 flex-col justify-between h-24">
+<div class="flex justify-between items-start">
+<span class="inline-flex items-center rounded-full bg-green-100 dark:bg-green-900/30 px-2.5 py-0.5 text-[10px] font-extrabold uppercase text-green-700 dark:text-green-400 border border-green-200 dark:border-green-800">
+                                Winning
+                            </span>
+<span class="text-[11px] text-gray-400 dark:text-gray-500 font-bold uppercase tracking-tighter">Ends in 2h 45m</span>
+</div>
+<div>
+<h3 class="text-[#0d151c] dark:text-white text-base font-bold leading-tight line-clamp-1">Vintage 1960s Submariner</h3>
+<div class="mt-1 flex items-center gap-1 text-gray-500 dark:text-gray-400">
+<span class="material-symbols-outlined text-[14px]">category</span>
+<p class="text-[11px] font-medium leading-normal">Luxury Collectibles</p>
+</div>
+</div>
+</div>
+</div>
+<div class="h-px bg-gray-100 dark:bg-gray-800 w-full my-1"></div>
+<div class="flex items-center justify-between">
+<div class="flex flex-col">
+<p class="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">Current Bid</p>
+<p class="text-xl font-extrabold text-[#0d151c] dark:text-white">$12,450.00</p>
+</div>
+<button class="flex items-center justify-center rounded-full bg-black dark:bg-white px-5 py-2.5 text-xs font-bold text-white dark:text-black transition-transform active:scale-95">
+                        Track Bid
+                    </button>
+</div>
+</div>
+<div class="flex flex-col gap-3 rounded-xl bg-white dark:bg-[#1a1c1e] p-4 shadow-sm border border-gray-100 dark:border-gray-800">
+<div class="flex items-start gap-4">
+<div class="h-24 w-24 shrink-0 overflow-hidden rounded-lg bg-gray-100">
+<div class="h-full w-full bg-cover bg-center" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAYoR8KXMlbzwuGF5NlTEBra3fYj30A7oYhjNYmQUynOal4NVC73oev0RbaC417HuNYDn5XZhjVsIaNia_GXc77zFTcOOQlAuSSoaviVVCUnMyoqZ90EJgl_gWu-GV8UficU4DkPeG5QUFsqE6FbrRwZ45qvm-ZQ0u3noFBJ4WYwULG1OFYRTs2veXEuZWjInoaVLVnUxmXUr1vXnVQdScQfgZIchOWFxi6cVsuPhyQ3yUJ1wbjA2zBOsuYcE4c_KJeMms1E2KkzgTR");'></div>
+</div>
+<div class="flex flex-1 flex-col justify-between h-24">
+<div class="flex justify-between items-start">
+<span class="inline-flex items-center rounded-full bg-red-100 dark:bg-red-900/30 px-2.5 py-0.5 text-[10px] font-extrabold uppercase text-red-700 dark:text-red-400 border border-red-200 dark:border-red-800">
+                                Outbid
+                            </span>
+<span class="text-[11px] text-gray-400 dark:text-gray-500 font-bold uppercase tracking-tighter">Ends in 5m</span>
+</div>
+<div>
+<h3 class="text-[#0d151c] dark:text-white text-base font-bold leading-tight line-clamp-1">Pro Studio Laptop M2 Max 64GB</h3>
+<div class="mt-1 flex items-center gap-1 text-gray-500 dark:text-gray-400">
+<span class="material-symbols-outlined text-[14px]">devices</span>
+<p class="text-[11px] font-medium leading-normal">High-end Tech</p>
+</div>
+</div>
+</div>
+</div>
+<div class="h-px bg-gray-100 dark:bg-gray-800 w-full my-1"></div>
+<div class="flex items-center justify-between">
+<div class="flex flex-col">
+<p class="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">Your Last Bid</p>
+<p class="text-xl font-extrabold text-red-600 dark:text-red-400">$3,100.00</p>
+</div>
+<button class="flex items-center justify-center rounded-full bg-accent px-5 py-2.5 text-xs font-bold text-white transition-transform active:scale-95">
+                        Bid Again
+                    </button>
+</div>
+</div>
+<div class="flex flex-col gap-3 rounded-xl bg-white dark:bg-[#1a1c1e] p-4 shadow-sm border border-gray-100 dark:border-gray-800">
+<div class="flex items-start gap-4">
+<div class="h-24 w-24 shrink-0 overflow-hidden rounded-lg bg-gray-100">
+<div class="h-full w-full bg-cover bg-center" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuB09Nqu5cpaT4UjAmKQB72lEK3IlxPwGtR4Ad0if71ECbvTZm4dg-4j3umPqunjzVyyLRdoKeonbFEN_ZuvYqOwd96annxf9qtSDaggNEem_JUc24HHgKt5mZ06li0Rt1n2M9TBL108_hXX2dhAIrp0G42vyDrCHrTUZ-Z3yrOJoYJq5XJ7kr7NGrXxY1qTD-wstGTnk7-Ppl5_GViFPeyNCSwDnQPg_ViI12IdxqZMl5rw4FRnZrPNkD1fY-bSdMye1-Y3M5VFugAC");'></div>
+</div>
+<div class="flex flex-1 flex-col justify-between h-24">
+<div class="flex justify-between items-start">
+<span class="inline-flex items-center rounded-full bg-amber-100 dark:bg-amber-900/30 px-2.5 py-0.5 text-[10px] font-extrabold uppercase text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-800">
+                                Won
+                            </span>
+<span class="text-[11px] text-gray-400 dark:text-gray-500 font-bold uppercase tracking-tighter">2 days ago</span>
+</div>
+<div>
+<h3 class="text-[#0d151c] dark:text-white text-base font-bold leading-tight line-clamp-1">Hand-crafted Tube Amplifier</h3>
+<div class="mt-1 flex items-center gap-1 text-gray-500 dark:text-gray-400">
+<span class="material-symbols-outlined text-[14px]">speaker_group</span>
+<p class="text-[11px] font-medium leading-normal">Premium Audio</p>
+</div>
+</div>
+</div>
+</div>
+<div class="h-px bg-gray-100 dark:bg-gray-800 w-full my-1"></div>
+<div class="flex items-center justify-between">
+<div class="flex flex-col">
+<p class="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">Winning Price</p>
+<p class="text-xl font-extrabold text-[#0d151c] dark:text-white">$1,850.00</p>
+</div>
+<button class="flex items-center justify-center rounded-full bg-primary/10 dark:bg-white/10 px-5 py-2.5 text-xs font-bold text-primary dark:text-white transition-colors">
+                        Payment Info
+                    </button>
+</div>
+</div>
+<div class="flex flex-col gap-3 rounded-xl bg-white dark:bg-[#1a1c1e] p-4 shadow-sm border border-gray-100 dark:border-gray-800 opacity-60">
+<div class="flex items-start gap-4">
+<div class="h-24 w-24 shrink-0 overflow-hidden rounded-lg bg-gray-100 grayscale">
+<div class="h-full w-full bg-cover bg-center" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAkjtTy86o4lRc_PM0-sTd6_rJsBVi_zITtzggfyn2mOGn0SbQXsmuEbRqMCmmg3LmVpt_tzznbmQEmEHfEtAtXuK6MvZCRgrcarHtFRfaCRGWgkAQqwcu7AmMrHXU0Fn2djHijlzrEmMzXrokcRoCCHfBISFjLhGziMjekbX4M69ovEX6gn4r9Sa0LY3XcJQLdz6FMNIEhuPT9oeotuNTGndpKEPeKA0rjt5VoaHvrqpO0g3gvWyIR153MyI4iKk2K1hrRnNSgP9xj");'></div>
+</div>
+<div class="flex flex-1 flex-col justify-between h-24">
+<div class="flex justify-between items-start">
+<span class="inline-flex items-center rounded-full bg-gray-100 dark:bg-gray-800 px-2.5 py-0.5 text-[10px] font-extrabold uppercase text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-700">
+                                Ended
+                            </span>
+<span class="text-[11px] text-gray-400 dark:text-gray-500 font-bold uppercase tracking-tighter">Aug 12</span>
+</div>
+<div>
+<h3 class="text-[#0d151c] dark:text-white text-base font-bold leading-tight line-clamp-1">Designer Lounge Chair (1956)</h3>
+<div class="mt-1 flex items-center gap-1 text-gray-500 dark:text-gray-400">
+<span class="material-symbols-outlined text-[14px]">weekend</span>
+<p class="text-[11px] font-medium leading-normal">Mid-Century Modern</p>
+</div>
+</div>
+</div>
+</div>
+<div class="h-px bg-gray-100 dark:bg-gray-800 w-full my-1"></div>
+<div class="flex items-center justify-between">
+<div class="flex flex-col">
+<p class="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">Final Bid</p>
+<p class="text-xl font-extrabold text-gray-400 dark:text-gray-500">$5,200.00</p>
+</div>
+<button class="flex items-center justify-center rounded-full bg-gray-50 dark:bg-gray-800 px-5 py-2.5 text-xs font-bold text-gray-400 dark:text-gray-500">
+                        Details
+                    </button>
+</div>
+</div>
+<div class="flex flex-col gap-3 rounded-xl bg-white dark:bg-[#1a1c1e] p-4 shadow-sm border border-gray-100 dark:border-gray-800">
+<div class="flex items-start gap-4">
+<div class="h-24 w-24 shrink-0 overflow-hidden rounded-lg bg-gray-100">
+<div class="h-full w-full bg-cover bg-center" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuB2LHkSkOG-UN3c_0EAkZR8A4HZUjEdodutywrrLGJJUHO8a3JAzlgREPzzgPyHAs3kivpU84szzkOJXUEYqqChOghzkdubrB-br3oInh5dN8Gn-Tdt57PPjOPjqtQGUgAtesgjyar6lK6Fp9okFnu_eA4EI1gMgaj-iwCKqFwILlAG45T92KASzQFMND29gr5cPuJVsqSUy18bO17_QHDtIg73V_efcHUnoXBQE46JS3eMW4wwa9aM-ZtsVtOASbM-dc8mHEWqZhf8");'></div>
+</div>
+<div class="flex flex-1 flex-col justify-between h-24">
+<div class="flex justify-between items-start">
+<span class="inline-flex items-center rounded-full bg-green-100 dark:bg-green-900/30 px-2.5 py-0.5 text-[10px] font-extrabold uppercase text-green-700 dark:text-green-400 border border-green-200 dark:border-green-800">
+                                Winning
+                            </span>
+<span class="text-[11px] text-gray-400 dark:text-gray-500 font-bold uppercase tracking-tighter">Starts in 1h</span>
+</div>
+<div>
+<h3 class="text-[#0d151c] dark:text-white text-base font-bold leading-tight line-clamp-1">Limited Edition Electric Superbike</h3>
+<div class="mt-1 flex items-center gap-1 text-gray-500 dark:text-gray-400">
+<span class="material-symbols-outlined text-[14px]">electric_bolt</span>
+<p class="text-[11px] font-medium leading-normal">Automotive</p>
+</div>
+</div>
+</div>
+</div>
+<div class="h-px bg-gray-100 dark:bg-gray-800 w-full my-1"></div>
+<div class="flex items-center justify-between">
+<div class="flex flex-col">
+<p class="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">Bid Amount</p>
+<p class="text-xl font-extrabold text-[#0d151c] dark:text-white">$42,900.00</p>
+</div>
+<button class="flex items-center justify-center rounded-full bg-black dark:bg-white px-5 py-2.5 text-xs font-bold text-white dark:text-black transition-transform active:scale-95">
+                        Track Bid
+                    </button>
+</div>
+</div>
+</div>
+<div class="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md bg-white/90 dark:bg-black/90 backdrop-blur-xl border-t border-gray-200 dark:border-gray-800 flex justify-around items-center py-3 pb-6 px-6 z-20">
+<div class="flex flex-col items-center gap-1 text-gray-400">
+<span class="material-symbols-outlined">home</span>
+<span class="text-[10px] font-bold uppercase tracking-widest">Home</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-black dark:text-white">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">gavel</span>
+<span class="text-[10px] font-bold uppercase tracking-widest">My Bids</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-gray-400">
+<span class="material-symbols-outlined">favorite</span>
+<span class="text-[10px] font-bold uppercase tracking-widest">Saved</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-gray-400">
+<span class="material-symbols-outlined">person</span>
+<span class="text-[10px] font-bold uppercase tracking-widest">Account</span>
+</div>
+</div>
+</div>
+
+</body></html>
