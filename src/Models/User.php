@@ -15,16 +15,7 @@ class User
         $this->db = Database::getConnection();
     }
 
-    /**
-     * Create a new user
-     * 
-     * @param string $email User email (must be unique)
-     * @param string $passwordHash Hashed password
-     * @param string $name User name
-     * @return array Created user data
-     * @throws \Exception If email already exists or validation fails
-     */
-    public function create(string $email, string $passwordHash, string $name): array
+    public function create(string $email, string $passwordHash, string $name, string $role = 'buyer'): array
     {
         // Validate email format
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -37,14 +28,15 @@ class User
         }
 
         try {
-            $sql = "INSERT INTO users (email, password, name, created_at) 
-                    VALUES (:email, :password, :name, CURRENT_TIMESTAMP)";
+            $sql = "INSERT INTO users (email, password, name, role, created_at) 
+                    VALUES (:email, :password, :name, :role, CURRENT_TIMESTAMP)";
             
             $stmt = $this->db->prepare($sql);
             $stmt->execute([
                 ':email' => $email,
                 ':password' => $passwordHash,
-                ':name' => $name
+                ':name' => $name,
+                ':role' => $role
             ]);
 
             $userId = (int)$this->db->lastInsertId();

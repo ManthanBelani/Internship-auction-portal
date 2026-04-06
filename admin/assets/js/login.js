@@ -1,38 +1,39 @@
 // Login form handler
 document.getElementById('loginForm').addEventListener('submit', async (e) => {
     e.preventDefault();
-    
+
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
     const submitBtn = e.target.querySelector('.btn-login');
-    
+
     // Disable button and show loading
     submitBtn.disabled = true;
     submitBtn.innerHTML = '<div class="spinner"></div> Logging in...';
-    
+
     try {
-        // Call login API (use correct port)
-        const response = await fetch('http://localhost:8000/api/users/login', {
+        // Call login API - use relative URL for all environments
+        const baseUrl = window.ADMIN_API_URL ? `${window.ADMIN_API_URL}/api` : '/api';
+        const response = await fetch(`${baseUrl}/users/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({ email, password })
         });
-        
+
         const data = await response.json();
-        
+
         if (!response.ok) {
             throw new Error(data.error || 'Login failed');
         }
-        
+
         // Check if user has admin or moderator role
         // The API returns role directly in the response
         const userRole = data.role;
         if (userRole !== 'admin' && userRole !== 'moderator') {
             throw new Error('You do not have permission to access the admin panel');
         }
-        
+
         // Store user data in session via PHP
         const sessionResponse = await fetch('login.php', {
             method: 'POST',
@@ -50,14 +51,14 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
                 })
             })
         });
-        
+
         if (sessionResponse.ok) {
             // Redirect to dashboard
             window.location.href = 'index.php';
         } else {
             throw new Error('Failed to create session');
         }
-        
+
     } catch (error) {
         // Show error
         let errorDiv = document.querySelector('.alert-error');
@@ -65,7 +66,7 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
             errorDiv = document.createElement('div');
             errorDiv.className = 'alert alert-error';
             document.querySelector('.login-form').insertBefore(
-                errorDiv, 
+                errorDiv,
                 document.querySelector('.form-group')
             );
         }
@@ -73,7 +74,7 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
             <i class="fas fa-exclamation-circle"></i>
             ${error.message}
         `;
-        
+
         // Re-enable button
         submitBtn.disabled = false;
         submitBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Login';

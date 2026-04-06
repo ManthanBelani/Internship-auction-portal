@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import '../models/item.dart';
+import '../theme/app_theme.dart';
 
 class BidDialog extends StatefulWidget {
   final Item item;
@@ -55,7 +56,7 @@ class _BidDialogState extends State<BidDialog> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Bid placed successfully!'),
-            backgroundColor: Colors.green,
+            backgroundColor: AppColors.success,
           ),
         );
       }
@@ -65,7 +66,7 @@ class _BidDialogState extends State<BidDialog> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Failed to place bid: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppColors.error,
           ),
         );
       }
@@ -111,7 +112,7 @@ class _BidDialogState extends State<BidDialog> {
                 Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: Colors.grey[100],
+                    color: AppColors.surfaceVariant,
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Column(
@@ -119,7 +120,7 @@ class _BidDialogState extends State<BidDialog> {
                       Text(
                         'Current Bid',
                         style: TextStyle(
-                          color: Colors.grey[600],
+                          color: AppColors.textSecondary,
                           fontSize: 14,
                         ),
                       ),
@@ -129,7 +130,7 @@ class _BidDialogState extends State<BidDialog> {
                         style: const TextStyle(
                           fontSize: 28,
                           fontWeight: FontWeight.bold,
-                          color: Color(0xFF2094F3),
+                          color: AppColors.primary,
                         ),
                       ),
                     ],
@@ -196,8 +197,8 @@ class _BidDialogState extends State<BidDialog> {
                 ElevatedButton(
                   onPressed: _isLoading ? null : _submitBid,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF2094F3),
-                    foregroundColor: Colors.white,
+                    backgroundColor: AppColors.primary,
+                    foregroundColor: AppColors.surface,
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
@@ -209,7 +210,7 @@ class _BidDialogState extends State<BidDialog> {
                           width: 20,
                           child: CircularProgressIndicator(
                             strokeWidth: 2,
-                            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                            valueColor: AlwaysStoppedAnimation<Color>(AppColors.surface),
                           ),
                         )
                       : const Text(
@@ -225,7 +226,7 @@ class _BidDialogState extends State<BidDialog> {
                 Text(
                   'By placing a bid, you agree to the terms and conditions of this auction.',
                   style: TextStyle(
-                    color: Colors.grey[600],
+                    color: AppColors.textSecondary,
                     fontSize: 12,
                   ),
                   textAlign: TextAlign.center,

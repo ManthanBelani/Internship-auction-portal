@@ -45,13 +45,24 @@ try {
     // Create WebSocket server
     $wsServer = new AuctionWebSocketServer($db);
     
+    // Create manual ReactPHP loop to add periodic timer
+    $loop = React\EventLoop\Loop::get();
+    
+    // Add timer to poll for events every 1 second
+    $loop->addPeriodicTimer(1.0, function() use ($wsServer) {
+        $wsServer->checkEvents();
+    });
+
+    // Create Socket server
+    $socket = new React\Socket\SocketServer("{$wsHost}:{$wsPort}", [], $loop);
+
     // Create Ratchet server
-    $server = IoServer::factory(
+    $server = new IoServer(
         new HttpServer(
             new WsServer($wsServer)
         ),
-        $wsPort,
-        $wsHost
+        $socket,
+        $loop
     );
     
     echo "WebSocket server started successfully!\n";

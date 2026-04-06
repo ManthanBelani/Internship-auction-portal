@@ -49,20 +49,20 @@ class UserController
             $result = $this->userService->registerUser(
                 $data['email'],
                 $data['password'],
-                $data['name']
+                $data['name'],
+                $role
             );
             
-            // Add role to response
-            $result['role'] = $role;
-            $result['status'] = 'active';
-
             $token = $result['token'];
+            $refreshToken = $result['refreshToken'];
             unset($result['token']);
+            unset($result['refreshToken']);
             
             Response::success([
                 'token' => $token,
+                'refreshToken' => $refreshToken,
                 'user' => $result
-            ], 201);
+            ], 'User registered successfully', 201);
         } catch (\Exception $e) {
             if (str_contains($e->getMessage(), 'already exists')) {
                 Response::error('EMAIL_ALREADY_EXISTS', $e->getMessage(), 409);
@@ -90,11 +90,36 @@ class UserController
             );
 
             $token = $result['token'];
+            $refreshToken = $result['refreshToken'];
             unset($result['token']);
+            unset($result['refreshToken']);
 
             Response::success([
                 'token' => $token,
+                'refreshToken' => $refreshToken,
                 'user' => $result
+            ]);
+        } catch (\Exception $e) {
+            Response::unauthorized($e->getMessage());
+        }
+    }
+
+    /**
+     * POST /api/users/refresh
+     */
+    public function refreshToken(array $data): void
+    {
+        try {
+            if (!isset($data['refreshToken'])) {
+                Response::badRequest('Refresh token is required');
+                return;
+            }
+
+            $result = $this->userService->refreshAccessToken($data['refreshToken']);
+
+            Response::success([
+                'token' => $result['token'],
+                'refreshToken' => $result['refreshToken']
             ]);
         } catch (\Exception $e) {
             Response::unauthorized($e->getMessage());

@@ -21,8 +21,11 @@ class ItemController
     public function create(array $data): void
     {
         try {
-            $user = AuthMiddleware::authenticate();
+            $user = \App\Middleware\RoleMiddleware::requireSeller();
             if (!$user) return;
+
+            // Debug logging
+            \App\Utils\AppLogger::info('Item creation data received', ['data' => $data]);
 
             // Validate input
             $validator = new \App\Validation\Validator();
@@ -34,6 +37,10 @@ class ItemController
             ];
 
             if (!$validator->validate($data, $rules)) {
+                 \App\Utils\AppLogger::error('Validation failed', [
+                     'errors' => $validator->getErrors(),
+                     'data' => $data
+                 ]);
                  Response::badRequest($validator->getFirstError());
                  return;
             }

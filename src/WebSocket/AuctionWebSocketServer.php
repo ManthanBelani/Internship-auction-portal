@@ -115,6 +115,62 @@ class AuctionWebSocketServer implements MessageComponentInterface {
     }
 
     /**
+     * Poll for pending events from the database
+     */
+    public function checkEvents(): void {
+        try {
+            // 1. Check for expired auctions every few loops (e.g., every 30 seconds)
+            static $lastAuctionCheck = 0;
+            if (time() - $lastAuctionCheck >= 30) {
+                $lastAuctionCheck = time();
+                $itemService = new \App\Services\ItemService();
+                $completedCount = $itemService->checkAndCompleteExpiredAuctions();
+                if ($completedCount > 0) {
+                    echo "Automated completion: {$completedCount} auctions completed\n";
+                }
+            }
+
+            // 2. Process pending events
+            $stmt = $this->db->prepare("SELECT * FROM events WHERE status = 'pending' ORDER BY created_at ASC");
+            $stmt->execute();
+            $events = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            foreach ($events as $event) {
+                $payload = json_decode($event['payload'], true);
+                
+                switch ($event['type']) {
+                    case 'bid_update':
+                        $this->broadcastBidUpdate((int)$event['item_id'], $payload);
+                        break;
+                    case 'outbid':
+                        $this->broadcastOutbidNotification(
+                            (int)$event['item_id'],
+                            (int)$payload['previousBidderId'],
+                            (float)$payload['newBidAmount'],
+                            (float)$payload['previousBidAmount']
+                        );
+                        break;
+                    case 'auction_ended':
+                        $this->broadcastAuctionEnded((int)$event['item_id'], $payload);
+                        break;
+                    case 'auction_ending':
+                        $this->broadcastAuctionEnding((int)$event['item_id'], (int)$payload['secondsRemaining']);
+                        break;
+                    case 'auction_extended':
+                        $this->broadcastAuctionExtended((int)$event['item_id'], $payload['newEndTime']);
+                        break;
+                }
+
+                // Mark event as processed
+                $updateStmt = $this->db->prepare("UPDATE events SET status = 'processed' WHERE event_id = ?");
+                $updateStmt->execute([$event['event_id']]);
+            }
+        } catch (\Exception $e) {
+            echo "Error polling events: " . $e->getMessage() . "\n";
+        }
+    }
+
+    /**
      * Broadcast bid update to all clients watching the item
      */
     public function broadcastBidUpdate(int $itemId, array $bidData): void {
@@ -323,6 +379,39 @@ class AuctionWebSocketServer implements MessageComponentInterface {
         }
         
         echo "Broadcast auction ended for item {$itemId} to {$deliveredCount} clients (event: {$eventId})\n";
+    }
+
+    /**
+     * Broadcast auction extension (Soft-Close)
+     */
+    public function broadcastAuctionExtended(int $itemId, string $newEndTime): void {
+        if (!isset($this->subscriptions[$itemId])) {
+            return;
+        }
+
+        $eventId = uniqid('extended_', true);
+
+        $message = json_encode([
+            'type' => 'auction_extended',
+            'eventId' => $eventId,
+            'itemId' => $itemId,
+            'newEndTime' => $newEndTime
+        ]);
+
+        $deliveredCount = 0;
+
+        foreach ($this->subscriptions[$itemId] as $conn) {
+            try {
+                $conn->send($message);
+                $deliveredCount++;
+            } catch (\Exception $e) {
+                echo "Failed to send auction extended notification: {$e->getMessage()}\n";
+                
+                // We don't necessarily need to queue this for offline users as they'll see the new time when they load the item
+            }
+        }
+        
+        echo "Broadcast auction extension for item {$itemId} to {$deliveredCount} clients (event: {$eventId})\n";
     }
 
     /**

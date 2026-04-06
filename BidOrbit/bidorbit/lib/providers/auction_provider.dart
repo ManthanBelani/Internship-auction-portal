@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import '../config/app_config.dart';
+import '../config/api_config.dart';
 
 class AuctionProvider with ChangeNotifier {
   List<dynamic> _items = [];
@@ -15,7 +15,7 @@ class AuctionProvider with ChangeNotifier {
     notifyListeners();
     
     try {
-      final url = Uri.parse('${AppConfig.apiUrl}/items');
+      final url = Uri.parse('${ApiConfig.baseUrl}/items');
       final response = await http.get(url);
       
       if (response.statusCode == 200) {
@@ -35,7 +35,7 @@ class AuctionProvider with ChangeNotifier {
 
   Future<Map<String, dynamic>> getItemDetails(int itemId) async {
     try {
-      final url = Uri.parse('${AppConfig.apiUrl}/items/$itemId');
+      final url = Uri.parse('${ApiConfig.baseUrl}/items/$itemId');
       final response = await http.get(url);
       
       if (response.statusCode == 200) {

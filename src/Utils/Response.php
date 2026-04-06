@@ -12,22 +12,32 @@ class Response
         exit;
     }
 
-    public static function success(array $data, int $statusCode = 200): void
+    public static function success(mixed $data = null, string $message = 'Success', int $statusCode = 200): void
     {
-        self::json($data, $statusCode);
+        $response = [
+            'success' => true,
+            'message' => $message
+        ];
+
+        if ($data !== null) {
+            foreach ($data as $key => $value) {
+                $response[$key] = $value;
+            }
+        }
+
+        self::json($response, $statusCode);
     }
 
     public static function error(string $code, string $message, int $statusCode = 400, ?array $details = null): void
     {
         $response = [
-            'error' => [
-                'code' => $code,
-                'message' => $message
-            ]
+            'success' => false,
+            'code' => $code,
+            'message' => $message
         ];
 
         if ($details !== null) {
-            $response['error']['details'] = $details;
+            $response['errors'] = $details;
         }
 
         self::json($response, $statusCode);

@@ -18,16 +18,7 @@ class UserService
         $this->reviewService = new ReviewService($db);
     }
 
-    /**
-     * Register a new user
-     * 
-     * @param string $email User email
-     * @param string $password Plain text password (will be hashed)
-     * @param string $name User name
-     * @return array User data with JWT token
-     * @throws \Exception If validation fails or email exists
-     */
-    public function registerUser(string $email, string $password, string $name): array
+    public function registerUser(string $email, string $password, string $name, string $role = 'buyer'): array
     {
         // Validate email format
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -54,20 +45,22 @@ class UserService
         $passwordHash = Auth::hashPassword($password);
 
         // Create user
-        $user = $this->userModel->create($email, $passwordHash, $name);
+        $user = $this->userModel->create($email, $passwordHash, $name, $role);
 
-        // Generate JWT token
+        // Generate JWT tokens
         $token = Auth::generateToken((int)$user['id'], $user['email']);
+        $refreshToken = Auth::generateRefreshToken((int)$user['id'], $user['email']);
 
         // Return user data without password hash
         return [
             'userId' => (int)$user['id'],
             'email' => $user['email'],
             'name' => $user['name'],
-            'role' => $user['role'] ?? 'buyer',
+            'role' => $user['role'] ?? $role,
             'status' => $user['status'] ?? 'active',
             'registeredAt' => $user['created_at'] ?? date('Y-m-d H:i:s'),
-            'token' => $token
+            'token' => $token,
+            'refreshToken' => $refreshToken
         ];
     }
 
@@ -93,8 +86,9 @@ class UserService
             throw new \Exception('Invalid credentials');
         }
 
-        // Generate JWT token
+        // Generate JWT tokens
         $token = Auth::generateToken((int)$user['id'], $user['email']);
+        $refreshToken = Auth::generateRefreshToken((int)$user['id'], $user['email']);
 
         // Return user data without password hash
         return [
@@ -104,7 +98,42 @@ class UserService
             'role' => $user['role'] ?? 'buyer',
             'status' => $user['status'] ?? 'active',
             'registeredAt' => $user['created_at'] ?? date('Y-m-d H:i:s'),
-            'token' => $token
+            'token' => $token,
+            'refreshToken' => $refreshToken
+        ];
+    }
+
+    /**
+     * Refresh access token using refresh token
+     * 
+     * @param string $refreshToken Refresh token
+     * @return array New access token and refresh token
+     * @throws \Exception If refresh token is invalid
+     */
+    public function refreshAccessToken(string $refreshToken): array
+    {
+        // Verify refresh token
+        $payload = Auth::verifyRefreshToken($refreshToken);
+        
+        if (!$payload) {
+            throw new \Exception('Invalid or expired refresh token');
+        }
+
+        // Get user to ensure they still exist
+        $user = $this->userModel->findById((int)$payload['userId']);
+        if (!$user) {
+            throw new \Exception('User not found');
+        }
+
+        // Generate new tokens
+        $newToken = Auth::generateToken((int)$user['id'], $user['email']);
+        $newRefreshToken = Auth::generateRefreshToken((int)$user['id'], $user['email']);
+
+        return [
+            'token' => $newToken,
+            'refreshToken' => $newRefreshToken,
+            'userId' => (int)$user['id'],
+            'email' => $user['email']
         ];
     }
 

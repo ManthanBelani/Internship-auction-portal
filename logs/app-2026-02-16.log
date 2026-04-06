@@ -1,0 +1,20 @@
+[2026-02-16 17:12:19] INFO: POST /api/users/login {"ip":"10.205.162.240"}
+[2026-02-16 17:12:20] INFO: GET /api/seller/listings {"ip":"10.205.162.240"}
+[2026-02-16 17:12:20] INFO: GET /api/seller/listings {"ip":"10.205.162.240"}
+[2026-02-16 17:12:20] INFO: GET /api/seller/stats {"ip":"10.205.162.240"}
+[2026-02-16 17:12:20] INFO: GET /api/seller/listings {"ip":"10.205.162.240"}
+[2026-02-16 17:14:15] INFO: POST /api/items {"ip":"10.205.162.240"}
+[2026-02-16 17:14:15] INFO: Item creation data received {"data":{"title":"Test product ","description":"this is sample product to check the server ","startingPrice":"100","endTime":"2026-02-17T13:30:00.000","reservePrice":"100","category":"Art","condition":"Good"}}
+[2026-02-16 17:14:30] INFO: POST /api/items {"ip":"10.205.162.240"}
+[2026-02-16 17:14:30] INFO: Item creation data received {"data":{"title":"Test product ","description":"this is sample product to check the server ","startingPrice":"100","endTime":"2026-02-17T13:30:00.000","reservePrice":"100","category":"Art","condition":"Good"}}
+[2026-02-16 17:16:08] INFO: POST /api/items {"ip":"10.205.162.240"}
+[2026-02-16 17:16:08] INFO: Item creation data received {"data":{"title":"test","description":"test product ","startingPrice":"10","endTime":"2026-02-16T21:55:00.000","reservePrice":"10","category":"Vehicles","condition":"Mint"}}
+[2026-02-16 17:25:14] INFO: POST /api/users/login {"ip":"10.205.162.240"}
+[2026-02-16 17:25:15] INFO: GET /api/seller/listings {"ip":"10.205.162.240"}
+[2026-02-16 17:25:15] INFO: GET /api/seller/stats {"ip":"10.205.162.240"}
+[2026-02-16 17:25:15] INFO: GET /api/seller/listings {"ip":"10.205.162.240"}
+[2026-02-16 17:25:15] INFO: GET /api/seller/listings {"ip":"10.205.162.240"}
+[2026-02-16 17:25:58] INFO: POST /api/items {"ip":"10.205.162.240"}
+[2026-02-16 17:25:58] INFO: Item creation data received {"data":{"title":"this is first product ","description":"testing descriptions ","startingPrice":"100","endTime":"2026-02-16T22:20:00.000","reservePrice":"100","category":"Art","condition":"Mint"}}
+[2026-02-16 17:25:59] INFO: POST /api/seller/items/8/images/bulk {"ip":"10.205.162.240"}
+[2026-02-16 17:25:59] INFO: GET /api/seller/listings {"ip":"10.205.162.240"}

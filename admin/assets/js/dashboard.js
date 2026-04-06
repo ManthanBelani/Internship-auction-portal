@@ -1,5 +1,5 @@
 // Dashboard statistics loader
-const API_BASE = 'http://localhost:8000/api';
+// API_BASE is now defined in main.js
 let usersChart, itemsChart;
 
 // Get token from session
@@ -11,17 +11,18 @@ function getToken() {
 // Fetch with authentication
 async function fetchAPI(endpoint) {
     const token = getToken();
-    const response = await fetch(`${API_BASE}${endpoint}`, {
+    const baseUrl = API_BASE_URL ? `${API_BASE_URL}/api` : '/api';
+    const response = await fetch(`${baseUrl}${endpoint}`, {
         headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'
         }
     });
-    
+
     if (!response.ok) {
         throw new Error(`API error: ${response.status}`);
     }
-    
+
     return response.json();
 }
 
@@ -29,17 +30,17 @@ async function fetchAPI(endpoint) {
 async function loadStatistics() {
     try {
         const stats = await fetchAPI('/admin/stats');
-        
+
         // Update stat cards
         document.getElementById('total-users').textContent = stats.users.total;
         document.getElementById('total-items').textContent = stats.items.total;
         document.getElementById('total-transactions').textContent = stats.transactions.total;
         document.getElementById('total-earnings').textContent = `$${parseFloat(stats.earnings.total).toFixed(2)}`;
-        
+
         // Create charts
         createUsersChart(stats.users.byRole);
         createItemsChart(stats.items.byStatus);
-        
+
     } catch (error) {
         console.error('Failed to load statistics:', error);
         showError('Failed to load dashboard statistics');
@@ -49,14 +50,14 @@ async function loadStatistics() {
 // Create users by role chart
 function createUsersChart(data) {
     const ctx = document.getElementById('usersChart').getContext('2d');
-    
+
     if (usersChart) {
         usersChart.destroy();
     }
-    
+
     const labels = data.map(item => item.role.charAt(0).toUpperCase() + item.role.slice(1));
     const counts = data.map(item => parseInt(item.count));
-    
+
     usersChart = new Chart(ctx, {
         type: 'doughnut',
         data: {
@@ -86,14 +87,14 @@ function createUsersChart(data) {
 // Create items by status chart
 function createItemsChart(data) {
     const ctx = document.getElementById('itemsChart').getContext('2d');
-    
+
     if (itemsChart) {
         itemsChart.destroy();
     }
-    
+
     const labels = data.map(item => item.status.charAt(0).toUpperCase() + item.status.slice(1));
     const counts = data.map(item => parseInt(item.count));
-    
+
     itemsChart = new Chart(ctx, {
         type: 'bar',
         data: {
@@ -178,7 +179,7 @@ function showError(message) {
 document.addEventListener('DOMContentLoaded', () => {
     loadStatistics();
     loadRecentActivity();
-    
+
     // Refresh stats every 30 seconds
     setInterval(loadStatistics, 30000);
 });

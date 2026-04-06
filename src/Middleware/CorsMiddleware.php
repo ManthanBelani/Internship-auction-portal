@@ -36,7 +36,25 @@ class CorsMiddleware
      */
     private static function getAllowedOrigins(): array
     {
-        $origins = $_ENV['ALLOWED_ORIGINS'] ?? 'http://localhost:3000,http://localhost:8080';
+        // Check multiple possible environment variable names
+        $origins = $_ENV['CORS_ALLOWED_ORIGINS'] 
+            ?? $_ENV['ALLOWED_ORIGINS'] 
+            ?? $_ENV['APP_URL'] 
+            ?? '';
+        
+        // Fallback to localhost for development
+        if (empty($origins)) {
+            $env = $_ENV['APP_ENV'] ?? 'development';
+            if ($env === 'production') {
+                $origins = $_ENV['APP_URL'] ?? '';
+                if (empty($origins)) {
+                    // Production should have APP_URL set
+                    return [];
+                }
+            } else {
+                $origins = 'http://localhost:3000,http://localhost:8080,http://localhost:8000';
+            }
+        }
         
         if ($origins === '*') {
             return ['*'];

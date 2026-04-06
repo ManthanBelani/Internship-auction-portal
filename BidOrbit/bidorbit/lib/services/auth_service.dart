@@ -24,6 +24,18 @@ class AuthService {
     await _storage.delete(key: ApiConfig.tokenKey);
   }
 
+  Future<void> saveRefreshToken(String refreshToken) async {
+    await _storage.write(key: ApiConfig.refreshTokenKey, value: refreshToken);
+  }
+
+  Future<String?> getRefreshToken() async {
+    return await _storage.read(key: ApiConfig.refreshTokenKey);
+  }
+
+  Future<void> deleteRefreshToken() async {
+    await _storage.delete(key: ApiConfig.refreshTokenKey);
+  }
+
   Future<void> saveUser(User user) async {
     await _storage.write(
       key: ApiConfig.userKey,
@@ -61,6 +73,10 @@ class AuthService {
 
       if (response['token'] != null) {
         await saveToken(response['token']);
+      }
+
+      if (response['refreshToken'] != null) {
+        await saveRefreshToken(response['refreshToken']);
       }
 
       if (response['user'] != null) {
@@ -104,6 +120,10 @@ class AuthService {
         await saveToken(response['token']);
       }
 
+      if (response['refreshToken'] != null) {
+        await saveRefreshToken(response['refreshToken']);
+      }
+
       if (response['user'] != null) {
         final user = User.fromJson(response['user']);
         await saveUser(user);
@@ -112,6 +132,36 @@ class AuthService {
       return response;
     } catch (e) {
       rethrow;
+    }
+  }
+
+  Future<Map<String, dynamic>?> refreshAccessToken() async {
+    try {
+      final refreshToken = await getRefreshToken();
+      if (refreshToken == null) {
+        return null;
+      }
+
+      final response = await _apiService.post(
+        ApiConfig.refreshToken,
+        {'refreshToken': refreshToken},
+        includeAuth: false,
+      );
+
+      if (response['token'] != null) {
+        await saveToken(response['token']);
+      }
+
+      if (response['refreshToken'] != null) {
+        await saveRefreshToken(response['refreshToken']);
+      }
+
+      return response;
+    } catch (e) {
+      // If refresh fails, clear tokens
+      await deleteToken();
+      await deleteRefreshToken();
+      return null;
     }
   }
 
@@ -131,6 +181,7 @@ class AuthService {
 
   Future<void> logout() async {
     await deleteToken();
+    await deleteRefreshToken();
     await deleteUser();
   }
 }

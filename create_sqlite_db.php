@@ -36,15 +36,19 @@ $tables = [
             seller_id INTEGER NOT NULL,
             title TEXT NOT NULL,
             description TEXT,
+            category TEXT,
             starting_price REAL NOT NULL,
             current_price REAL NOT NULL,
             reserve_price REAL,
+            highest_bidder_id INTEGER,
+            reserve_met INTEGER DEFAULT 0,
             commission_rate REAL DEFAULT 5.0,
             end_time TEXT NOT NULL,
             status TEXT DEFAULT 'active' CHECK(status IN ('active', 'sold', 'expired')),
             created_at TEXT DEFAULT CURRENT_TIMESTAMP,
             updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
-            FOREIGN KEY (seller_id) REFERENCES users(id) ON DELETE CASCADE
+            FOREIGN KEY (seller_id) REFERENCES users(id) ON DELETE CASCADE,
+            FOREIGN KEY (highest_bidder_id) REFERENCES users(id) ON DELETE SET NULL
         )
     ",
     'bids' => "
@@ -64,11 +68,15 @@ $tables = [
             item_id INTEGER NOT NULL,
             buyer_id INTEGER NOT NULL,
             seller_id INTEGER NOT NULL,
-            amount REAL NOT NULL,
-            commission REAL NOT NULL,
-            seller_earnings REAL NOT NULL,
+            final_price REAL NOT NULL,
+            commission_amount REAL NOT NULL,
+            seller_payout REAL NOT NULL,
+            tracking_number TEXT,
+            shipping_status TEXT DEFAULT 'pending',
+            payout_status TEXT DEFAULT 'pending',
+            payment_status TEXT DEFAULT 'unpaid',
             status TEXT DEFAULT 'pending' CHECK(status IN ('pending', 'completed', 'cancelled')),
-            created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+            completed_at TEXT DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY (item_id) REFERENCES items(id) ON DELETE CASCADE,
             FOREIGN KEY (buyer_id) REFERENCES users(id) ON DELETE CASCADE,
             FOREIGN KEY (seller_id) REFERENCES users(id) ON DELETE CASCADE
@@ -120,6 +128,31 @@ $tables = [
             delivered INTEGER DEFAULT 0,
             created_at TEXT DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+        )
+    ",
+    'messages' => "
+        CREATE TABLE IF NOT EXISTS messages (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            sender_id INTEGER NOT NULL,
+            receiver_id INTEGER NOT NULL,
+            item_id INTEGER,
+            message TEXT NOT NULL,
+            is_read INTEGER DEFAULT 0,
+            created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (sender_id) REFERENCES users(id) ON DELETE CASCADE,
+            FOREIGN KEY (receiver_id) REFERENCES users(id) ON DELETE CASCADE,
+            FOREIGN KEY (item_id) REFERENCES items(id) ON DELETE SET NULL
+        )
+    ",
+    'payouts' => "
+        CREATE TABLE IF NOT EXISTS payouts (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            seller_id INTEGER NOT NULL,
+            amount REAL NOT NULL,
+            payment_method TEXT NOT NULL,
+            status TEXT DEFAULT 'pending' CHECK(status IN ('pending', 'completed', 'rejected')),
+            created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (seller_id) REFERENCES users(id) ON DELETE CASCADE
         )
     "
 ];

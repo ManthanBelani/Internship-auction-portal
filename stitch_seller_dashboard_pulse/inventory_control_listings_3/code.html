@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sold Listings - Premium Auction Portal</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#2977f5",
+                        "emerald-custom": "#10b981",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#0a0c10",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style type="text/tailwindcss">
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glass-nav {
+            background: rgba(10, 12, 16, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen pb-24">
+<header class="sticky top-0 z-50 glass-nav pt-12 pb-4 px-6 border-b border-white/5">
+<div class="flex items-center justify-between mb-6">
+<h1 class="text-2xl font-bold tracking-tight">My Listings</h1>
+<div class="flex gap-3">
+<button class="w-10 h-10 flex items-center justify-center rounded-full bg-white/5 hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined text-[22px]">search</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-full bg-white/5 hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined text-[22px]">tune</span>
+</button>
+</div>
+</div>
+<div class="flex p-1 bg-white/5 rounded-full">
+<button class="flex-1 py-2 text-sm font-medium text-slate-400 hover:text-white transition-colors">Active</button>
+<button class="flex-1 py-2 text-sm font-medium text-slate-400 hover:text-white transition-colors">Pending</button>
+<button class="flex-1 py-2 text-sm font-semibold rounded-full bg-primary text-white shadow-lg shadow-primary/20">Sold</button>
+<button class="flex-1 py-2 text-sm font-medium text-slate-400 hover:text-white transition-colors">Drafts</button>
+</div>
+</header>
+<main class="p-4 space-y-4">
+<div class="glass-card rounded-2xl overflow-hidden p-4">
+<div class="flex gap-4">
+<div class="relative w-24 h-24 shrink-0 rounded-xl overflow-hidden bg-white/5">
+<img class="w-full h-full object-cover" data-alt="Premium chronograph watch" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBxXdB0z8T-qBUQ83e1k3unw8EdodqI6bSqR3seMPtAYsJ_k2OrGgVssT-9Anq18Lua8v1JbTNk10Y-ZtpGKi-HNO0qn2r__qsAD50Ii5DKMwLDrLD1BhOdIW0XW1mFw5VTIEtkILMbIox0D7qeFEWIxHMQ16EDCgmjguCar26JU_ZV74Kv0lZPy-sB0OQBSmFx14KIdXLW3UFqnK-3WtTWKH213yfs9ON1fHNEpUmZcbVyy3rQnSeiETfrI9TSqSSK4RDIUhfghdI"/>
+<div class="absolute top-1 left-1 px-1.5 py-0.5 rounded-md bg-emerald-custom/90 text-[8px] font-black uppercase tracking-tighter text-white">Sold</div>
+</div>
+<div class="flex-1 flex flex-col justify-between py-1">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="font-semibold text-base leading-tight">Vintage Rolex Submariner</h3>
+<div class="flex items-center gap-1.5 mt-1">
+<span class="text-[11px] text-slate-400">Buyer:</span>
+<span class="text-[11px] font-bold text-primary">@watchcollector_99</span>
+</div>
+</div>
+<div class="text-right">
+<p class="text-[10px] text-slate-400 font-medium uppercase tracking-wider mb-1">Sold For</p>
+<p class="text-emerald-custom font-bold text-lg leading-none">$13,850</p>
+</div>
+</div>
+<div class="mt-4 flex gap-2">
+<button class="flex-1 py-2 px-3 rounded-xl bg-primary text-white text-xs font-bold shadow-lg shadow-primary/20">Ship Now</button>
+<button class="py-2 px-4 rounded-xl bg-white/5 text-white text-xs font-bold border border-white/5">Details</button>
+</div>
+</div>
+</div>
+<div class="mt-4 pt-3 border-t border-white/5 flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[18px] text-slate-500">calendar_today</span>
+<span class="text-xs font-medium text-slate-400">Oct 12, 2023</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[18px] text-slate-500">gavel</span>
+<span class="text-xs font-medium text-slate-400">24 Bids</span>
+</div>
+</div>
+<span class="text-[10px] font-bold text-emerald-custom/80 uppercase">Payment Received</span>
+</div>
+</div>
+<div class="glass-card rounded-2xl overflow-hidden p-4">
+<div class="flex gap-4">
+<div class="relative w-24 h-24 shrink-0 rounded-xl overflow-hidden bg-white/5">
+<img class="w-full h-full object-cover" data-alt="Modern sculptural art piece" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBabvgawFW_lyGjA-xkl73m_khX-J0J01CmWShQv5NvMSmYFnG06N80w9Ljv8ISANMUaJNfztT8tOuJB0ev64YefUyGHKCnti71NIoGxJPGZYzSCh0piSkfGizLi2aySZXYyUZKlyMTqNODDiMRIJ6z5EchGLxZhPIzHGsBJvC9joCwa699Dd9wtC_2Jt-QevRRmUXCWC75xcRwkqBtcLcOqGJsUZ0JDt7qSd3rrmxbFnc6TYoKbW_UMhqw7zQ5-NRgzSQ0CDRHuxc"/>
+<div class="absolute top-1 left-1 px-1.5 py-0.5 rounded-md bg-emerald-custom/90 text-[8px] font-black uppercase tracking-tighter text-white">Sold</div>
+</div>
+<div class="flex-1 flex flex-col justify-between py-1">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="font-semibold text-base leading-tight">Minimalist Marble Base</h3>
+<div class="flex items-center gap-1.5 mt-1">
+<span class="text-[11px] text-slate-400">Buyer:</span>
+<span class="text-[11px] font-bold text-primary">@art_curator_nyc</span>
+</div>
+</div>
+<div class="text-right">
+<p class="text-[10px] text-slate-400 font-medium uppercase tracking-wider mb-1">Sold For</p>
+<p class="text-emerald-custom font-bold text-lg leading-none">$2,400</p>
+</div>
+</div>
+<div class="mt-4 flex gap-2">
+<button class="flex-1 py-2 px-3 rounded-xl bg-white/10 text-white text-xs font-bold border border-white/10">View Order</button>
+<button class="py-2 px-4 rounded-xl bg-white/5 text-white text-xs font-bold border border-white/5">
+<span class="material-symbols-outlined text-sm">more_horiz</span>
+</button>
+</div>
+</div>
+</div>
+<div class="mt-4 pt-3 border-t border-white/5 flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[18px] text-slate-500">calendar_today</span>
+<span class="text-xs font-medium text-slate-400">Oct 10, 2023</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[18px] text-slate-500">gavel</span>
+<span class="text-xs font-medium text-slate-400">56 Bids</span>
+</div>
+</div>
+<span class="text-[10px] font-bold text-primary uppercase">Shipped</span>
+</div>
+</div>
+<div class="glass-card rounded-2xl overflow-hidden p-4">
+<div class="flex gap-4">
+<div class="relative w-24 h-24 shrink-0 rounded-xl overflow-hidden bg-white/5">
+<img class="w-full h-full object-cover" data-alt="Collector sneakers" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCJ8gF3En9afOsqnxUaIolHRNMSLs-rgvMRx_-VVUmQgsy_WQUnuPC5fMjHmHcuRe7UrzNEqfMpna-2OKadrGC48o9f_xr5wvW53m36wHf0fgPJharM5mPYRjpOMUpyo4e7FrnrAt8gMDP8AzMjTRLSo4yZdibW43RNGjh4V4gxz7JqtQIctVCJtMp0lpY-KKNX8gz1IHepvknVOy0TO8RKcgc3NXB8eq-7_r8NmxAQfZvBynKTRqurZ_HRBqNO9yIoGU5J8dqWf2k"/>
+<div class="absolute top-1 left-1 px-1.5 py-0.5 rounded-md bg-emerald-custom/90 text-[8px] font-black uppercase tracking-tighter text-white">Sold</div>
+</div>
+<div class="flex-1 flex flex-col justify-between py-1">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="font-semibold text-base leading-tight">Hyper-Pulse Sneakers</h3>
+<div class="flex items-center gap-1.5 mt-1">
+<span class="text-[11px] text-slate-400">Buyer:</span>
+<span class="text-[11px] font-bold text-primary">@sneakerhead_la</span>
+</div>
+</div>
+<div class="text-right">
+<p class="text-[10px] text-slate-400 font-medium uppercase tracking-wider mb-1">Sold For</p>
+<p class="text-emerald-custom font-bold text-lg leading-none">$920</p>
+</div>
+</div>
+<div class="mt-4 flex gap-2">
+<button class="flex-1 py-2 px-3 rounded-xl bg-primary text-white text-xs font-bold shadow-lg shadow-primary/20">Ship Now</button>
+<button class="py-2 px-4 rounded-xl bg-white/5 text-white text-xs font-bold border border-white/5">Details</button>
+</div>
+</div>
+</div>
+<div class="mt-4 pt-3 border-t border-white/5 flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[18px] text-slate-500">calendar_today</span>
+<span class="text-xs font-medium text-slate-400">Oct 08, 2023</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[18px] text-slate-500">gavel</span>
+<span class="text-xs font-medium text-slate-400">14 Bids</span>
+</div>
+</div>
+<span class="text-[10px] font-bold text-emerald-custom/80 uppercase">Payment Received</span>
+</div>
+</div>
+</main>
+<nav class="fixed bottom-0 left-0 right-0 h-24 glass-nav border-t border-white/5 px-8 flex items-start pt-4 justify-between">
+<div class="flex flex-col items-center gap-1">
+<span class="material-symbols-outlined text-[26px] text-slate-500">dashboard</span>
+<span class="text-[10px] font-medium text-slate-500">Overview</span>
+</div>
+<div class="flex flex-col items-center gap-1">
+<span class="material-symbols-outlined text-[26px] text-primary" style="font-variation-settings: 'FILL' 1;">list_alt</span>
+<span class="text-[10px] font-bold text-primary">Inventory</span>
+</div>
+<div class="flex flex-col items-center gap-1">
+<div class="w-12 h-12 -mt-8 bg-primary rounded-full flex items-center justify-center shadow-lg shadow-primary/40 border-4 border-background-dark">
+<span class="material-symbols-outlined text-white text-[28px]">add</span>
+</div>
+</div>
+<div class="flex flex-col items-center gap-1">
+<span class="material-symbols-outlined text-[26px] text-slate-500">insights</span>
+<span class="text-[10px] font-medium text-slate-500">Analytics</span>
+</div>
+<div class="flex flex-col items-center gap-1">
+<span class="material-symbols-outlined text-[26px] text-slate-500">account_circle</span>
+<span class="text-[10px] font-medium text-slate-500">Account</span>
+</div>
+</nav>
+
+</body></html>

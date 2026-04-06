@@ -1,0 +1,6 @@
+[2026-02-07 08:42:56] INFO: GET /api {"ip":"::1"}
+[2026-02-07 08:42:56] INFO: GET /api {"ip":"::1"}
+[2026-02-07 08:43:17] INFO: POST /api/users/login {"ip":"::1"}
+[2026-02-07 08:43:20] INFO: POST /api/users/login {"ip":"::1"}
+[2026-02-07 08:44:40] INFO: POST /api/users/login {"ip":"::1"}
+[2026-02-07 09:17:38] INFO: GET /health {"ip":"::1"}

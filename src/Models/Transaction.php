@@ -41,7 +41,7 @@ class Transaction
 
         try {
             $sql = "INSERT INTO transactions (item_id, seller_id, buyer_id, final_price, commission_amount, seller_payout, completed_at) 
-                    VALUES (:item_id, :seller_id, :buyer_id, :final_price, :commission_amount, :seller_payout, NOW())";
+                    VALUES (:item_id, :seller_id, :buyer_id, :final_price, :commission_amount, :seller_payout, CURRENT_TIMESTAMP)";
             
             $stmt = $this->db->prepare($sql);
             $stmt->execute([

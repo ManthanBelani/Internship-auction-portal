@@ -1,7 +1,7 @@
 class Bid {
-  final String id;
-  final String itemId;
-  final String bidderId;
+  final int id;
+  final int itemId;
+  final int bidderId;
   final String? bidderName;
   final double amount;
   final DateTime timestamp;
@@ -23,9 +23,15 @@ class Bid {
 
   factory Bid.fromJson(Map<String, dynamic> json) {
     return Bid(
-      id: (json['bidId'] ?? json['id'])?.toString() ?? '',
-      itemId: (json['itemId'] ?? json['item_id'])?.toString() ?? '',
-      bidderId: (json['bidderId'] ?? json['bidder_id'])?.toString() ?? '',
+      id: (json['bidId'] ?? json['id']) is int
+          ? (json['bidId'] ?? json['id'])
+          : int.parse((json['bidId'] ?? json['id']).toString()),
+      itemId: (json['itemId'] ?? json['item_id']) is int
+          ? (json['itemId'] ?? json['item_id'])
+          : int.parse((json['itemId'] ?? json['item_id']).toString()),
+      bidderId: (json['bidderId'] ?? json['bidder_id']) is int
+          ? (json['bidderId'] ?? json['bidder_id'])
+          : int.parse((json['bidderId'] ?? json['bidder_id']).toString()),
       bidderName: json['bidderName'] ?? json['bidder_name'],
       amount: (json['amount'] ?? 0).toDouble(),
       timestamp: json['timestamp'] != null

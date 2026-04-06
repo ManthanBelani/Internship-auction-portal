@@ -4,7 +4,7 @@ class AppNotification {
   final String type;
   final String title;
   final String message;
-  final String? itemId;
+  final int? itemId;
   final String? itemTitle;
   final bool isRead;
   final DateTime timestamp;
@@ -30,7 +30,11 @@ class AppNotification {
       type: json['type'] ?? 'info',
       title: json['title'] ?? '',
       message: json['message'] ?? '',
-      itemId: json['item_id']?.toString(),
+      itemId: json['item_id'] != null
+          ? (json['item_id'] is int
+                ? json['item_id']
+                : int.tryParse(json['item_id'].toString()))
+          : null,
       itemTitle: json['item_title'],
       isRead: json['is_read'] ?? false,
       timestamp: json['timestamp'] != null
@@ -61,7 +65,7 @@ class AppNotification {
     String? type,
     String? title,
     String? message,
-    String? itemId,
+    int? itemId,
     String? itemTitle,
     bool? isRead,
     DateTime? timestamp,

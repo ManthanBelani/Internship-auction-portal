@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Seller Profile &amp; Reviews</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#2977f5",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#101722",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .glass-primary {
+            background: rgba(41, 119, 245, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(41, 119, 245, 0.2);
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen pb-32">
+<!-- Top AppBar -->
+<div class="sticky top-0 z-50 glass flex items-center p-4 justify-between">
+<div class="flex items-center gap-3">
+<button class="flex size-10 items-center justify-center rounded-full bg-slate-200/50 dark:bg-slate-800/50">
+<span class="material-symbols-outlined text-xl">arrow_back_ios_new</span>
+</button>
+</div>
+<h2 class="text-lg font-bold tracking-tight">Seller Profile</h2>
+<div class="flex items-center gap-2">
+<button class="flex size-10 items-center justify-center rounded-full bg-slate-200/50 dark:bg-slate-800/50">
+<span class="material-symbols-outlined text-xl">share</span>
+</button>
+<button class="flex size-10 items-center justify-center rounded-full bg-slate-200/50 dark:bg-slate-800/50">
+<span class="material-symbols-outlined text-xl">more_horiz</span>
+</button>
+</div>
+</div>
+<div class="p-4 max-w-md mx-auto space-y-6">
+<!-- Profile Header Section -->
+<div class="relative flex flex-col items-center py-6 px-4 glass rounded-xl overflow-hidden">
+<!-- Background Glow -->
+<div class="absolute top-0 left-1/2 -translate-x-1/2 w-48 h-48 bg-primary/20 blur-[60px] rounded-full -z-10"></div>
+<div class="relative">
+<div class="size-32 rounded-full border-4 border-primary/30 p-1">
+<div class="w-full h-full rounded-full bg-cover bg-center" data-alt="Close up portrait of a professional male seller" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCPJOseRbPXWMRdl8ESTgMnWAccOhL0UO0K3QbqzGDmvm9O4zYTLW5TQEODuVA01THhY8cAWtzSbE9PfW19txLYXoUNY4Q97HFH5nA9U6wTGnXCAXay5_s4qlS7dNvR3Tcs7v1-evt3A4bE9GVkH1WXt9PP9J6P86REXaQM6Ojge1agwkk07rP7_ROh9GeegV27nV_C2oSUL8Xm0lNqiyEvdTbPdgGBxqkMYe1TB0yc0vlTXUJGLfqGWPqg47vbL1KVSasQcZE7N5k");'></div>
+</div>
+<div class="absolute bottom-1 right-1 bg-primary text-white p-1.5 rounded-full border-4 border-background-dark flex items-center justify-center">
+<span class="material-symbols-outlined text-[14px] font-bold">verified</span>
+</div>
+</div>
+<div class="mt-4 text-center">
+<h1 class="text-2xl font-bold tracking-tight">Alex Harrison</h1>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Premium Estate Seller</p>
+<div class="flex items-center justify-center gap-1 mt-2 bg-primary/10 px-3 py-1 rounded-full">
+<span class="material-symbols-outlined text-primary text-sm fill-1">star</span>
+<span class="font-bold text-sm text-primary">4.9 Rating</span>
+<span class="text-xs text-slate-500 ml-1">• Seller Since 2021</span>
+</div>
+</div>
+<div class="flex w-full gap-3 mt-8">
+<div class="flex-1 flex flex-col items-center justify-center p-3 rounded-lg bg-slate-100/10 border border-white/5">
+<span class="text-xs text-slate-400 uppercase font-bold tracking-wider">Sales</span>
+<span class="text-xl font-bold">$12.4k</span>
+</div>
+<div class="flex-1 flex flex-col items-center justify-center p-3 rounded-lg bg-slate-100/10 border border-white/5">
+<span class="text-xs text-slate-400 uppercase font-bold tracking-wider">Items</span>
+<span class="text-xl font-bold">142</span>
+</div>
+<div class="flex-1 flex flex-col items-center justify-center p-3 rounded-lg bg-slate-100/10 border border-white/5">
+<span class="text-xs text-slate-400 uppercase font-bold tracking-wider">Fans</span>
+<span class="text-xl font-bold">892</span>
+</div>
+</div>
+</div>
+<!-- Rating Overview Section -->
+<section class="space-y-4">
+<h3 class="text-lg font-bold px-1">Customer Reviews</h3>
+<div class="glass p-6 rounded-xl flex flex-wrap items-center gap-8">
+<div class="flex flex-col items-center">
+<p class="text-5xl font-black tracking-tight">4.9</p>
+<div class="flex text-primary mt-1">
+<span class="material-symbols-outlined fill-1">star</span>
+<span class="material-symbols-outlined fill-1">star</span>
+<span class="material-symbols-outlined fill-1">star</span>
+<span class="material-symbols-outlined fill-1">star</span>
+<span class="material-symbols-outlined fill-1">star</span>
+</div>
+<p class="text-xs text-slate-500 mt-2 font-medium">142 REVIEWS</p>
+</div>
+<div class="flex-1 min-w-[180px] space-y-2">
+<div class="flex items-center gap-3">
+<span class="text-xs font-bold text-slate-400 w-4">5</span>
+<div class="h-1.5 flex-1 bg-slate-800 rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full w-[92%]"></div>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<span class="text-xs font-bold text-slate-400 w-4">4</span>
+<div class="h-1.5 flex-1 bg-slate-800 rounded-full overflow-hidden">
+<div class="h-full bg-primary/60 rounded-full w-[7%]"></div>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<span class="text-xs font-bold text-slate-400 w-4">3</span>
+<div class="h-1.5 flex-1 bg-slate-800 rounded-full overflow-hidden">
+<div class="h-full bg-primary/30 rounded-full w-[1%]"></div>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<span class="text-xs font-bold text-slate-400 w-4">2</span>
+<div class="h-1.5 flex-1 bg-slate-800 rounded-full overflow-hidden">
+<div class="h-full bg-slate-600 rounded-full w-[0%]"></div>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<span class="text-xs font-bold text-slate-400 w-4">1</span>
+<div class="h-1.5 flex-1 bg-slate-800 rounded-full overflow-hidden">
+<div class="h-full bg-slate-600 rounded-full w-[0%]"></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Reviews List -->
+<div class="space-y-4">
+<!-- Review Card 1 -->
+<div class="glass p-4 rounded-xl space-y-3">
+<div class="flex justify-between items-start">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-slate-800 bg-cover bg-center" data-alt="Portrait of woman reviewer" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuA1MvGSNeUTdBAmYAjJzF0H2zrrRpX3MC-tQsmTLaDWezcfkfMN4QWJCofilefGlMquGF0ou3yJSNOChkKtHxRjfYwnctqw3x_xFwNgfcSJEYCDzIfg_tvx2ycjjZ3Yw27kakPjWnjZdWOITlylGgKxlJDzOf439N35pFxfFDoeqOgYy6qrArVHFrd8CXCkkj3CNotsCwNn7cL8Vh2x36790t01HQPE3_Y-ky6nnSK1_xk7xB-bIQqAY5WYaUrb-TeDjdDt1C1QVe0");'></div>
+<div>
+<h4 class="font-bold text-sm">Julian R.</h4>
+<div class="flex text-primary text-[10px]">
+<span class="material-symbols-outlined fill-1 text-xs">star</span>
+<span class="material-symbols-outlined fill-1 text-xs">star</span>
+<span class="material-symbols-outlined fill-1 text-xs">star</span>
+<span class="material-symbols-outlined fill-1 text-xs">star</span>
+<span class="material-symbols-outlined fill-1 text-xs">star</span>
+</div>
+</div>
+</div>
+<span class="text-[10px] font-bold text-emerald-500 bg-emerald-500/10 px-2 py-0.5 rounded-full flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">check_circle</span> Verified
+                    </span>
+</div>
+<p class="text-sm text-slate-300 leading-relaxed">
+                    "Alex is an incredible seller. The vintage watch was exactly as described and packed with extreme care. Communication was top-notch throughout the auction process."
+                </p>
+<div class="flex gap-2 pt-2 overflow-x-auto hide-scrollbar">
+<div class="shrink-0 size-20 rounded-lg bg-slate-800 bg-cover" data-alt="Close up of vintage watch product" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAXUOE5f6SlB649s9leXEzah4Sbg4Mj83klsk30IPTRw8nnkyOvYCsokq3yM9PV0I3MBp7mhA-MD7lgdJVxOBlkbmXBi8CF8GQAwc6ys7YjraPvSL9dNvaF26fsF-xgGMkVNb7lFpcMx4aHPmba_UqyPWhJRC-UTSDEWJnNwOwjBpi9hqBqadoRKo2iwDdNXLG3K1h6EySK5PDIOoWsn0MY-BcjtLZflc3rHhX2PxApjVqoswhWT1wJE4oDoeyLlzk24nk86CJhOr4");'></div>
+<div class="shrink-0 size-20 rounded-lg bg-slate-800 bg-cover" data-alt="Close up of watch details" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuA-AJQt4q5zTfbYCuqISo4ArSvY6WUWRW0Ib0NyuqON_hygxj93QNF5lUTKw5-G0xBoPEvJl9M1ikDL9bA1ByMgxFKYNzrKh55iXED15uw5PeR56WKhMM7CQEhGz6VK0Ik065MT6sqciEQKnJ1qhGvc-8ela9AYBtZPmiTYkaFzj2GE-lng-8_LRkL_v256iLQr9LGotahZ1tS7WDsHNoGyZ3tnC48EPLbRRbCFi_HOuxahAEz-Nqz0RS0mj0bgTJ-yK1mUjS2zQXE");'></div>
+</div>
+</div>
+<!-- Review Card 2 -->
+<div class="glass p-4 rounded-xl space-y-3">
+<div class="flex justify-between items-start">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-slate-800 bg-cover bg-center" data-alt="Portrait of male reviewer" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDv4Z72K89uMsg_dW7d8GJgvMQnpKfzD2CKwo3Mu-GYbpGNgnzSFWme4GP2LyAMV2PWpr9I8xOJrFu0PExHWnTg_a4slK2UJXtDzwy1FkfmpHa6zTOLhtHMJjksbpOuQX2hy-C5Rw4BTysC5bfdLddIwFivBN_gz5sSay-0CSkx1Jr-XqVeROOHDgMIlFLq0MOLdO6NqIxT6VkyKzhBW-XEomAF-h1Ux5QhHxhgiKVM4Jc3pUabFxSiTJzWCPPTCrHhJLdC8op37Eg");'></div>
+<div>
+<h4 class="font-bold text-sm">Marcus Chen</h4>
+<div class="flex text-primary text-[10px]">
+<span class="material-symbols-outlined fill-1 text-xs">star</span>
+<span class="material-symbols-outlined fill-1 text-xs">star</span>
+<span class="material-symbols-outlined fill-1 text-xs">star</span>
+<span class="material-symbols-outlined fill-1 text-xs">star</span>
+<span class="material-symbols-outlined text-xs">star</span>
+</div>
+</div>
+</div>
+<span class="text-[10px] font-bold text-emerald-500 bg-emerald-500/10 px-2 py-0.5 rounded-full flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">check_circle</span> Verified
+                    </span>
+</div>
+<p class="text-sm text-slate-300 leading-relaxed">
+                    "Fast shipping and great items. Always look forward to his weekly glass auctions."
+                </p>
+</div>
+</div>
+<!-- Seller Settings Section -->
+<section class="space-y-4 pt-4">
+<h3 class="text-lg font-bold px-1">Seller Settings</h3>
+<div class="glass divide-y divide-white/5 overflow-hidden rounded-xl">
+<div class="flex items-center justify-between p-4">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-primary/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">notifications</span>
+</div>
+<div>
+<p class="text-sm font-bold">Auction Alerts</p>
+<p class="text-xs text-slate-500">Real-time bid notifications</p>
+</div>
+</div>
+<div class="relative inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full bg-primary transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2">
+<span class="inline-block h-5 w-5 translate-x-6 rounded-full bg-white transition-transform"></span>
+</div>
+</div>
+<div class="flex items-center justify-between p-4">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-primary/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">analytics</span>
+</div>
+<div>
+<p class="text-sm font-bold">Weekly Performance</p>
+<p class="text-xs text-slate-500">Automated sales summary</p>
+</div>
+</div>
+<div class="relative inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full bg-slate-700 transition-colors focus:outline-none">
+<span class="inline-block h-5 w-5 translate-x-1 rounded-full bg-white transition-transform"></span>
+</div>
+</div>
+</div>
+</section>
+<button class="w-full bg-primary text-white font-bold py-4 rounded-xl shadow-lg shadow-primary/20 active:scale-95 transition-transform flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">mail</span>
+            Contact Seller
+        </button>
+</div>
+<!-- Bottom Navigation Bar -->
+<div class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[90%] max-w-sm glass rounded-full p-2 flex items-center justify-around z-50">
+<button class="flex flex-col items-center justify-center size-12 text-slate-400">
+<span class="material-symbols-outlined">home</span>
+</button>
+<button class="flex flex-col items-center justify-center size-12 text-slate-400">
+<span class="material-symbols-outlined">gavel</span>
+</button>
+<button class="flex flex-col items-center justify-center size-12 text-primary bg-primary/10 rounded-full">
+<span class="material-symbols-outlined fill-1">person</span>
+</button>
+<button class="flex flex-col items-center justify-center size-12 text-slate-400">
+<span class="material-symbols-outlined">chat_bubble</span>
+</button>
+<button class="flex flex-col items-center justify-center size-12 text-slate-400">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</div>
+</body></html>

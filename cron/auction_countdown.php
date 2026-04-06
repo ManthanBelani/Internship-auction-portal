@@ -5,7 +5,7 @@
  * 
  * Run this script periodically (e.g., every 30 seconds) using:
  * - Windows Task Scheduler
- * - Linux cron: */1 * * * * php /path/to/auction_countdown.php (runs every minute)
+ * - Linux cron: `* * * * * php /path/to/auction_countdown.php` (runs every minute)
  * 
  * This script finds auctions ending within 5 minutes and broadcasts countdown updates
  */
@@ -46,7 +46,7 @@ try {
     
     // Find active auctions ending within 5 minutes
     $stmt = $db->prepare("
-        SELECT item_id, end_time, title
+        SELECT id as item_id, end_time, title
         FROM items
         WHERE status = 'active'
         AND end_time > NOW()

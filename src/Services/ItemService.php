@@ -265,98 +265,111 @@ class ItemService
      */
     public function completeAuction(int $itemId): array
     {
-        $item = $this->itemModel->findById($itemId);
-        $bidCount = $this->bidModel->countByItemId($itemId);
-        
-        if ($bidCount === 0) {
-            // No bids - mark as expired
-            $this->itemModel->update($itemId, ['status' => 'expired']);
+        return \App\Utils\Transaction::run(function() use ($itemId) {
+            // Lock item for completion
+            $item = $this->itemModel->findByIdForUpdate($itemId);
             
-            // Notify WebSocket clients
-            $this->wsClient->notifyAuctionEnded($itemId, [
-                'finalPrice' => null,
-                'winnerId' => null,
-                'winnerName' => null,
-                'status' => 'expired'
-            ]);
+            // Check if already completed
+            if ($item['status'] !== 'active') {
+                return [
+                    'success' => false,
+                    'message' => 'Auction is already ' . $item['status'],
+                    'transaction' => null
+                ];
+            }
+
+            $bidCount = $this->bidModel->countByItemId($itemId);
             
-            return [
-                'success' => false,
-                'message' => 'No bids placed',
-                'transaction' => null
-            ];
-        }
-        
-        $highestBid = $this->bidModel->getHighestBid($itemId);
-        
-        if (!$highestBid) {
-            $this->itemModel->update($itemId, ['status' => 'expired']);
+            if ($bidCount === 0) {
+                // No bids - mark as expired
+                $this->itemModel->update($itemId, ['status' => 'expired']);
+                
+                // Notify WebSocket clients
+                $this->wsClient->notifyAuctionEnded($itemId, [
+                    'finalPrice' => null,
+                    'winnerId' => null,
+                    'winnerName' => null,
+                    'status' => 'expired'
+                ]);
+                
+                return [
+                    'success' => false,
+                    'message' => 'No bids placed',
+                    'transaction' => null
+                ];
+            }
             
-            // Notify WebSocket clients
-            $this->wsClient->notifyAuctionEnded($itemId, [
-                'finalPrice' => null,
-                'winnerId' => null,
-                'winnerName' => null,
-                'status' => 'expired'
-            ]);
+            $highestBid = $this->bidModel->getHighestBid($itemId);
             
-            return [
-                'success' => false,
-                'message' => 'No valid bids',
-                'transaction' => null
-            ];
-        }
-        
-        $finalPrice = (float)$highestBid['amount'];
-        
-        // Check reserve price
-        if (!$this->isReserveMet($itemId, $finalPrice)) {
-            // Reserve not met - mark as completed but don't create transaction
+            if (!$highestBid) {
+                $this->itemModel->update($itemId, ['status' => 'expired']);
+                
+                // Notify WebSocket clients
+                $this->wsClient->notifyAuctionEnded($itemId, [
+                    'finalPrice' => null,
+                    'winnerId' => null,
+                    'winnerName' => null,
+                    'status' => 'expired'
+                ]);
+                
+                return [
+                    'success' => false,
+                    'message' => 'No valid bids',
+                    'transaction' => null
+                ];
+            }
+            
+            $finalPrice = (float)$highestBid['amount'];
+            
+            // Check reserve price
+            if (!$this->isReserveMet($itemId, $finalPrice)) {
+                // Reserve not met - mark as completed but don't create transaction
+                $this->itemModel->update($itemId, [
+                    'status' => 'completed',
+                    'reserve_met' => false
+                ]);
+                
+                // Notify WebSocket clients
+                $this->wsClient->notifyAuctionEnded($itemId, [
+                    'finalPrice' => $finalPrice,
+                    'winnerId' => null,
+                    'winnerName' => null,
+                    'status' => 'reserve_not_met'
+                ]);
+                
+                return [
+                    'success' => false,
+                    'message' => 'Reserve price not met',
+                    'transaction' => null
+                ];
+            }
+            
+            // Reserve met or no reserve - create transaction
             $this->itemModel->update($itemId, [
                 'status' => 'completed',
-                'reserve_met' => false
+                'reserve_met' => true
             ]);
+            
+            $transaction = $this->transactionModel->create(
+                $itemId,
+                (int)$item['seller_id'],
+                (int)$highestBid['bidder_id'],
+                $finalPrice
+            );
             
             // Notify WebSocket clients
             $this->wsClient->notifyAuctionEnded($itemId, [
                 'finalPrice' => $finalPrice,
-                'winnerId' => null,
-                'winnerName' => null,
-                'status' => 'reserve_not_met'
+                'winnerId' => (int)$highestBid['bidder_id'],
+                'winnerName' => $highestBid['bidder_name'] ?? 'Unknown',
+                'status' => 'completed'
             ]);
             
             return [
-                'success' => false,
-                'message' => 'Reserve price not met',
-                'transaction' => null
+                'success' => true,
+                'message' => 'Auction completed successfully',
+                'transaction' => $transaction
             ];
-        }
-        
-        // Reserve met or no reserve - create transaction
-        $this->itemModel->update($itemId, [
-            'status' => 'completed',
-            'reserve_met' => true
-        ]);
-        
-        $transaction = $this->transactionModel->create(
-            $itemId,
-            (int)$item['seller_id'],
-            (int)$highestBid['bidder_id'],
-            $finalPrice
-        );
-        
-        // Notify WebSocket clients
-        $this->wsClient->notifyAuctionEnded($itemId, [
-            'finalPrice' => $finalPrice,
-            'winnerId' => (int)$highestBid['bidder_id'],
-            'winnerName' => $highestBid['bidder_name'] ?? 'Unknown',
-            'status' => 'completed'
-        ]);
-        
-        return [
-            'success' => true,
-            'message' => 'Auction completed successfully',
-            'transaction' => $transaction
-        ];
+        });
     }
 }

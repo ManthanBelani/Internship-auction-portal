@@ -1,0 +1,12 @@
+[2026-02-08 15:56:54] INFO: GET / {"ip":"10.241.248.238"}
+[2026-02-08 15:57:03] INFO: GET /api/items {"ip":"10.241.248.238"}
+[2026-02-08 16:05:59] INFO: GET /api/users/profile {"ip":"10.241.248.238"}
+[2026-02-08 16:06:21] INFO: POST /api/users/login {"ip":"10.241.248.238"}
+[2026-02-08 16:06:23] INFO: GET /api/bids/my-bids {"ip":"10.241.248.238"}
+[2026-02-08 16:06:23] INFO: GET /api/notifications {"ip":"10.241.248.238"}
+[2026-02-08 16:06:23] INFO: GET /api/items?page=1&limit=20 {"ip":"10.241.248.238"}
+[2026-02-08 16:06:23] INFO: GET /api/watchlist {"ip":"10.241.248.238"}
+[2026-02-08 16:06:24] INFO: GET /api/watchlist {"ip":"10.241.248.238"}
+[2026-02-08 16:06:31] INFO: GET /api/items/2 {"ip":"10.241.248.238"}
+[2026-02-08 16:06:31] INFO: GET /api/bids/2 {"ip":"10.241.248.238"}
+[2026-02-08 16:07:14] INFO: GET /api/items?page=1&limit=20 {"ip":"10.241.248.238"}

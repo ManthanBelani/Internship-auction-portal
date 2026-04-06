@@ -1,5 +1,5 @@
 class Item {
-  final String id;
+  final int id;
   final String title;
   final String description;
   final double startingPrice;
@@ -8,13 +8,15 @@ class Item {
   final DateTime startTime;
   final DateTime endTime;
   final String status;
-  final String sellerId;
+  final int sellerId;
   final String? sellerName;
   final List<String> images;
   final String? location;
   final String? category;
   final int bidCount;
   final bool isFavorite;
+  final bool reserveSet;
+  final bool reserveMet;
 
   Item({
     required this.id,
@@ -33,15 +35,52 @@ class Item {
     this.category,
     this.bidCount = 0,
     this.isFavorite = false,
+    this.reserveSet = false,
+    this.reserveMet = false,
   });
 
   factory Item.fromJson(Map<String, dynamic> json) {
+    // Parse images - handle both array of strings and array of objects
+    List<String> parseImages(dynamic imagesData) {
+      if (imagesData == null) return [];
+      
+      if (imagesData is List) {
+        return imagesData.map((img) {
+          if (img is String) {
+            // Already a string URL
+            return img;
+          } else if (img is Map) {
+            // Image object from backend - extract imageUrl
+            String imageUrl = img['imageUrl'] ?? img['image_url'] ?? '';
+            // If it's a relative path, prepend the base URL
+            if (imageUrl.isNotEmpty && !imageUrl.startsWith('http')) {
+              // Use the IP address from ApiConfig
+              return 'http://10.205.162.238:8000$imageUrl';
+            }
+            return imageUrl;
+          }
+          return '';
+        }).where((url) => url.isNotEmpty).toList();
+      }
+      
+      return [];
+    }
+    
     return Item(
-      id: (json['itemId'] ?? json['id'])?.toString() ?? '',
+      id: (json['itemId'] ?? json['id']) is int
+          ? (json['itemId'] ?? json['id'])
+          : int.parse((json['itemId'] ?? json['id']).toString()),
       title: json['title'] ?? '',
       description: json['description'] ?? '',
-      startingPrice: (json['startingPrice'] ?? json['starting_price'] ?? 0).toDouble(),
-      currentPrice: (json['currentPrice'] ?? json['current_price'] ?? json['startingPrice'] ?? json['starting_price'] ?? 0).toDouble(),
+      startingPrice: (json['startingPrice'] ?? json['starting_price'] ?? 0)
+          .toDouble(),
+      currentPrice:
+          (json['currentPrice'] ??
+                  json['current_price'] ??
+                  json['startingPrice'] ??
+                  json['starting_price'] ??
+                  0)
+              .toDouble(),
       reservePrice: (json['reservePrice'] ?? json['reserve_price'])?.toDouble(),
       startTime: (json['startTime'] ?? json['start_time']) != null
           ? DateTime.parse(json['startTime'] ?? json['start_time'])
@@ -50,15 +89,17 @@ class Item {
           ? DateTime.parse(json['endTime'] ?? json['end_time'])
           : DateTime.now().add(const Duration(days: 7)),
       status: json['status'] ?? 'active',
-      sellerId: (json['sellerId'] ?? json['seller_id'])?.toString() ?? '',
+      sellerId: (json['sellerId'] ?? json['seller_id']) is int
+          ? (json['sellerId'] ?? json['seller_id'])
+          : int.parse((json['sellerId'] ?? json['seller_id']).toString()),
       sellerName: json['sellerName'] ?? json['seller_name'],
-      images: json['images'] != null
-          ? List<String>.from(json['images'])
-          : [],
+      images: parseImages(json['images']),
       location: json['location'],
       category: json['category'],
       bidCount: (json['bidCount'] ?? json['bid_count'] ?? 0),
       isFavorite: json['isWatching'] ?? json['is_favorite'] ?? false,
+      reserveSet: json['reserveSet'] ?? (json['reserve_set'] ?? false),
+      reserveMet: json['reserveMet'] ?? (json['reserve_met'] ?? false),
     );
   }
 
@@ -85,14 +126,14 @@ class Item {
 
   bool get isActive => status == 'active' && DateTime.now().isBefore(endTime);
   bool get hasEnded => DateTime.now().isAfter(endTime) || status == 'ended';
-  
+
   Duration get timeRemaining {
     if (hasEnded) return Duration.zero;
     return endTime.difference(DateTime.now());
   }
 
   Item copyWith({
-    String? id,
+    int? id,
     String? title,
     String? description,
     double? startingPrice,
@@ -101,13 +142,15 @@ class Item {
     DateTime? startTime,
     DateTime? endTime,
     String? status,
-    String? sellerId,
+    int? sellerId,
     String? sellerName,
     List<String>? images,
     String? location,
     String? category,
     int? bidCount,
     bool? isFavorite,
+    bool? reserveSet,
+    bool? reserveMet,
   }) {
     return Item(
       id: id ?? this.id,
@@ -126,6 +169,8 @@ class Item {
       category: category ?? this.category,
       bidCount: bidCount ?? this.bidCount,
       isFavorite: isFavorite ?? this.isFavorite,
+      reserveSet: reserveSet ?? this.reserveSet,
+      reserveMet: reserveMet ?? this.reserveMet,
     );
   }
 }

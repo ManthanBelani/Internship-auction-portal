@@ -223,8 +223,8 @@ class SellerController
             $user = AuthMiddleware::authenticate();
             if (!$user) return;
 
-            if (!isset($data['amount']) || !isset($data['method'])) {
-                Response::badRequest('Amount and payment method are required');
+            if (!isset($data['amount'])) {
+                Response::badRequest('Amount is required');
                 return;
             }
 
@@ -234,27 +234,132 @@ class SellerController
                 return;
             }
 
-            // Check if seller has enough balance
+            $method = $data['method'] ?? $data['paymentMethod'] ?? 'bank_transfer';
+
             $stats = $this->sellerService->getSellerStats((int)$user['userId']);
             
-            // Get already withdrawn or pending payouts
             $db = Database::getConnection();
-            $stmt = $db->prepare("SELECT SUM(amount) as total FROM payouts WHERE seller_id = ? AND status != 'rejected'");
+            $stmt = $db->prepare("SELECT COALESCE(SUM(amount), 0) as total FROM payouts WHERE seller_id = ? AND status != 'rejected'");
             $stmt->execute([$user['userId']]);
             $pendingTotal = (float)$stmt->fetch()['total'];
 
             $availableBalance = $stats['totalEarnings'] - $pendingTotal;
 
             if ($amount > $availableBalance) {
-                Response::badRequest("Insufficient balance. Available: {$availableBalance}");
+                Response::badRequest("Insufficient balance. Available: \${$availableBalance}");
                 return;
             }
 
-            // Record payout request
             $stmt = $db->prepare("INSERT INTO payouts (seller_id, amount, payment_method) VALUES (?, ?, ?)");
-            $stmt->execute([$user['userId'], $amount, $data['method']]);
+            $stmt->execute([$user['userId'], $amount, $method]);
 
             Response::success(['message' => 'Payout request submitted successfully'], 201);
+        } catch (\Exception $e) {
+            Response::serverError($e->getMessage());
+        }
+    }
+
+    /**
+     * GET /api/seller/payouts
+     * Get all payouts for the seller
+     */
+    public function getPayouts(): void
+    {
+        try {
+            $user = AuthMiddleware::authenticate();
+            if (!$user) return;
+
+            $db = Database::getConnection();
+            $stmt = $db->prepare("SELECT * FROM payouts WHERE seller_id = ? ORDER BY requested_at DESC");
+            $stmt->execute([$user['userId']]);
+            $payouts = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+            Response::success(['payouts' => $payouts]);
+        } catch (\Exception $e) {
+            Response::serverError($e->getMessage());
+        }
+    }
+
+    /**
+     * GET /api/seller/balance
+     * Get seller's available balance
+     */
+    public function getBalance(): void
+    {
+        try {
+            $user = AuthMiddleware::authenticate();
+            if (!$user) return;
+
+            $stats = $this->sellerService->getSellerStats((int)$user['userId']);
+
+            $db = Database::getConnection();
+            $stmt = $db->prepare("SELECT COALESCE(SUM(amount), 0) as total FROM payouts WHERE seller_id = ? AND status != 'rejected'");
+            $stmt->execute([$user['userId']]);
+            $pendingPayouts = (float)$stmt->fetch()['total'];
+
+            $stmt = $db->prepare("SELECT COALESCE(SUM(amount), 0) as total FROM payouts WHERE seller_id = ? AND status = 'pending'");
+            $stmt->execute([$user['userId']]);
+            $processingPayouts = (float)$stmt->fetch()['total'];
+
+            $available = $stats['totalEarnings'] - $pendingPayouts;
+
+            Response::success([
+                'available' => max(0, $available),
+                'pending' => $processingPayouts,
+                'totalEarnings' => $stats['totalEarnings'],
+                'currency' => 'USD'
+            ]);
+        } catch (\Exception $e) {
+            Response::serverError($e->getMessage());
+        }
+    }
+
+    /**
+     * POST /api/seller/messages/send
+     * Send a message (app uses conversationId instead of receiverId)
+     */
+    public function sendMessageByConversation(array $data): void
+    {
+        try {
+            $user = AuthMiddleware::authenticate();
+            if (!$user) return;
+
+            $conversationId = (int)($data['conversationId'] ?? $data['receiverId'] ?? 0);
+            $message = $data['message'] ?? '';
+
+            if ($conversationId <= 0 || empty($message)) {
+                Response::badRequest('Conversation ID and message content are required');
+                return;
+            }
+
+            $message = $this->messageModel->create(
+                (int)$user['userId'],
+                $conversationId,
+                null,
+                $message
+            );
+
+            Response::success($message, 201);
+        } catch (\Exception $e) {
+            Response::serverError($e->getMessage());
+        }
+    }
+
+    /**
+     * PUT /api/seller/messages/{messageId}/read
+     * Mark a single message as read
+     */
+    public function markMessageAsRead(int $messageId): void
+    {
+        try {
+            $user = AuthMiddleware::authenticate();
+            if (!$user) return;
+
+            $db = Database::getConnection();
+            $stmt = $db->prepare("UPDATE messages SET is_read = 1 WHERE id = ? AND receiver_id = ?");
+            $stmt->execute([$messageId, $user['userId']]);
+
+            Response::success(['message' => 'Message marked as read']);
         } catch (\Exception $e) {
             Response::serverError($e->getMessage());
         }

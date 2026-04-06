@@ -21,7 +21,7 @@ class BidController
     public function create(array $data): void
     {
         try {
-            $user = AuthMiddleware::authenticate();
+            $user = \App\Middleware\RoleMiddleware::requireBuyer();
             if (!$user) return;
 
             // Validate inputs
@@ -38,6 +38,16 @@ class BidController
                 (int)$data['itemId'],
                 (int)$user['userId'],
                 (float)$data['amount']
+            );
+
+            // Broadcast bid update via WebSocket
+            \App\Utils\WebSocketBroadcaster::broadcastBidUpdate(
+                (int)$data['itemId'],
+                [
+                    'amount' => (float)$data['amount'],
+                    'bidderName' => $user['name'] ?? 'Anonymous',
+                    'bidCount' => $result['bidCount'] ?? 0
+                ]
             );
 
             Response::success($result, 201);

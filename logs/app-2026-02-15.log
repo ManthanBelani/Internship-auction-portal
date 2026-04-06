@@ -1,0 +1,10 @@
+[2026-02-15 12:45:47] INFO: GET /health {"ip":"::1"}
+[2026-02-15 12:46:20] INFO: POST /api/users/register {"ip":"::1"}
+[2026-02-15 12:46:41] INFO: POST /api/users/register {"ip":"::1"}
+[2026-02-15 13:02:40] INFO: GET / {"ip":"10.205.162.238"}
+[2026-02-15 13:04:22] INFO: POST /api/users/login {"ip":"10.205.162.238"}
+[2026-02-15 13:04:24] INFO: GET /api/seller/stats {"ip":"10.205.162.238"}
+[2026-02-15 13:04:25] INFO: GET /api/seller/listings {"ip":"10.205.162.238"}
+[2026-02-15 13:04:25] INFO: GET /api/seller/listings {"ip":"10.205.162.238"}
+[2026-02-15 13:04:25] INFO: GET /api/seller/listings {"ip":"10.205.162.238"}
+[2026-02-15 13:06:18] INFO: POST /api/items {"ip":"10.205.162.238"}

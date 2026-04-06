@@ -20,7 +20,7 @@ class Auth
     public static function generateToken(int $userId, string $email): string
     {
         $secret = $_ENV['JWT_SECRET'] ?? 'default-secret-key';
-        $expiresIn = (int)($_ENV['JWT_EXPIRES_IN'] ?? 604800); // 7 days default
+        $expiresIn = (int)($_ENV['JWT_EXPIRES_IN'] ?? 3600); // 1 hour default
 
         $payload = [
             'userId' => $userId,
@@ -30,6 +30,42 @@ class Auth
         ];
 
         return JWT::encode($payload, $secret, 'HS256');
+    }
+
+    public static function generateRefreshToken(int $userId, string $email): string
+    {
+        $secret = $_ENV['JWT_SECRET'] ?? 'default-secret-key';
+        $refreshSecret = $secret . '-refresh'; // Different secret for refresh tokens
+        $expiresIn = (int)($_ENV['JWT_REFRESH_EXPIRES_IN'] ?? 2592000); // 30 days default
+
+        $payload = [
+            'userId' => $userId,
+            'email' => $email,
+            'iat' => time(),
+            'exp' => time() + $expiresIn,
+            'type' => 'refresh'
+        ];
+
+        return JWT::encode($payload, $refreshSecret, 'HS256');
+    }
+
+    public static function verifyRefreshToken(string $token): ?array
+    {
+        try {
+            $secret = $_ENV['JWT_SECRET'] ?? 'default-secret-key';
+            $refreshSecret = $secret . '-refresh';
+            $decoded = JWT::decode($token, new Key($refreshSecret, 'HS256'));
+            $payload = (array)$decoded;
+            
+            // Verify it's a refresh token
+            if (isset($payload['type']) && $payload['type'] === 'refresh') {
+                return $payload;
+            }
+            
+            return null;
+        } catch (\Exception $e) {
+            return null;
+        }
     }
 
     public static function verifyToken(string $token): ?array

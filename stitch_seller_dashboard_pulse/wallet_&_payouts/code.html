@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Wallet &amp; Payouts</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#2977f5",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#0a0c10",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .glass-card {
+            background: linear-gradient(135deg, rgba(41, 119, 245, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-white min-h-screen pb-24">
+<!-- Top Navigation Bar -->
+<header class="sticky top-0 z-50 glass px-4 py-4 flex items-center justify-between">
+<button class="size-10 flex items-center justify-center rounded-full hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined">arrow_back_ios_new</span>
+</button>
+<h1 class="text-lg font-bold tracking-tight">Wallet &amp; Payouts</h1>
+<button class="size-10 flex items-center justify-center rounded-full bg-primary/20 text-primary">
+<span class="material-symbols-outlined">account_balance_wallet</span>
+</button>
+</header>
+<main class="p-4 space-y-6">
+<!-- Hero Balance Card -->
+<section class="relative overflow-hidden rounded-xl p-6 glass-card shadow-2xl">
+<div class="absolute -top-12 -right-12 size-40 bg-primary/20 rounded-full blur-3xl"></div>
+<div class="relative z-10 space-y-1">
+<p class="text-white/60 text-sm font-medium uppercase tracking-wider">Available for Payout</p>
+<div class="flex items-baseline gap-1">
+<span class="text-primary text-2xl font-bold">$</span>
+<span class="text-4xl font-extrabold tracking-tight">12,450.00</span>
+</div>
+<div class="pt-4 flex items-center gap-2 text-xs text-white/40">
+<span class="material-symbols-outlined text-sm">schedule</span>
+<span>Last updated: Just now</span>
+</div>
+</div>
+<!-- Progress Sub-indicator -->
+<div class="mt-6 space-y-2">
+<div class="flex justify-between text-xs font-medium">
+<span class="text-white/60">Pending Clearance</span>
+<span class="text-white">$3,120.45</span>
+</div>
+<div class="h-1.5 w-full bg-white/10 rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full w-3/4"></div>
+</div>
+</div>
+</section>
+<!-- Payout Request Form -->
+<section class="space-y-4">
+<h2 class="text-lg font-bold px-1">Withdraw Funds</h2>
+<div class="bg-white/5 dark:bg-white/5 rounded-xl p-4 border border-white/10 space-y-5">
+<!-- Amount Input -->
+<div class="space-y-2">
+<label class="text-sm font-medium text-white/60 block px-1">Enter Amount</label>
+<div class="relative">
+<span class="absolute left-4 top-1/2 -translate-y-1/2 text-white/40 font-bold">$</span>
+<input class="w-full bg-background-dark/50 border border-white/10 rounded-full py-4 pl-8 pr-4 text-xl font-bold focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all" placeholder="0.00" type="number"/>
+</div>
+</div>
+<!-- Method Selection -->
+<div class="space-y-2">
+<label class="text-sm font-medium text-white/60 block px-1">Payout Method</label>
+<div class="grid grid-cols-3 gap-2">
+<button class="flex flex-col items-center justify-center py-3 rounded-xl border-2 border-primary bg-primary/10 text-primary transition-all">
+<span class="material-symbols-outlined mb-1">account_balance</span>
+<span class="text-[10px] font-bold uppercase tracking-tighter">Bank</span>
+</button>
+<button class="flex flex-col items-center justify-center py-3 rounded-xl border-2 border-transparent bg-white/5 text-white/60 hover:bg-white/10 transition-all">
+<span class="material-symbols-outlined mb-1">payments</span>
+<span class="text-[10px] font-bold uppercase tracking-tighter">PayPal</span>
+</button>
+<button class="flex flex-col items-center justify-center py-3 rounded-xl border-2 border-transparent bg-white/5 text-white/60 hover:bg-white/10 transition-all">
+<span class="material-symbols-outlined mb-1">credit_card</span>
+<span class="text-[10px] font-bold uppercase tracking-tighter">Stripe</span>
+</button>
+</div>
+</div>
+<!-- Submit Button -->
+<button class="w-full bg-primary hover:bg-primary/90 text-white font-bold py-4 rounded-full shadow-lg shadow-primary/20 transition-all active:scale-95">
+                    Request Instant Payout
+                </button>
+</div>
+</section>
+<!-- Transaction History -->
+<section class="space-y-4">
+<div class="flex items-center justify-between px-1">
+<h2 class="text-lg font-bold">History</h2>
+<button class="text-primary text-sm font-semibold">View All</button>
+</div>
+<div class="space-y-3">
+<!-- Transaction Item 1 -->
+<div class="glass p-4 rounded-xl flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-500">
+<span class="material-symbols-outlined text-xl">call_made</span>
+</div>
+<div>
+<p class="font-bold text-sm">Withdrawal to Bank</p>
+<p class="text-xs text-white/40">Oct 24, 2023 • 14:20</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-bold text-sm">-$2,400.00</p>
+<div class="flex items-center justify-end gap-1">
+<div class="size-1.5 rounded-full bg-emerald-500"></div>
+<span class="text-[10px] text-emerald-500 font-bold uppercase">Completed</span>
+</div>
+</div>
+</div>
+<!-- Transaction Item 2 -->
+<div class="glass p-4 rounded-xl flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-amber-500/20 flex items-center justify-center text-amber-500">
+<span class="material-symbols-outlined text-xl">hourglass_empty</span>
+</div>
+<div>
+<p class="font-bold text-sm">Auction Sale #8921</p>
+<p class="text-xs text-white/40">Oct 23, 2023 • 09:15</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-bold text-sm">+$850.00</p>
+<div class="flex items-center justify-end gap-1">
+<div class="size-1.5 rounded-full bg-amber-500"></div>
+<span class="text-[10px] text-amber-500 font-bold uppercase">Pending</span>
+</div>
+</div>
+</div>
+<!-- Transaction Item 3 -->
+<div class="glass p-4 rounded-xl flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-rose-500/20 flex items-center justify-center text-rose-500">
+<span class="material-symbols-outlined text-xl">error_outline</span>
+</div>
+<div>
+<p class="font-bold text-sm">Withdrawal to Stripe</p>
+<p class="text-xs text-white/40">Oct 21, 2023 • 18:45</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-bold text-sm">-$500.00</p>
+<div class="flex items-center justify-end gap-1">
+<div class="size-1.5 rounded-full bg-rose-500"></div>
+<span class="text-[10px] text-rose-500 font-bold uppercase">Failed</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation -->
+<nav class="fixed bottom-0 left-0 right-0 glass pb-8 pt-4 px-8 z-50 rounded-t-xl">
+<div class="max-w-md mx-auto flex items-center justify-between">
+<button class="flex flex-col items-center text-white/40 hover:text-white transition-colors">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="text-[10px] mt-1 font-medium">Dashboard</span>
+</button>
+<button class="flex flex-col items-center text-white/40 hover:text-white transition-colors">
+<span class="material-symbols-outlined">gavel</span>
+<span class="text-[10px] mt-1 font-medium">Auctions</span>
+</button>
+<button class="flex flex-col items-center text-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">account_balance_wallet</span>
+<span class="text-[10px] mt-1 font-bold">Wallet</span>
+</button>
+<button class="flex flex-col items-center text-white/40 hover:text-white transition-colors">
+<span class="material-symbols-outlined">person</span>
+<span class="text-[10px] mt-1 font-medium">Profile</span>
+</button>
+</div>
+</nav>
+<!-- iOS Indicator Bar Decoration -->
+<div class="fixed bottom-1 left-1/2 -translate-x-1/2 w-32 h-1 bg-white/20 rounded-full z-[60]"></div>
+</body></html>

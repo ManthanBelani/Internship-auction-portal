@@ -1,0 +1,4 @@
+Fixing database schema inconsistency...
+??? Migrated transactions table to correct column names
+
+??? Schema fix complete!

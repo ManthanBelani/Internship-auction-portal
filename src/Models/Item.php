@@ -27,7 +27,7 @@ class Item
      * @return array Created item data
      * @throws \Exception If validation fails
      */
-    public function create(int $sellerId, string $title, string $description, float $startingPrice, string $endTime): array
+    public function create(int $sellerId, string $title, string $description, float $startingPrice, string $endTime, array $data = []): array
     {
         // Validate positive price
         if ($startingPrice <= 0) {
@@ -79,10 +79,35 @@ class Item
      */
     public function findById(int $itemId): array
     {
-        $sql = "SELECT i.*, u.name as seller_name 
+        $sql = "SELECT i.*, u.name as seller_name,
+                       (SELECT COUNT(*) FROM bids WHERE item_id = i.id) as bid_count
                 FROM items i 
                 JOIN users u ON i.seller_id = u.id 
                 WHERE i.id = :id";
+        
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([':id' => $itemId]);
+        
+        $item = $stmt->fetch();
+        
+        if (!$item) {
+            throw new \Exception('Item not found');
+        }
+        
+        return $item;
+    }
+
+    /**
+     * Find item by ID and lock row for update
+     */
+    public function findByIdForUpdate(int $itemId): array
+    {
+        $sql = "SELECT i.*, u.name as seller_name,
+                       (SELECT COUNT(*) FROM bids WHERE item_id = i.id) as bid_count
+                FROM items i 
+                JOIN users u ON i.seller_id = u.id 
+                WHERE i.id = :id 
+                FOR UPDATE";
         
         $stmt = $this->db->prepare($sql);
         $stmt->execute([':id' => $itemId]);
@@ -104,7 +129,8 @@ class Item
      */
     public function findActive(array $filters = []): array
     {
-        $sql = "SELECT i.*, u.name as seller_name 
+        $sql = "SELECT i.*, u.name as seller_name,
+                       (SELECT COUNT(*) FROM bids WHERE item_id = i.id) as bid_count
                 FROM items i 
                 JOIN users u ON i.seller_id = u.id 
                 WHERE i.status = 'active' AND i.end_time > CURRENT_TIMESTAMP";
@@ -224,6 +250,11 @@ class Item
             $params[':reserve_met'] = $data['reserve_met'] ? 1 : 0;
         }
 
+        if (isset($data['end_time'])) {
+            $updates[] = "end_time = :end_time";
+            $params[':end_time'] = $data['end_time'];
+        }
+
         if (empty($updates)) {
             return $item;
         }
@@ -273,6 +304,7 @@ class Item
             'sellerId' => (int)$item['seller_id'],
             'category' => $item['category'],
             'status' => $item['status'],
+            'bidCount' => (int)($item['bid_count'] ?? 0),
             'createdAt' => $item['created_at']
         ];
 

@@ -1,15 +1,25 @@
 // Main admin panel JavaScript
 
+// API Base URL - Dynamic for all environments
+const API_BASE_URL = (function () {
+    // Check for environment variable or use relative path
+    const envUrl = window.ADMIN_API_URL || '';
+    if (envUrl) return envUrl;
+
+    // Use relative URL (works for both development and production)
+    return ''; // Empty = same origin
+})();
+
 // Sidebar toggle for mobile
 document.addEventListener('DOMContentLoaded', () => {
     const menuToggle = document.querySelector('.menu-toggle');
     const sidebar = document.querySelector('.sidebar');
-    
+
     if (menuToggle) {
         menuToggle.addEventListener('click', () => {
             sidebar.classList.toggle('active');
         });
-        
+
         // Close sidebar when clicking outside on mobile
         document.addEventListener('click', (e) => {
             if (window.innerWidth <= 768) {
@@ -19,11 +29,11 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-    
+
     // Set active menu item based on current page
     const currentPage = window.location.pathname.split('/').pop() || 'index.php';
     const menuItems = document.querySelectorAll('.sidebar-menu a');
-    
+
     menuItems.forEach(item => {
         const href = item.getAttribute('href');
         if (href === currentPage) {
@@ -35,15 +45,17 @@ document.addEventListener('DOMContentLoaded', () => {
 // Utility function for API calls
 async function apiCall(endpoint, options = {}) {
     const token = document.querySelector('meta[name="api-token"]')?.content || '';
-    
+
     const defaultOptions = {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
         }
     };
-    
-    const response = await fetch(`http://localhost:8000/api${endpoint}`, {
+
+    // Build URL - use API_BASE_URL if set, otherwise use relative path
+    const baseUrl = API_BASE_URL ? `${API_BASE_URL}/api` : '/api';
+    const response = await fetch(`${baseUrl}${endpoint}`, {
         ...defaultOptions,
         ...options,
         headers: {
@@ -51,13 +63,13 @@ async function apiCall(endpoint, options = {}) {
             ...options.headers
         }
     });
-    
+
     const data = await response.json();
-    
+
     if (!response.ok) {
         throw new Error(data.error || 'API request failed');
     }
-    
+
     return data;
 }
 
@@ -69,13 +81,13 @@ function showToast(message, type = 'success') {
         <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
         ${message}
     `;
-    
+
     document.body.appendChild(toast);
-    
+
     setTimeout(() => {
         toast.classList.add('show');
     }, 100);
-    
+
     setTimeout(() => {
         toast.classList.remove('show');
         setTimeout(() => toast.remove(), 300);
@@ -112,12 +124,12 @@ function formatRelativeTime(dateString) {
     const date = new Date(dateString);
     const now = new Date();
     const diff = now - date;
-    
+
     const seconds = Math.floor(diff / 1000);
     const minutes = Math.floor(seconds / 60);
     const hours = Math.floor(minutes / 60);
     const days = Math.floor(hours / 24);
-    
+
     if (days > 0) return `${days} day${days > 1 ? 's' : ''} ago`;
     if (hours > 0) return `${hours} hour${hours > 1 ? 's' : ''} ago`;
     if (minutes > 0) return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;

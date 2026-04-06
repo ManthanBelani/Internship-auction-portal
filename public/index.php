@@ -21,6 +21,28 @@ use App\Middleware\RateLimiter;
 use App\Middleware\AuthMiddleware;
 use App\Utils\AppLogger;
 
+// Global Exception Handler
+set_exception_handler(function ($e) {
+    AppLogger::logException($e);
+    $statusCode = 500;
+    if ($e->getCode() >= 400 && $e->getCode() < 600) {
+        $statusCode = $e->getCode();
+    }
+    
+    Response::error(
+        'UNEXPECTED_ERROR',
+        ($_ENV['APP_DEBUG'] ?? 'false') === 'true' ? $e->getMessage() : 'An internal server error occurred',
+        $statusCode,
+        ($_ENV['APP_DEBUG'] ?? 'false') === 'true' ? ['trace' => $e->getTraceAsString()] : null
+    );
+});
+
+// Global Error Handler
+set_error_handler(function ($severity, $message, $file, $line) {
+    if (!(error_reporting() & $severity)) return;
+    throw new \ErrorException($message, 0, $severity, $file, $line);
+});
+
 // Controllers
 use App\Controllers\UserController;
 use App\Controllers\ItemController;
@@ -31,6 +53,9 @@ use App\Controllers\ImageController;
 use App\Controllers\ReviewController;
 use App\Controllers\WatchlistController;
 use App\Controllers\AdminController;
+use App\Controllers\PaymentController;
+use App\Controllers\ShippingController;
+use App\Controllers\OrderController;
 
 // Load environment variables
 $dotenv = Dotenv::createImmutable(__DIR__ . '/..');
@@ -66,13 +91,14 @@ $router->get('', function() {
     Response::success([
         'message' => 'Auction Portal API',
         'version' => '1.1.0',
-        'technology' => 'PHP + SQLite'
+        'technology' => 'PHP + MySQL'
     ]);
 });
 
 // User Routes
 $router->post('api/users/register', [new UserController(), 'register']);
 $router->post('api/users/login', [new UserController(), 'login']);
+$router->post('api/users/refresh', [new UserController(), 'refreshToken']);
 
 $router->get('api/users/profile', [new UserController(), 'getProfile'], [AuthMiddleware::class . '::authenticate']);
 $router->put('api/users/profile', [new UserController(), 'updateProfile'], [AuthMiddleware::class . '::authenticate']);
@@ -142,6 +168,41 @@ $router->group('api/my', function(Router $r) {
     $r->post('payments/(\d+)/pay', [new \App\Controllers\TransactionController(), 'pay']);
 }, [AuthMiddleware::class . '::authenticate']);
 
+// Payment Routes
+$router->group('api/payments', function(Router $r) {
+    $paymentController = new \App\Controllers\PaymentController();
+    
+    $r->post('create-intent', [$paymentController, 'createPaymentIntent']);
+    $r->post('confirm', [$paymentController, 'confirmPayment']);
+    $r->get('methods', [$paymentController, 'getPaymentMethods']);
+    $r->post('methods', [$paymentController, 'addPaymentMethod']);
+    $r->delete('methods/(\d+)', [$paymentController, 'deletePaymentMethod']);
+    $r->get('history', [$paymentController, 'getPaymentHistory']);
+}, [AuthMiddleware::class . '::authenticate']);
+
+// Shipping Routes
+$router->group('api/shipping', function(Router $r) {
+    $shippingController = new \App\Controllers\ShippingController();
+    
+    $r->get('addresses', [$shippingController, 'getAddresses']);
+    $r->post('addresses', [$shippingController, 'addAddress']);
+    $r->put('addresses/(\d+)', [$shippingController, 'updateAddress']);
+    $r->delete('addresses/(\d+)', [$shippingController, 'deleteAddress']);
+    $r->post('calculate', [$shippingController, 'calculateShipping']);
+}, [AuthMiddleware::class . '::authenticate']);
+
+// Order Routes
+$router->group('api/orders', function(Router $r) {
+    $orderController = new \App\Controllers\OrderController();
+    
+    $r->get('', [$orderController, 'getOrders']);
+    $r->get('(\d+)', [$orderController, 'getOrderById']);
+    $r->post('create', [$orderController, 'createOrder']);
+    $r->put('(\d+)/status', [$orderController, 'updateOrderStatus']);
+    $r->post('(\d+)/cancel', [$orderController, 'cancelOrder']);
+    $r->get('won-items', [$orderController, 'getWonItems']);
+}, [AuthMiddleware::class . '::authenticate']);
+
 // Auction Status (Real-time)
 $router->get('api/auction-status/(\d+)', [new AuctionStatusController(), 'getAuctionStatus']);
 $router->get('api/auction-status/multiple', [new AuctionStatusController(), 'getMultipleAuctionStatus']);
@@ -150,6 +211,8 @@ $router->get('api/price-history/(\d+)', [new AuctionStatusController(), 'getPric
 // --- Seller Role Specific Routes ---
 $router->group('api/seller', function(Router $r) {
     $sellerController = new \App\Controllers\SellerController();
+    $salesController = new \App\Controllers\SalesController();
+    $analyticsController = new \App\Controllers\AnalyticsController();
     $imageController = new \App\Controllers\ImageController();
     
     // Dashboard Stats
@@ -159,6 +222,19 @@ $router->group('api/seller', function(Router $r) {
     $r->get('listings', [$sellerController, 'getListings']);
     $r->put('items/(\d+)', [$sellerController, 'updateListing']);
     
+    // Sales Management
+    $r->get('sales', [$salesController, 'getSales']);
+    $r->get('sales/(\d+)', [$salesController, 'getSaleDetails']);
+    $r->put('sales/(\d+)/ship', [$salesController, 'markAsShipped']);
+    $r->put('sales/(\d+)/deliver', [$salesController, 'markAsDelivered']);
+    $r->get('revenue', [$salesController, 'getRevenue']);
+    
+    // Analytics
+    $r->get('analytics/overview', [$analyticsController, 'getOverview']);
+    $r->get('analytics/revenue', [$analyticsController, 'getRevenueAnalytics']);
+    $r->get('analytics/performance', [$analyticsController, 'getPerformance']);
+    $r->get('analytics/categories', [$analyticsController, 'getCategoryAnalytics']);
+    
     // Bulk Media Upload
     $r->post('items/(\d+)/images/bulk', [$imageController, 'bulkUpload']);
     
@@ -166,12 +242,17 @@ $router->group('api/seller', function(Router $r) {
     $r->get('messages', [$sellerController, 'getMessages']);
     $r->get('messages/(\d+)', [$sellerController, 'getConversation']);
     $r->post('messages', [$sellerController, 'sendMessage']);
+    $r->post('messages/send', [$sellerController, 'sendMessageByConversation']);
+    $r->put('messages/(\d+)/read', [$sellerController, 'markMessageAsRead']);
     
     // Shipping & Tracking
     $r->post('shipping/track', [$sellerController, 'updateShipping']);
     
     // Payout Requests
+    $r->get('payouts', [$sellerController, 'getPayouts']);
     $r->post('payouts', [$sellerController, 'requestPayout']);
+    $r->post('payouts/request', [$sellerController, 'requestPayout']);
+    $r->get('balance', [$sellerController, 'getBalance']);
 }, [AuthMiddleware::class . '::authenticate']);
 
 // Admin Routes
@@ -194,33 +275,33 @@ $router->group('api/admin', function(Router $r) {
     // Payout Management
     $r->get('payouts', [$adminController, 'getPayouts']);
     $r->put('payouts/(\d+)', [$adminController, 'updatePayoutStatus']);
+    
+    // Transaction Management
+    $r->get('transactions', [$adminController, 'getTransactions']);
+    
+    // Review Management
+    $r->get('reviews', [$adminController, 'getReviews']);
+    $r->delete('reviews/(\d+)', [$adminController, 'deleteReview']);
+    
+    // Earnings
+    $r->get('earnings', [$adminController, 'getEarnings']);
 }, [AuthMiddleware::class . '::authenticate']); // Basic Auth for all admin routes
 
 // Dispatch
-try {
-    $method = $_SERVER['REQUEST_METHOD'];
-    $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-    $uri = trim($uri, '/');
-    
-    // Parse JSON body
-    $requestBody = null;
-    if (in_array($method, ['POST', 'PUT', 'PATCH'])) {
-        $input = file_get_contents('php://input');
-        if (!empty($input)) {
-            $requestBody = json_decode($input, true);
-        }
-    }
-    
-    // Parse Query Params matches what Router expects ( $_GET can be used but passing it is explicit)
-    $queryParams = $_GET;
+$method = $_SERVER['REQUEST_METHOD'];
+$uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+$uri = trim($uri, '/');
 
-    $router->dispatch($method, $uri, $requestBody, $queryParams);
-
-} catch (\Exception $e) {
-    AppLogger::logException($e);
-    if (($_ENV['APP_DEBUG'] ?? 'false') === 'true') {
-        Response::serverError($e->getMessage());
-    } else {
-        Response::serverError('An unexpected error occurred');
+// Parse JSON body
+$requestBody = null;
+if (in_array($method, ['POST', 'PUT', 'PATCH'])) {
+    $input = file_get_contents('php://input');
+    if (!empty($input)) {
+        $requestBody = json_decode($input, true);
     }
 }
+
+// Parse Query Params matches what Router expects ( $_GET can be used but passing it is explicit)
+$queryParams = $_GET;
+
+$router->dispatch($method, $uri, $requestBody, $queryParams);

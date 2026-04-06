@@ -429,9 +429,8 @@ class ImageService {
     public function getItemImages(int $itemId): array {
         try {
             // Check if table exists and has correct structure
-            $tableCheck = $this->db->query("SELECT name FROM sqlite_master WHERE type='table' AND name='item_images'");
+            $tableCheck = $this->db->query("SELECT TABLE_NAME FROM information_schema.TABLES WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'item_images'");
             if (!$tableCheck || !$tableCheck->fetch()) {
-                // Table doesn't exist, return empty array
                 return [];
             }
             
@@ -476,7 +475,7 @@ class ImageService {
             $stmt = $this->db->prepare("
                 SELECT image_url, thumbnail_url
                 FROM item_images
-                WHERE image_id = :image_id
+                WHERE id = :image_id
             ");
             
             $stmt->execute([':image_id' => $imageId]);
@@ -492,7 +491,7 @@ class ImageService {
             // Delete database record first
             $deleteStmt = $this->db->prepare("
                 DELETE FROM item_images
-                WHERE image_id = :image_id
+                WHERE id = :image_id
             ");
             
             $deleteStmt->execute([':image_id' => $imageId]);

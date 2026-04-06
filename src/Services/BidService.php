@@ -38,38 +38,37 @@ class BidService
             throw new \Exception('Bid amount must be positive');
         }
 
-        // Get item details
-        $item = $this->itemModel->findById($itemId);
-
-        // Validate auction exists and is active
-        if ($item['status'] !== 'active') {
-            throw new \Exception('Auction is not active');
-        }
-
-        // Validate auction end time is in the future
-        $endTime = new DateTime($item['end_time']);
-        $now = new DateTime();
-        
-        if ($endTime <= $now) {
-            throw new \Exception('Auction has expired');
-        }
-
-        // Validate bidder is not the seller
-        if ((int)$item['seller_id'] === $bidderId) {
-            throw new \Exception('You cannot bid on your own item');
-        }
-
-        // Validate bid amount is higher than current price
-        if ($amount <= (float)$item['current_price']) {
-            throw new \Exception('Bid amount must be higher than current price');
-        }
-
         // Prepare context for notifications
-        $previousBidderId = isset($item['highest_bidder_id']) ? (int)$item['highest_bidder_id'] : null;
-        $previousBidAmount = (float)$item['current_price'];
+        $previousBidderId = null;
+        $previousBidAmount = 0;
+        $item = null;
         
         // 2. Execution (Transactional)
-        $result = \App\Utils\Transaction::run(function() use ($itemId, $bidderId, $amount, $item, $previousBidderId) {
+        $result = \App\Utils\Transaction::run(function() use ($itemId, $bidderId, $amount, &$item, &$previousBidderId, &$previousBidAmount) {
+            // Get item details inside transaction with lock
+            $item = $this->itemModel->findByIdForUpdate($itemId);
+
+            // Re-validate everything with the locked data
+            if ($item['status'] !== 'active') {
+                throw new \Exception('Auction is not active');
+            }
+
+            $endTime = new DateTime($item['end_time']);
+            if ($endTime <= new DateTime()) {
+                throw new \Exception('Auction has expired');
+            }
+
+            if ((int)$item['seller_id'] === $bidderId) {
+                throw new \Exception('You cannot bid on your own item');
+            }
+
+            if ($amount <= (float)$item['current_price']) {
+                throw new \Exception('Bid amount must be higher than current price (' . $item['current_price'] . ')');
+            }
+
+            $previousBidderId = isset($item['highest_bidder_id']) ? (int)$item['highest_bidder_id'] : null;
+            $previousBidAmount = (float)$item['current_price'];
+
             // Create bid
             $bid = $this->bidModel->create($itemId, $bidderId, $amount);
 
@@ -88,6 +87,17 @@ class BidService
                 }
             }
 
+            // Soft-Close Logic (Anti-Sniping) inside transaction
+            $softCloseThreshold = 120; // 2 minutes
+            $extensionTime = 120; // 2 minutes
+            $secondsRemaining = $endTime->getTimestamp() - (new DateTime())->getTimestamp();
+            $newEndTime = null;
+
+            if ($secondsRemaining <= $softCloseThreshold) {
+                $newEndTime = (clone $endTime)->modify("+{$extensionTime} seconds")->format('Y-m-d H:i:s');
+                $this->itemModel->update($itemId, ['end_time' => $newEndTime]);
+            }
+
             $bidData = [
                 'bidId' => (int)$bid['id'],
                 'itemId' => (int)$bid['item_id'],
@@ -99,12 +109,19 @@ class BidService
 
             return [
                 'bidData' => $bidData,
-                'reserveMet' => $reserveMet
+                'reserveMet' => $reserveMet,
+                'newEndTime' => $newEndTime
             ];
         });
 
         $bidData = $result['bidData'];
         $reserveMet = $result['reserveMet'];
+        $newEndTime = $result['newEndTime'];
+
+        if ($newEndTime) {
+            // Notify WebSocket of extension
+            $this->wsClient->notifyAuctionExtended($itemId, $newEndTime);
+        }
 
         // 3. Notifications (Post-Transaction)
         

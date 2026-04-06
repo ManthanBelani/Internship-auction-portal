@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import '../theme/app_theme.dart';
 
 class CountdownTimer extends StatefulWidget {
   final DateTime endTime;
@@ -69,13 +70,13 @@ class _CountdownTimerState extends State<CountdownTimer> {
 
   Color _getColor() {
     if (_remaining.isNegative || _remaining == Duration.zero) {
-      return Colors.grey;
+      return AppColors.textMuted;
     } else if (_remaining.inHours < 1) {
-      return Colors.red;
+      return AppColors.error;
     } else if (_remaining.inHours < 24) {
-      return Colors.orange;
+      return AppColors.warning;
     }
-    return Colors.green;
+    return AppColors.success;
   }
 
   @override

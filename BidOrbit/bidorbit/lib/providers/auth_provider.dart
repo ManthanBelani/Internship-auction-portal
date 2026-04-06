@@ -142,4 +142,6 @@ class AuthProvider with ChangeNotifier {
     _error = null;
     notifyListeners();
   }
+
+  Future<void> loadUser() async {}
 }

@@ -29,46 +29,141 @@ class ItemsProvider with ChangeNotifier {
   bool get hasMore => _hasMore;
 
   ItemsProvider() {
-    // WebSocket disabled until server is available
-    // _initWebSocket();
+    _initWebSocket();
   }
 
   void _initWebSocket() {
-    // Disabled - uncomment when WebSocket server is running
-    // _wsService.connect();
-    // _wsService.stream.listen((data) {
-    //   _handleWebSocketMessage(data);
-    // });
+    // Connect to WebSocket
+    _wsService.connect();
+    
+    // Listen to bid updates
+    _wsService.bidUpdates.listen((data) {
+      _handleBidUpdate(data);
+    });
+    
+    // Listen to auction status updates
+    _wsService.auctionStatusUpdates.listen((data) {
+      _handleAuctionStatusUpdate(data);
+    });
   }
 
-  void _handleWebSocketMessage(Map<String, dynamic> data) {
-    final type = data['type'];
-    
-    if (type == 'bid_placed' || type == 'price_update') {
-      final itemId = data['itemId']?.toString();
-      final newPrice = data['currentPrice']?.toDouble();
-      
-      if (itemId != null && newPrice != null) {
-        _updateItemPrice(itemId, newPrice);
-      }
+  void _handleBidUpdate(Map<String, dynamic> data) {
+    final itemId = data['itemId'] != null
+        ? (data['itemId'] is int
+              ? data['itemId']
+              : int.tryParse(data['itemId'].toString()))
+        : null;
+    final newPrice = (data['amount'] ?? data['bidAmount'] as num?)?.toDouble();
+    final bidCount = data['bidCount'] as int?;
+
+    if (itemId != null && newPrice != null) {
+      _updateItemPrice(itemId, newPrice, bidCount);
     }
   }
 
-  void _updateItemPrice(String itemId, double newPrice) {
+  void _handleAuctionStatusUpdate(Map<String, dynamic> data) {
+    final itemId = data['itemId'] as int?;
+    final status = data['status'] as String?;
+
+    if (itemId != null && status != null) {
+      _updateItemStatus(itemId, status);
+    }
+  }
+
+  void _updateItemPrice(int itemId, double newPrice, int? bidCount) {
     final index = _items.indexWhere((item) => item.id == itemId);
     if (index != -1) {
-      _items[index] = _items[index].copyWith(
+      _items[index] = Item(
+        id: _items[index].id,
+        title: _items[index].title,
+        description: _items[index].description,
+        startingPrice: _items[index].startingPrice,
         currentPrice: newPrice,
-        bidCount: _items[index].bidCount + 1,
+        reservePrice: _items[index].reservePrice,
+        startTime: _items[index].startTime,
+        endTime: _items[index].endTime,
+        status: _items[index].status,
+        sellerId: _items[index].sellerId,
+        sellerName: _items[index].sellerName,
+        images: _items[index].images,
+        location: _items[index].location,
+        category: _items[index].category,
+        bidCount: bidCount ?? (_items[index].bidCount + 1),
+        isFavorite: _items[index].isFavorite,
+        reserveMet: _items[index].reserveMet,
       );
-      
+
       if (_selectedItem?.id == itemId) {
-        _selectedItem = _selectedItem!.copyWith(
+        _selectedItem = Item(
+          id: _selectedItem!.id,
+          title: _selectedItem!.title,
+          description: _selectedItem!.description,
+          startingPrice: _selectedItem!.startingPrice,
           currentPrice: newPrice,
-          bidCount: _selectedItem!.bidCount + 1,
+          reservePrice: _selectedItem!.reservePrice,
+          startTime: _selectedItem!.startTime,
+          endTime: _selectedItem!.endTime,
+          status: _selectedItem!.status,
+          sellerId: _selectedItem!.sellerId,
+          sellerName: _selectedItem!.sellerName,
+          images: _selectedItem!.images,
+          location: _selectedItem!.location,
+          category: _selectedItem!.category,
+          bidCount: bidCount ?? (_selectedItem!.bidCount + 1),
+          isFavorite: _selectedItem!.isFavorite,
+          reserveMet: _selectedItem!.reserveMet,
         );
       }
-      
+
+      notifyListeners();
+    }
+  }
+
+  void _updateItemStatus(int itemId, String status) {
+    final index = _items.indexWhere((item) => item.id == itemId);
+    if (index != -1) {
+      _items[index] = Item(
+        id: _items[index].id,
+        title: _items[index].title,
+        description: _items[index].description,
+        startingPrice: _items[index].startingPrice,
+        currentPrice: _items[index].currentPrice,
+        reservePrice: _items[index].reservePrice,
+        startTime: _items[index].startTime,
+        endTime: _items[index].endTime,
+        status: status,
+        sellerId: _items[index].sellerId,
+        sellerName: _items[index].sellerName,
+        images: _items[index].images,
+        location: _items[index].location,
+        category: _items[index].category,
+        bidCount: _items[index].bidCount,
+        isFavorite: _items[index].isFavorite,
+        reserveMet: _items[index].reserveMet,
+      );
+
+      if (_selectedItem?.id == itemId) {
+        _selectedItem = Item(
+          id: _selectedItem!.id,
+          title: _selectedItem!.title,
+          description: _selectedItem!.description,
+          startingPrice: _selectedItem!.startingPrice,
+          currentPrice: _selectedItem!.currentPrice,
+          reservePrice: _selectedItem!.reservePrice,
+          startTime: _selectedItem!.startTime,
+          endTime: _selectedItem!.endTime,
+          status: status,
+          sellerId: _selectedItem!.sellerId,
+          sellerName: _selectedItem!.sellerName,
+          images: _selectedItem!.images,
+          location: _selectedItem!.location,
+          category: _selectedItem!.category,
+          bidCount: _selectedItem!.bidCount,
+          isFavorite: _selectedItem!.isFavorite,
+          reserveMet: _selectedItem!.reserveMet,
+        );
+      }
+
       notifyListeners();
     }
   }
@@ -109,11 +204,10 @@ class ItemsProvider with ChangeNotifier {
           .map((e) => '${e.key}=${Uri.encodeComponent(e.value)}')
           .join('&');
 
-      final response = await _apiService.get(
-        '${ApiConfig.items}?$queryString',
-      );
+      final response = await _apiService.get('${ApiConfig.items}?$queryString');
 
-      final List<dynamic> itemsJson = response['items'] ?? response['data'] ?? [];
+      final List<dynamic> itemsJson =
+          response['items'] ?? response['data'] ?? [];
       final newItems = itemsJson.map((json) => Item.fromJson(json)).toList();
 
       if (refresh) {
@@ -133,7 +227,7 @@ class ItemsProvider with ChangeNotifier {
     }
   }
 
-  Future<void> fetchItemDetails(String itemId) async {
+  Future<void> fetchItemDetails(int itemId) async {
     _isLoading = true;
     _error = null;
     notifyListeners();
@@ -141,10 +235,10 @@ class ItemsProvider with ChangeNotifier {
     try {
       final response = await _apiService.get('${ApiConfig.items}/$itemId');
       _selectedItem = Item.fromJson(response['item'] ?? response);
-      
+
       // Subscribe to WebSocket updates for this item
-      _wsService.subscribe('item_updates', itemId);
-      
+      _wsService.subscribeToItem(itemId);
+
       _error = null;
     } catch (e) {
       _error = e.toString().replaceAll('Exception: ', '');
@@ -154,7 +248,7 @@ class ItemsProvider with ChangeNotifier {
     }
   }
 
-  Future<void> fetchItemBids(String itemId) async {
+  Future<void> fetchItemBids(int itemId) async {
     try {
       final response = await _apiService.get('${ApiConfig.bids}/$itemId');
       final List<dynamic> bidsJson = response['bids'] ?? response['data'] ?? [];
@@ -165,20 +259,17 @@ class ItemsProvider with ChangeNotifier {
     }
   }
 
-  Future<bool> placeBid(String itemId, double amount) async {
+  Future<bool> placeBid(int itemId, double amount) async {
     try {
-      await _apiService.post(
-        ApiConfig.bids,
-        {
-          'itemId': itemId,
-          'amount': amount,
-        },
-      );
-      
+      await _apiService.post(ApiConfig.bids, {
+        'itemId': itemId,
+        'amount': amount,
+      });
+
       // Refresh item details
       await fetchItemDetails(itemId);
       await fetchItemBids(itemId);
-      
+
       return true;
     } catch (e) {
       _error = e.toString().replaceAll('Exception: ', '');
@@ -219,7 +310,7 @@ class ItemsProvider with ChangeNotifier {
   @override
   void dispose() {
     if (_selectedItem != null) {
-      _wsService.unsubscribe('item_updates', _selectedItem!.id);
+      _wsService.unsubscribeFromItem(_selectedItem!.id);
     }
     super.dispose();
   }

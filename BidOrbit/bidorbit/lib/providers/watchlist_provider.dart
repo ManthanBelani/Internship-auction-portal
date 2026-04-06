@@ -9,13 +9,13 @@ class WatchlistProvider with ChangeNotifier {
   List<Item> _watchlist = [];
   bool _isLoading = false;
   String? _error;
-  final Set<String> _watchlistIds = {};
+  final Set<int> _watchlistIds = {};
 
   List<Item> get watchlist => _watchlist;
   bool get isLoading => _isLoading;
   String? get error => _error;
 
-  bool isInWatchlist(String itemId) {
+  bool isInWatchlist(int itemId) {
     return _watchlistIds.contains(itemId);
   }
 
@@ -28,17 +28,18 @@ class WatchlistProvider with ChangeNotifier {
       print('Fetching watchlist...');
       final response = await _apiService.get(ApiConfig.watchlist);
       print('Watchlist response: $response');
-      
-      final List<dynamic> itemsJson = response['items'] ?? response['data'] ?? [];
+
+      final List<dynamic> itemsJson =
+          response['items'] ?? response['data'] ?? [];
       print('Items count: ${itemsJson.length}');
-      
+
       _watchlist = itemsJson.map((json) => Item.fromJson(json)).toList();
-      
+
       _watchlistIds.clear();
       for (var item in _watchlist) {
         _watchlistIds.add(item.id);
       }
-      
+
       print('Watchlist IDs: $_watchlistIds');
       _error = null;
     } catch (e) {
@@ -50,36 +51,33 @@ class WatchlistProvider with ChangeNotifier {
     }
   }
 
-  Future<bool> addToWatchlist(String itemId) async {
+  Future<bool> addToWatchlist(int itemId) async {
     try {
-      await _apiService.post(
-        ApiConfig.watchlist,
-        {'itemId': itemId},
-      );
-      
+      await _apiService.post(ApiConfig.watchlist, {'itemId': itemId});
+
       _watchlistIds.add(itemId);
       await fetchWatchlist();
       return true;
     } catch (e) {
       final errorMsg = e.toString().replaceAll('Exception: ', '');
-      
+
       // If item is already in watchlist, just update local state
       if (errorMsg.contains('already in watchlist')) {
         _watchlistIds.add(itemId);
         await fetchWatchlist();
         return true;
       }
-      
+
       _error = errorMsg;
       notifyListeners();
       return false;
     }
   }
 
-  Future<bool> removeFromWatchlist(String itemId) async {
+  Future<bool> removeFromWatchlist(int itemId) async {
     try {
       await _apiService.delete('${ApiConfig.watchlist}/$itemId');
-      
+
       _watchlistIds.remove(itemId);
       _watchlist.removeWhere((item) => item.id == itemId);
       notifyListeners();
@@ -91,10 +89,10 @@ class WatchlistProvider with ChangeNotifier {
     }
   }
 
-  Future<bool> toggleWatchlist(String itemId) async {
+  Future<bool> toggleWatchlist(int itemId) async {
     // Check current state before toggling
     final isCurrentlyInWatchlist = isInWatchlist(itemId);
-    
+
     if (isCurrentlyInWatchlist) {
       return await removeFromWatchlist(itemId);
     } else {

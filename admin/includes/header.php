@@ -7,6 +7,11 @@
     <title><?php echo $pageTitle ?? 'Admin'; ?> - Auction Portal</title>
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        // API URL Configuration - Set this for production
+        // Leave empty for relative URLs (same origin)
+        window.ADMIN_API_URL = '<?php echo $_ENV["ADMIN_API_URL"] ?? ""; ?>';
+    </script>
 </head>
 <body>
     <div class="admin-wrapper">

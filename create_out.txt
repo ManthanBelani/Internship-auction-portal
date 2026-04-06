@@ -1,0 +1,17 @@
+Creating SQLite database with all tables...
+
+??? Created table: users
+??? Created table: items
+??? Created table: bids
+??? Created table: transactions
+??? Created table: item_images
+??? Created table: reviews
+??? Created table: watchlist
+??? Created table: notifications
+??? Created table: messages
+??? Created table: payouts
+
+??? Created admin user (admin@auction.com / admin123)
+
+??? SQLite database setup complete!
+Database location: C:\Users\manth\OneDrive\Desktop\Final Internship Project/database/auction_portal.sqlite

@@ -24,7 +24,7 @@ class ImageController
      * POST /api/items/{itemId}/images/bulk
      * Bulk upload images for an auction item
      */
-    public function bulkUpload(int $itemId): void
+    public function bulkUpload(array $data, int $itemId): void
     {
         try {
             $user = AuthMiddleware::authenticate();
@@ -46,7 +46,18 @@ class ImageController
             $results = [];
             $errors = [];
 
-            // Reformat $_FILES array if needed (multiple files)
+            // If only one file was uploaded, the arrays might not be nested
+            // Reformat to handle both single and multiple uploads via the same key
+            if (!is_array($files['name'])) {
+                $files = [
+                    'name' => [$files['name']],
+                    'type' => [$files['type']],
+                    'tmp_name' => [$files['tmp_name']],
+                    'error' => [$files['error']],
+                    'size' => [$files['size']]
+                ];
+            }
+
             $fileCount = count($files['name']);
             for ($i = 0; $i < $fileCount; $i++) {
                 $file = [
@@ -76,7 +87,45 @@ class ImageController
                 'errors' => $errors,
                 'total_success' => count($results),
                 'total_failed' => count($errors)
-            ], 201);
+            ], 'Images uploaded successfully', 201);
+
+        } catch (\Exception $e) {
+            Response::serverError($e->getMessage());
+        }
+    }
+
+    /**
+     * POST /api/items/{itemId}/images
+     * Upload a single image
+     */
+    public function upload(array $data, int $itemId): void
+    {
+        try {
+            $user = AuthMiddleware::authenticate();
+            if (!$user) return;
+
+            // Verify item exists and user is seller
+            $item = $this->itemService->getItemById($itemId);
+            if ($item['sellerId'] !== (int)$user['userId']) {
+                Response::forbidden('Access denied');
+                return;
+            }
+
+            if (!isset($_FILES['image'])) {
+                Response::badRequest('No image provided');
+                return;
+            }
+
+            $uploadResult = $this->imageService->uploadImage($itemId, $_FILES['image']);
+            
+            if ($uploadResult['success']) {
+                Response::success([
+                    'imageId' => $uploadResult['imageId'],
+                    'imageUrl' => $uploadResult['imageUrl']
+                ], 'Image uploaded successfully', 201);
+            } else {
+                Response::badRequest($uploadResult['error']);
+            }
 
         } catch (\Exception $e) {
             Response::serverError($e->getMessage());
@@ -144,7 +193,7 @@ class ImageController
             // We need to query the image to get its itemId for ownership verification
             // Let's get all images and find the one we need
             $db = Database::getConnection();
-            $stmt = $db->prepare("SELECT item_id FROM item_images WHERE image_id = :image_id");
+            $stmt = $db->prepare("SELECT item_id FROM item_images WHERE id = :image_id");
             $stmt->execute([':image_id' => $imageId]);
             $imageRecord = $stmt->fetch();
 

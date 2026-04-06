@@ -1,0 +1,5 @@
+id (INTEGER)
+item_id (INTEGER)
+image_url (TEXT)
+thumbnail_url (TEXT)
+created_at (TEXT)

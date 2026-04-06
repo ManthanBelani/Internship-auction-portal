@@ -316,4 +316,199 @@ class AdminController
             Response::json(['error' => $e->getMessage()], 400);
         }
     }
+
+    /**
+     * Get all transactions (Admin only)
+     * GET /api/admin/transactions
+     */
+    public function getTransactions(): void
+    {
+        $admin = RoleMiddleware::requireAdmin();
+        if (!$admin) return;
+
+        try {
+            $db = Database::getConnection();
+            $queryParams = $_GET;
+            
+            $sql = "SELECT t.*, 
+                    buyer.name as buyer_name, buyer.email as buyer_email,
+                    seller.name as seller_name, seller.email as seller_email,
+                    i.title as item_title, i.image_url
+                    FROM transactions t
+                    LEFT JOIN users buyer ON t.buyer_id = buyer.id
+                    LEFT JOIN users seller ON t.seller_id = seller.id
+                    LEFT JOIN items i ON t.item_id = i.id
+                    WHERE 1=1";
+            
+            $params = [];
+            
+            if (isset($queryParams['status']) && $queryParams['status']) {
+                $sql .= " AND t.status = ?";
+                $params[] = $queryParams['status'];
+            }
+            
+            if (isset($queryParams['search']) && $queryParams['search']) {
+                $sql .= " AND (i.title LIKE ? OR buyer.name LIKE ? OR seller.name LIKE ?)";
+                $searchTerm = '%' . $queryParams['search'] . '%';
+                $params[] = $searchTerm;
+                $params[] = $searchTerm;
+                $params[] = $searchTerm;
+            }
+            
+            if (isset($queryParams['dateFrom']) && $queryParams['dateFrom']) {
+                $sql .= " AND DATE(t.created_at) >= ?";
+                $params[] = $queryParams['dateFrom'];
+            }
+            
+            if (isset($queryParams['dateTo']) && $queryParams['dateTo']) {
+                $sql .= " AND DATE(t.created_at) <= ?";
+                $params[] = $queryParams['dateTo'];
+            }
+            
+            $sql .= " ORDER BY t.created_at DESC LIMIT 100";
+            
+            $stmt = $db->prepare($sql);
+            $stmt->execute($params);
+            $transactions = $stmt->fetchAll();
+            
+            Response::json([
+                'transactions' => $transactions,
+                'total' => count($transactions)
+            ]);
+        } catch (\Exception $e) {
+            Response::json(['error' => $e->getMessage()], 500);
+        }
+    }
+
+    /**
+     * Get all reviews (Admin only)
+     * GET /api/admin/reviews
+     */
+    public function getReviews(): void
+    {
+        $admin = RoleMiddleware::requireAdmin();
+        if (!$admin) return;
+
+        try {
+            $db = Database::getConnection();
+            $queryParams = $_GET;
+            
+            $sql = "SELECT r.*, 
+                    reviewer.name as reviewer_name,
+                    reviewee.name as reviewee_name
+                    FROM reviews r
+                    LEFT JOIN users reviewer ON r.reviewer_id = reviewer.id
+                    LEFT JOIN users reviewee ON r.reviewee_id = reviewee.id
+                    WHERE 1=1";
+            
+            $params = [];
+            
+            if (isset($queryParams['rating']) && $queryParams['rating']) {
+                $sql .= " AND r.rating = ?";
+                $params[] = (int)$queryParams['rating'];
+            }
+            
+            if (isset($queryParams['type']) && $queryParams['type']) {
+                $sql .= " AND r.type = ?";
+                $params[] = $queryParams['type'];
+            }
+            
+            if (isset($queryParams['search']) && $queryParams['search']) {
+                $sql .= " AND r.comment LIKE ?";
+                $params[] = '%' . $queryParams['search'] . '%';
+            }
+            
+            $sql .= " ORDER BY r.created_at DESC LIMIT 100";
+            
+            $stmt = $db->prepare($sql);
+            $stmt->execute($params);
+            $reviews = $stmt->fetchAll();
+            
+            Response::json([
+                'reviews' => $reviews,
+                'total' => count($reviews)
+            ]);
+        } catch (\Exception $e) {
+            Response::json(['error' => $e->getMessage()], 500);
+        }
+    }
+
+    /**
+     * Delete review (Admin only)
+     * DELETE /api/admin/reviews/{reviewId}
+     */
+    public function deleteReview(int $reviewId): void
+    {
+        $admin = RoleMiddleware::requireAdmin();
+        if (!$admin) return;
+
+        try {
+            $db = Database::getConnection();
+            
+            $stmt = $db->prepare("DELETE FROM reviews WHERE id = ?");
+            $stmt->execute([$reviewId]);
+            
+            if ($stmt->rowCount() === 0) {
+                Response::json(['error' => 'Review not found'], 404);
+                return;
+            }
+
+            Response::json(['message' => 'Review deleted successfully']);
+        } catch (\Exception $e) {
+            Response::json(['error' => $e->getMessage()], 400);
+        }
+    }
+
+    /**
+     * Get platform earnings (Admin only)
+     * GET /api/admin/earnings
+     */
+    public function getEarnings(): void
+    {
+        $admin = RoleMiddleware::requireAdmin();
+        if (!$admin) return;
+
+        try {
+            $db = Database::getConnection();
+            $queryParams = $_GET;
+            
+            $period = $queryParams['period'] ?? '30'; // days
+            $startDate = date('Y-m-d', strtotime("-{$period} days"));
+            
+            // Total earnings
+            $stmt = $db->query("SELECT COALESCE(SUM(commission_amount), 0) as total FROM transactions WHERE status = 'completed'");
+            $totalEarnings = $stmt->fetch()['total'];
+            
+            // Earnings in period
+            $stmt = $db->prepare("SELECT COALESCE(SUM(commission_amount), 0) as total FROM transactions WHERE status = 'completed' AND created_at >= ?");
+            $stmt->execute([$startDate]);
+            $periodEarnings = $stmt->fetch()['total'];
+            
+            // Today's earnings
+            $stmt = $db->query("SELECT COALESCE(SUM(commission_amount), 0) as total FROM transactions WHERE status = 'completed' AND DATE(created_at) = CURDATE()");
+            $todayEarnings = $stmt->fetch()['total'];
+            
+            // Transaction details in period
+            $stmt = $db->prepare("SELECT t.*, i.title as item_title, buyer.name as buyer_name, seller.name as seller_name
+                    FROM transactions t
+                    LEFT JOIN items i ON t.item_id = i.id
+                    LEFT JOIN users buyer ON t.buyer_id = buyer.id
+                    LEFT JOIN users seller ON t.seller_id = seller.id
+                    WHERE t.status = 'completed' AND t.created_at >= ?
+                    ORDER BY t.created_at DESC
+                    LIMIT 50");
+            $stmt->execute([$startDate]);
+            $transactions = $stmt->fetchAll();
+            
+            Response::json([
+                'total' => (float)$totalEarnings,
+                'period' => (float)$periodEarnings,
+                'today' => (float)$todayEarnings,
+                'period_days' => (int)$period,
+                'transactions' => $transactions
+            ]);
+        } catch (\Exception $e) {
+            Response::json(['error' => $e->getMessage()], 500);
+        }
+    }
 }

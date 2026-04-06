@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Seller Dashboard Pulse</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#2977f5",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#0a0e17",
+                        "glass": "rgba(255, 255, 255, 0.08)",
+                        "glass-border": "rgba(255, 255, 255, 0.12)",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .ios-tab-bar {
+            background: rgba(10, 14, 23, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .donut-gradient {
+            background: conic-gradient(#2977f5 0% 65%, #60a5fa 65% 85%, #93c5fd 85% 100%);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-white selection:bg-primary/30">
+<div class="relative flex h-auto min-h-screen w-full flex-col overflow-x-hidden pb-24">
+<!-- Header Section -->
+<div class="flex items-center p-6 pb-2 justify-between sticky top-0 z-20 bg-background-dark/50 backdrop-blur-md">
+<div class="flex items-center gap-3">
+<div class="relative">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-12 border-2 border-primary/50 shadow-lg shadow-primary/20" data-alt="User profile avatar smiling businessman" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCKbGIoRASylZWBcJNHq7hj2Bh3CuEwklfn5VBXuUtybNP1wjU_d6zpC8UYVTDLSGBTEpD8FYeOg-bSfzSn5dyhuJHWv-pkGptedIQ7OX-1BFuhEDzqukJb80p5gDSTPPTGAkbKWCc77EFaqZD8mrHsE5Cd034sugLMRbI078psif1mcQXn83HqY-Py9ijq0wZbNK2BAqxf7OTN0kZgy3d-PR1F6w_Iwh7mNnNIBES1xEk11AQIeX5HVEV_NS5K-SHB8kBM0sMHVqw");'></div>
+<div class="absolute bottom-0 right-0 size-3 bg-[#0bda5e] rounded-full border-2 border-background-dark"></div>
+</div>
+<div>
+<h2 class="text-white text-lg font-bold leading-tight tracking-tight">Welcome back</h2>
+<p class="text-white/50 text-xs font-medium uppercase tracking-widest">Premium Seller</p>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<button class="flex size-11 items-center justify-center rounded-full glass-card text-white hover:bg-primary/20 transition-colors">
+<span class="material-symbols-outlined text-[24px]">notifications</span>
+</button>
+</div>
+</div>
+<!-- KPI Grid -->
+<div class="flex overflow-x-auto gap-4 p-6 no-scrollbar">
+<!-- Earnings Card -->
+<div class="flex min-w-[280px] flex-col gap-4 rounded-xl p-6 glass-card relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-4 opacity-20 group-hover:opacity-40 transition-opacity">
+<span class="material-symbols-outlined text-4xl">payments</span>
+</div>
+<div>
+<p class="text-white/60 text-sm font-medium leading-normal mb-1">Total Earnings</p>
+<p class="text-white tracking-tight text-3xl font-bold leading-tight">$12,450.00</p>
+</div>
+<div class="flex items-end justify-between">
+<div class="flex items-center gap-1 text-[#0bda5e] bg-[#0bda5e]/10 px-2 py-1 rounded-full text-sm font-bold">
+<span class="material-symbols-outlined text-[18px]">trending_up</span>
+<span>+15.4%</span>
+</div>
+<!-- Sparkline Simulation -->
+<div class="flex items-end gap-1 h-8">
+<div class="w-1.5 h-3 bg-primary/30 rounded-full"></div>
+<div class="w-1.5 h-5 bg-primary/40 rounded-full"></div>
+<div class="w-1.5 h-4 bg-primary/50 rounded-full"></div>
+<div class="w-1.5 h-7 bg-primary/70 rounded-full"></div>
+<div class="w-1.5 h-8 bg-primary rounded-full"></div>
+</div>
+</div>
+</div>
+<!-- Active Bids Card -->
+<div class="flex min-w-[180px] flex-col justify-between rounded-xl p-6 glass-card">
+<p class="text-white/60 text-sm font-medium leading-normal">Active Bids</p>
+<div>
+<p class="text-white tracking-tight text-3xl font-bold leading-tight">48</p>
+<p class="text-[#0bda5e] text-xs font-medium mt-1">8 closing soon</p>
+</div>
+</div>
+<!-- Sold Items Card -->
+<div class="flex min-w-[180px] flex-col justify-between rounded-xl p-6 glass-card">
+<p class="text-white/60 text-sm font-medium leading-normal">Sold Items</p>
+<div>
+<p class="text-white tracking-tight text-3xl font-bold leading-tight">12</p>
+<p class="text-white/40 text-xs font-medium mt-1">This month</p>
+</div>
+</div>
+</div>
+<!-- Performance Insights -->
+<div class="px-6 py-4">
+<h2 class="text-white text-xl font-bold leading-tight tracking-tight mb-4">Performance Insights</h2>
+<div class="rounded-xl p-6 glass-card flex flex-col items-center">
+<!-- Doughnut Chart Container -->
+<div class="relative size-48 flex items-center justify-center mb-6">
+<div class="absolute inset-0 rounded-full donut-gradient mask-radial opacity-90"></div>
+<!-- Inner Hole for Doughnut -->
+<div class="absolute inset-4 rounded-full bg-[#111827] flex flex-col items-center justify-center shadow-inner">
+<p class="text-white/50 text-xs uppercase font-bold tracking-tighter">Sales</p>
+<p class="text-white text-2xl font-black">$12.4k</p>
+</div>
+</div>
+<!-- Legend -->
+<div class="grid grid-cols-2 gap-4 w-full">
+<div class="flex items-center gap-2">
+<div class="size-2 rounded-full bg-primary"></div>
+<p class="text-white/70 text-sm font-medium">Watches (65%)</p>
+</div>
+<div class="flex items-center gap-2">
+<div class="size-2 rounded-full bg-blue-400"></div>
+<p class="text-white/70 text-sm font-medium">Fine Art (20%)</p>
+</div>
+<div class="flex items-center gap-2">
+<div class="size-2 rounded-full bg-blue-200"></div>
+<p class="text-white/70 text-sm font-medium">Collectibles (15%)</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Recent Activity -->
+<div class="px-6 py-4">
+<div class="flex items-center justify-between mb-4">
+<h2 class="text-white text-xl font-bold leading-tight tracking-tight">Recent Activity</h2>
+<button class="text-primary text-sm font-bold">View All</button>
+</div>
+<div class="space-y-3">
+<!-- Activity Item 1 -->
+<div class="flex items-center justify-between p-4 rounded-xl glass-card">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-cover bg-center" data-alt="Buyer avatar profile photo" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBfOE-44i8L2GpvSUDL-Mv3R3POjOHYdsrAr_jExFFk4zU2eMkkaGyTn40g55OpIsj5MpJT9uGWRUt1DcMKVtiho-ypxmH7gU7q0qs-XWifLbzZa6BGV6SbYHxZVRAA8RGfHs7mtn6_FVzr1SV5pGcSqB0nYJpE9XwKKtJ2HBgwGS0hP4ivKybaMW-NIXQ1AsOOwwqlZt4CV5O_R3n7REdifO0T4ACpRemidbtMzEKXM2t-uQ0lnh-X9V9Um30rZNUh7M9mJTOueRQ");'></div>
+<div>
+<p class="text-sm font-bold text-white">New bid on <span class="text-primary">Rolex Submariner</span></p>
+<p class="text-xs text-white/40">by @alex_luxury • 2m ago</p>
+</div>
+</div>
+<p class="text-sm font-bold text-[#0bda5e]">+$8,200</p>
+</div>
+<!-- Activity Item 2 -->
+<div class="flex items-center justify-between p-4 rounded-xl glass-card">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-cover bg-center" data-alt="Buyer female avatar profile photo" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCTrLWvoq2oCGr_Avcf-Afu_2isUA3x2NsbuICBO9SiV5b0MRem79B8DIzqmbeUuix5gYtgwH17nwy5GgB3G63VH8QxmzJVCL6KxPE5eS5OnypMTtulGgdFY_XVebNb2ZQqA1QgVhUCKKpPwBUcmZn5tTtXAFkNGYAuR_htv8Ywg0IprJElddg__HzFGSe0F48S97irHj5z50dZRQUMuJ1i9kOzFQ3joRFCxJ7x7dlkX-2Gm1eVzpHQHPVwKZBkcJLDP3PVMjBGBZ4");'></div>
+<div>
+<p class="text-sm font-bold text-white">Item Sold: <span class="text-primary">Eames Lounge Chair</span></p>
+<p class="text-xs text-white/40">to @sarah_designs • 1h ago</p>
+</div>
+</div>
+<p class="text-sm font-bold text-white">$3,150</p>
+</div>
+<!-- Activity Item 3 -->
+<div class="flex items-center justify-between p-4 rounded-xl glass-card">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-cover bg-center flex items-center justify-center bg-primary/20" data-alt="Generic placeholder avatar">
+<span class="material-symbols-outlined text-primary text-xl">person</span>
+</div>
+<div>
+<p class="text-sm font-bold text-white">New Bid: <span class="text-primary">Basquiat Print</span></p>
+<p class="text-xs text-white/40">by @art_collector • 4h ago</p>
+</div>
+</div>
+<p class="text-sm font-bold text-[#0bda5e]">+$1,100</p>
+</div>
+</div>
+</div>
+<!-- Floating Action Button -->
+<button class="fixed bottom-28 right-6 size-16 bg-primary text-white rounded-full flex items-center justify-center shadow-2xl shadow-primary/40 active:scale-95 transition-transform z-30">
+<span class="material-symbols-outlined text-[32px]">add</span>
+</button>
+<!-- Bottom Navigation -->
+<div class="fixed bottom-0 left-0 right-0 h-20 ios-tab-bar z-20 px-6 flex items-center justify-between">
+<button class="flex flex-col items-center gap-1 text-primary">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-[10px] font-bold uppercase tracking-wider">Pulse</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-white/40 hover:text-white transition-colors">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="text-[10px] font-bold uppercase tracking-wider">Inventory</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-white/40 hover:text-white transition-colors">
+<span class="material-symbols-outlined">chat_bubble</span>
+<span class="text-[10px] font-bold uppercase tracking-wider">Messages</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-white/40 hover:text-white transition-colors">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-[10px] font-bold uppercase tracking-wider">Settings</span>
+</button>
+</div>
+</div>
+<!-- Custom Chart Styles -->
+<style>
+        .mask-radial {
+            mask-image: radial-gradient(circle, transparent 55%, black 56%);
+            -webkit-mask-image: radial-gradient(circle, transparent 55%, black 56%);
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</body></html>

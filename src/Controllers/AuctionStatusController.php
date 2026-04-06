@@ -52,6 +52,9 @@ class AuctionStatusController
                     $item['startingPrice'],
                     $item['currentPrice']
                 ),
+                'sellerName' => $item['sellerName'],
+                'reserveSet' => !empty($item['reservePrice']),
+                'reserveMet' => !empty($item['reserveMet']),
                 'timestamp' => date('Y-m-d H:i:s')
             ];
 
